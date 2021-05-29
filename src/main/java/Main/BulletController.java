@@ -1,0 +1,43 @@
+package Main;
+
+import java.awt.*;
+import java.util.LinkedList;
+import java.util.List;
+
+public class BulletController {
+
+    public List<Bullet> bulletList = new LinkedList<Bullet>();
+
+    Bullet bullet;
+    MainClass main;
+
+    public BulletController(MainClass main) {
+        this.main = main;
+    }
+
+    public void tick() {
+        for(int i = 0; i < bulletList.size(); i++) {
+            bullet = bulletList.get(i);
+            if(bullet.getyPOS() <= 0) {
+                removeBullet(bullet);
+            }
+            bullet.tick();
+        }
+    }
+
+    public void render(Graphics graphic) {
+        for(int i = 0; i < bulletList.size(); i++) {
+            bullet = bulletList.get(i);
+            bullet.render(graphic);
+        }
+    }
+
+    public void addBullet(Bullet bullet) {
+        bulletList.add(bullet);
+    }
+
+    public void removeBullet(Bullet bullet) {
+        bulletList.remove(bullet);
+    }
+
+}
