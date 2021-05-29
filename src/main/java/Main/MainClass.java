@@ -1,5 +1,6 @@
 package Main;
 
+import Bomb.*;
 import Bullet.*;
 import Monster.*;
 
@@ -33,10 +34,14 @@ public class MainClass extends Canvas implements Runnable {
     private Monster monster;
     private MonsterController monsterController;
 
+    private Bomb bomb;
+    private BombController bombController;
+
     private long lastSecond, lastFrame;
     private int ticks, frames;
     private double delta;
     private double RANDOM_X, RANDOM_Y; // ?????????
+    private int SPAWN_SIZE;
 
     public static void main(String[] args) {
         MainClass main = new MainClass();
@@ -67,6 +72,7 @@ public class MainClass extends Canvas implements Runnable {
 
         bulletController = new BulletController(this);
         monsterController = new MonsterController(this);
+        bombController = new BombController(this);
 
         monsterController.addMonster(new Monster(setRandomX(), setRandomY(), this));
     }
@@ -121,6 +127,7 @@ public class MainClass extends Canvas implements Runnable {
             if(Time.msNow() - lastFrame > 1000) {
                 lastFrame += 1000;
                 System.out.println(ticks + " Ticks, FPS " + frames);
+                addBomb();
                 ticks = 0;
                 frames = 0;
             }
@@ -132,8 +139,10 @@ public class MainClass extends Canvas implements Runnable {
         player.tick();
         bulletController.tick();
         monsterController.tick();
+        bombController.tick();
 
-        monsterShot();
+        monsterKilled();
+        userKilled();
     }
     private void render() {
 
@@ -151,6 +160,7 @@ public class MainClass extends Canvas implements Runnable {
         player.render(graphics);
         bulletController.render(graphics);
         monsterController.render(graphics);
+        bombController.render(graphics);
 
         // ---------- //
         graphics.dispose();
@@ -227,7 +237,7 @@ public class MainClass extends Canvas implements Runnable {
     /**
      * TEMP CODES
      */
-    public void monsterShot() {
+    public void monsterKilled() {
         if(bulletController.getBulletList().size() > 0) {
             for (int i = 0; i < monsterController.getMonsterList().size(); i++) {
                 for (int j = 0; j < bulletController.getBulletList().size(); j++) {
@@ -239,10 +249,41 @@ public class MainClass extends Canvas implements Runnable {
                         monsterController.removeMonster(monster);
                         bulletController.removeBullet(bullet);
 
-                        monsterController.addMonster(new Monster(setRandomX(), setRandomY(), this));
+                        SPAWN_SIZE = (int) Math.ceil(Math.random() * 4);
+
+                        for(int k = 0; k <= SPAWN_SIZE; k++) {
+                            RANDOM_X = setRandomX();
+                            RANDOM_Y = setRandomY();
+
+                            monsterController.addMonster(new Monster(RANDOM_X, RANDOM_Y, this));
+                        }
                     }
                 }
             }
+        }
+    }
+
+    public void userKilled() {
+        for(int i = 0; i < bombController.getBombList().size(); i++) {
+            bomb = bombController.getBombList().get(i);
+
+            if(((bomb.getyPOS() > player.getyPOS() - 32) && bomb.getyPOS() < player.getyPOS()) && (bomb.getxPOS() + 32 > player.getxPOS() && bomb.getxPOS() < player.getxPOS() + 32)) {
+                bombController.removeBomb(bomb);
+            }
+        }
+    }
+
+    public void addBomb() {
+        Monster randomMonster = null;
+
+        if(monsterController.getMonsterList().size() > 1) {
+            randomMonster = monsterController.getMonsterList().get((int) Math.ceil(Math.random() * (monsterController.getMonsterList().size() - 1)));
+        } else if(monsterController.getMonsterList().size() == 1) {
+            randomMonster = monsterController.getMonsterList().get(0);
+        }
+
+        if(bombController.getBombList().size() == 0 && randomMonster != null) {
+            bombController.addBomb(new Bomb(randomMonster.getxPOS(), randomMonster.getyPOS() + 32, this));
         }
     }
 

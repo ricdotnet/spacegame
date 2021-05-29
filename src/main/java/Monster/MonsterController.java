@@ -32,9 +32,6 @@ public class MonsterController {
     }
 
     public void addMonster(Monster monster) {
-        if(monsterList.size() > 0) {
-            monsterList.remove(0);
-        }
         monsterList.add(monster);
     }
 
