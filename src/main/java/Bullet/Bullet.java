@@ -1,4 +1,7 @@
-package Main;
+package Bullet;
+
+import Main.MainClass;
+import Main.SprideSheet;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -29,6 +32,9 @@ public class Bullet {
 
     public double getyPOS() {
         return yPOS;
+    }
+    public double getxPOS() {
+        return xPOS;
     }
 
 }

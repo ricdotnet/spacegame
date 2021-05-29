@@ -1,4 +1,6 @@
-package Main;
+package Bullet;
+
+import Main.MainClass;
 
 import java.awt.*;
 import java.util.LinkedList;
@@ -6,7 +8,7 @@ import java.util.List;
 
 public class BulletController {
 
-    public List<Bullet> bulletList = new LinkedList<Bullet>();
+    private List<Bullet> bulletList = new LinkedList<Bullet>();
 
     Bullet bullet;
     MainClass main;
@@ -38,6 +40,10 @@ public class BulletController {
 
     public void removeBullet(Bullet bullet) {
         bulletList.remove(bullet);
+    }
+
+    public List<Bullet> getBulletList() {
+        return bulletList;
     }
 
 }

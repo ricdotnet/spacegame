@@ -1,5 +1,8 @@
 package Main;
 
+import Bullet.*;
+import Monster.*;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -23,11 +26,17 @@ public class MainClass extends Canvas implements Runnable {
     private BufferedImage spriteSheet = null;
 
     private Player player;
+
+    private Bullet bullet;
     private BulletController bulletController;
+
+    private Monster monster;
+    private MonsterController monsterController;
 
     private long lastSecond, lastFrame;
     private int ticks, frames;
     private double delta;
+    private double RANDOM_X, RANDOM_Y; // ?????????
 
     public static void main(String[] args) {
         MainClass main = new MainClass();
@@ -53,8 +62,13 @@ public class MainClass extends Canvas implements Runnable {
         spriteSheet = imageLoader.loadImage("/sprites.png");
 
         addKeyListener(new KeyInput(this));
-        player = new Player(200, 200, this);
+
+        player = new Player((getWidth() / 2) - 16, getHeight() - 64, this);
+
         bulletController = new BulletController(this);
+        monsterController = new MonsterController(this);
+
+        monsterController.addMonster(new Monster(setRandomX(), setRandomY(), this));
     }
 
     private synchronized void start() {
@@ -78,6 +92,10 @@ public class MainClass extends Canvas implements Runnable {
         System.exit(1);
     }
 
+    /**
+     * Main loop game.
+     * Use as reference always.
+     */
     @Override
     public void run() {
         init();
@@ -103,7 +121,6 @@ public class MainClass extends Canvas implements Runnable {
             if(Time.msNow() - lastFrame > 1000) {
                 lastFrame += 1000;
                 System.out.println(ticks + " Ticks, FPS " + frames);
-                System.out.println(bulletController.bulletList.size());
                 ticks = 0;
                 frames = 0;
             }
@@ -114,6 +131,9 @@ public class MainClass extends Canvas implements Runnable {
     private void tick() {
         player.tick();
         bulletController.tick();
+        monsterController.tick();
+
+        monsterShot();
     }
     private void render() {
 
@@ -130,6 +150,7 @@ public class MainClass extends Canvas implements Runnable {
 
         player.render(graphics);
         bulletController.render(graphics);
+        monsterController.render(graphics);
 
         // ---------- //
         graphics.dispose();
@@ -158,11 +179,19 @@ public class MainClass extends Canvas implements Runnable {
         }
 
         if(e.getKeyCode() == KeyEvent.VK_SPACE) {
-            if(bulletController.bulletList.size() >= 0) {
+
+            //allow only 2 bullets on the screen at once
+            if(bulletController.getBulletList().size() < 2) {
                 bulletController.addBullet(new Bullet(player.getxPOS(), player.getyPOS() - 32, this));
-            } else {
-                System.out.println("limit");
             }
+
+        }
+
+        /**
+         * TEMP KEY COMMANDS
+         */
+        if(e.getKeyCode() == KeyEvent.VK_ENTER) {
+            monsterController.addMonster(new Monster(setRandomX(), setRandomY(), this));
         }
     }
     public void keyReleased(KeyEvent e) {
@@ -177,6 +206,43 @@ public class MainClass extends Canvas implements Runnable {
         }
         if(e.getKeyCode() == KeyEvent.VK_DOWN) {
             player.setVelY(0);
+        }
+    }
+
+    /**
+     * Random X and random Y
+     */
+    private double setRandomX() {
+        double x = Math.floor(Math.random() * getWidth());
+
+        if(x >= getWidth() - 32) {
+            x = x - 32;
+        }
+        return x;
+    }
+    private double setRandomY() {
+        return Math.floor(Math.random() * (getHeight() / 2));
+    }
+
+    /**
+     * TEMP CODES
+     */
+    public void monsterShot() {
+        if(bulletController.getBulletList().size() > 0) {
+            for (int i = 0; i < monsterController.getMonsterList().size(); i++) {
+                for (int j = 0; j < bulletController.getBulletList().size(); j++) {
+                    monster = monsterController.getMonsterList().get(i);
+                    bullet = bulletController.getBulletList().get(j);
+
+                    //kill monster and add another one
+                    if((bullet.getxPOS() + 16 > monster.getxPOS() && bullet.getxPOS() + 16 < monster.getxPOS() + 32) && (bullet.getyPOS() > monster.getyPOS() && bullet.getyPOS() < monster.getyPOS() + 32)) {
+                        monsterController.removeMonster(monster);
+                        bulletController.removeBullet(bullet);
+
+                        monsterController.addMonster(new Monster(setRandomX(), setRandomY(), this));
+                    }
+                }
+            }
         }
     }
 
