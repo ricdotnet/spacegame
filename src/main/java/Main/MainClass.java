@@ -3,7 +3,7 @@ package Main;
 import Bomb.*;
 import Bullet.*;
 import Monster.*;
-import Player.Player;
+import Player.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -17,6 +17,7 @@ public class MainClass extends Canvas implements Runnable {
 
     private Boolean RUNNING = false;
     private Thread thread;
+    private Thread playerShoot;
 
     public static final int WIDTH = 320;
     public static final int HEIGHT = WIDTH / 12 * 9;
@@ -38,6 +39,9 @@ public class MainClass extends Canvas implements Runnable {
 
     private Bomb bomb;
     private BombController bombController;
+
+    private Heart heart;
+    private HeartController heartController;
 
     private long lastSecond, lastFrame;
     private int ticks, frames;
@@ -76,8 +80,17 @@ public class MainClass extends Canvas implements Runnable {
         bulletController = new BulletController(this);
         monsterController = new MonsterController(this);
         bombController = new BombController(this);
+        heartController = new HeartController(this);
 
         monsterController.addMonster(new Monster(setRandomX(), setRandomY(), this));
+
+        // temp lives
+        double x = 50;
+        double y = getHeight() - 50;
+        for(int i = 0; i < 5; i++) {
+            heartController.addHeart(new Heart(x, y, this));
+            x = x + 26;
+        }
     }
 
     private synchronized void start() {
@@ -143,9 +156,12 @@ public class MainClass extends Canvas implements Runnable {
         bulletController.tick();
         monsterController.tick();
         bombController.tick();
+        heartController.tick();
 
         monsterKilled();
-        userKilled();
+        userHit();
+
+        gameFinished(); //check for when game end
     }
     private void render() {
 
@@ -164,6 +180,7 @@ public class MainClass extends Canvas implements Runnable {
         bulletController.render(graphics);
         monsterController.render(graphics);
         bombController.render(graphics);
+        heartController.render(graphics);
 
         // ---------- //
         graphics.dispose();
@@ -172,6 +189,9 @@ public class MainClass extends Canvas implements Runnable {
 
     public BufferedImage getSpriteSheet() {
         return spriteSheet;
+    }
+    public BufferedImage getIconsSheet() {
+        return icons;
     }
 
     /*
@@ -204,7 +224,7 @@ public class MainClass extends Canvas implements Runnable {
          * TEMP KEY COMMANDS
          */
         if(e.getKeyCode() == KeyEvent.VK_ENTER) {
-            monsterController.addMonster(new Monster(setRandomX(), setRandomY(), this));
+//            monsterController.addMonster(new Monster(setRandomX(), setRandomY(), this));
         }
     }
     public void keyReleased(KeyEvent e) {
@@ -266,12 +286,13 @@ public class MainClass extends Canvas implements Runnable {
         }
     }
 
-    public void userKilled() {
+    public void userHit() {
         for(int i = 0; i < bombController.getBombList().size(); i++) {
             bomb = bombController.getBombList().get(i);
 
             if(((bomb.getyPOS() > player.getyPOS() - 32) && bomb.getyPOS() < player.getyPOS()) && (bomb.getxPOS() + 32 > player.getxPOS() && bomb.getxPOS() < player.getxPOS() + 32)) {
                 bombController.removeBomb(bomb);
+                heartController.removeHeart();
             }
         }
     }
@@ -287,6 +308,12 @@ public class MainClass extends Canvas implements Runnable {
 
         if(bombController.getBombList().size() == 0 && randomMonster != null) {
             bombController.addBomb(new Bomb(randomMonster.getxPOS(), randomMonster.getyPOS() + 32, this));
+        }
+    }
+
+    public void gameFinished() {
+        if(heartController.getHeartList().size() == 0) {
+            RUNNING = false;
         }
     }
 
