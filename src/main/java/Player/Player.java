@@ -1,4 +1,7 @@
-package Main;
+package Player;
+
+import Images.SprideSheet;
+import Main.MainClass;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;

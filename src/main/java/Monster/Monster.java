@@ -1,7 +1,7 @@
 package Monster;
 
 import Main.MainClass;
-import Main.SprideSheet;
+import Images.SprideSheet;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;

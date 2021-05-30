@@ -3,6 +3,7 @@ package Main;
 import Bomb.*;
 import Bullet.*;
 import Monster.*;
+import Player.Player;
 
 import javax.swing.*;
 import java.awt.*;
@@ -25,6 +26,7 @@ public class MainClass extends Canvas implements Runnable {
     private BufferedImage image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
     private BufferStrategy bufferStrategy;
     private BufferedImage spriteSheet = null;
+    private BufferedImage icons = null;
 
     private Player player;
 
@@ -65,6 +67,7 @@ public class MainClass extends Canvas implements Runnable {
         requestFocus();
         ImageLoader imageLoader = new ImageLoader();
         spriteSheet = imageLoader.loadImage("/sprites.png");
+        icons = imageLoader.loadImage("/icons.png");
 
         addKeyListener(new KeyInput(this));
 
