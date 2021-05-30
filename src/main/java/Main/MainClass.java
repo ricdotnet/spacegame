@@ -10,6 +10,7 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 
 public class MainClass extends Canvas implements Runnable {
 
@@ -28,6 +29,8 @@ public class MainClass extends Canvas implements Runnable {
     private BufferStrategy bufferStrategy;
     private BufferedImage spriteSheet = null;
     private BufferedImage icons = null;
+
+    SoundLoader sound = new SoundLoader();
 
     private Player player;
 
@@ -216,6 +219,8 @@ public class MainClass extends Canvas implements Runnable {
             //allow only 2 bullets on the screen at once
             if(bulletController.getBulletList().size() < 2) {
                 bulletController.addBullet(new Bullet(player.getxPOS(), player.getyPOS() - 32, this));
+
+                sound.playSound("/playerShoot.wav");
             }
 
         }
@@ -308,6 +313,8 @@ public class MainClass extends Canvas implements Runnable {
 
         if(bombController.getBombList().size() == 0 && randomMonster != null) {
             bombController.addBomb(new Bomb(randomMonster.getxPOS(), randomMonster.getyPOS() + 32, this));
+
+            sound.playSound("/enemyShoot.wav");
         }
     }
 
