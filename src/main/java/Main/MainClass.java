@@ -10,7 +10,11 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
+import java.util.TimerTask;
+import java.util.Timer;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class MainClass extends Canvas implements Runnable {
 
@@ -18,7 +22,8 @@ public class MainClass extends Canvas implements Runnable {
 
     private Boolean RUNNING = false;
     private Thread thread;
-    private Thread playerShoot;
+    Timer timer = new Timer();
+    ScheduledExecutorService service = Executors.newScheduledThreadPool(1);
 
     public static final int WIDTH = 320;
     public static final int HEIGHT = WIDTH / 12 * 9;
@@ -39,6 +44,7 @@ public class MainClass extends Canvas implements Runnable {
 
     private Monster monster;
     private MonsterController monsterController;
+    private Explosion explosion = null;
 
     private Bomb bomb;
     private BombController bombController;
@@ -185,6 +191,10 @@ public class MainClass extends Canvas implements Runnable {
         bombController.render(graphics);
         heartController.render(graphics);
 
+        if(explosion != null) {
+            explosion.render(graphics);
+        }
+
         // ---------- //
         graphics.dispose();
         bufferStrategy.show();
@@ -274,12 +284,34 @@ public class MainClass extends Canvas implements Runnable {
 
                     //kill monster and add another one
                     if((bullet.getxPOS() + 16 > monster.getxPOS() && bullet.getxPOS() + 16 < monster.getxPOS() + 32) && (bullet.getyPOS() > monster.getyPOS() && bullet.getyPOS() < monster.getyPOS() + 32)) {
+
+                        double tempX = monster.getxPOS();
+                        double tempY = monster.getyPOS();
+
                         monsterController.removeMonster(monster);
                         bulletController.removeBullet(bullet);
 
-                        SPAWN_SIZE = (int) Math.ceil(Math.random() * 4);
+                        sound.playSound("/enemyExplode.wav");
 
-                        for(int k = 0; k <= SPAWN_SIZE; k++) {
+                        //spawn explosion image
+                        for(int explosionStage = 1; explosionStage <= 4; explosionStage++) {
+                            explosion = new Explosion(tempX, tempY, this, explosionStage);
+                        }
+//                        timer.schedule(removeExplosion, 150);
+                        service.schedule(removeExplosion, 150, TimeUnit.MILLISECONDS);
+//                        service.execute(removeExplosion);
+
+                        if(Time.chance() < 0.01) {
+                            SPAWN_SIZE = 6;
+                        } else if(Time.chance() < 0.15) {
+                            SPAWN_SIZE = 3;
+                        } else if(Time.chance() < 0.30) {
+                            SPAWN_SIZE = 2;
+                        } else {
+                            SPAWN_SIZE = 1;
+                        }
+
+                        for(int k = 0; k < SPAWN_SIZE; k++) {
                             RANDOM_X = setRandomX();
                             RANDOM_Y = setRandomY();
 
@@ -323,5 +355,12 @@ public class MainClass extends Canvas implements Runnable {
             RUNNING = false;
         }
     }
+
+    Runnable removeExplosion = new Runnable() {
+        @Override
+        public void run() {
+            explosion = null;
+        }
+    };
 
 }

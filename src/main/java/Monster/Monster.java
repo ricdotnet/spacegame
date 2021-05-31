@@ -33,8 +33,14 @@ public class Monster {
     public double getyPOS() {
         return yPOS;
     }
+    public void setyPOS(double yPOS) {
+        this.yPOS = getyPOS() + yPOS;
+    }
     public double getxPOS() {
         return xPOS;
+    }
+    public void setxPOS(double xPOS) { //bit pointless unless to move also horizontal
+        this.xPOS = xPOS;
     }
 
 }

@@ -18,4 +18,9 @@ public class Time {
         return System.currentTimeMillis();
     }
 
+    //random int number from 0-10
+    public static double chance() {
+        return Math.random();
+    }
+
 }

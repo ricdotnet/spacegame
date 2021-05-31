@@ -3,6 +3,7 @@ package Main;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
+import javax.sound.sampled.FloatControl;
 import java.net.URL;
 
 public class SoundLoader {
@@ -14,6 +15,10 @@ public class SoundLoader {
             AudioInputStream sound = AudioSystem.getAudioInputStream(audioFile);
 
             clip.open(sound);
+
+//            FloatControl volumeControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+//            volumeControl.setValue(-10.0f);
+
             clip.start();
         } catch (Exception e) {
             System.out.println(e.toString());
