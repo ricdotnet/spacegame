@@ -10,8 +10,6 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
-import java.util.TimerTask;
-import java.util.Timer;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -22,13 +20,13 @@ public class MainClass extends Canvas implements Runnable {
 
     private Boolean RUNNING = false;
     private Thread thread;
-    Timer timer = new Timer();
+
     ScheduledExecutorService service = Executors.newScheduledThreadPool(1);
 
     public static final int WIDTH = 320;
     public static final int HEIGHT = WIDTH / 12 * 9;
     public static final int SCALE = 2;
-    public static final String TITLE = "JFrame and Canvas Testing";
+    public static final String TITLE = "Space Game";
 
     private BufferedImage image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
     private BufferStrategy bufferStrategy;
@@ -44,7 +42,7 @@ public class MainClass extends Canvas implements Runnable {
 
     private Monster monster;
     private MonsterController monsterController;
-    private Explosion explosion = null;
+    public Explosion explosion = null;
 
     private Bomb bomb;
     private BombController bombController;
@@ -60,6 +58,7 @@ public class MainClass extends Canvas implements Runnable {
 
     public static void main(String[] args) {
         MainClass main = new MainClass();
+        MainMenu menu = new MainMenu();
         main.setPreferredSize(new Dimension(WIDTH * SCALE, HEIGHT * SCALE));
         main.setMaximumSize(new Dimension(WIDTH * SCALE, HEIGHT * SCALE));
         main.setMinimumSize(new Dimension(WIDTH * SCALE, HEIGHT * SCALE));
@@ -98,7 +97,7 @@ public class MainClass extends Canvas implements Runnable {
         double y = getHeight() - 50;
         for(int i = 0; i < 5; i++) {
             heartController.addHeart(new Heart(x, y, this));
-            x = x + 26;
+            x = x + 20;
         }
     }
 
@@ -169,6 +168,7 @@ public class MainClass extends Canvas implements Runnable {
 
         monsterKilled();
         userHit();
+        monsterOut();
 
         gameFinished(); //check for when game end
     }
@@ -294,12 +294,11 @@ public class MainClass extends Canvas implements Runnable {
                         sound.playSound("/enemyExplode.wav");
 
                         //spawn explosion image
-                        for(int explosionStage = 1; explosionStage <= 4; explosionStage++) {
-                            explosion = new Explosion(tempX, tempY, this, explosionStage);
-                        }
-//                        timer.schedule(removeExplosion, 150);
+                        explosion = new Explosion(tempX, tempY, this);
+
+                        System.out.println(explosion);
                         service.schedule(removeExplosion, 150, TimeUnit.MILLISECONDS);
-//                        service.execute(removeExplosion);
+                        System.out.println(explosion);
 
                         if(Time.chance() < 0.01) {
                             SPAWN_SIZE = 6;
@@ -319,6 +318,16 @@ public class MainClass extends Canvas implements Runnable {
                         }
                     }
                 }
+            }
+        }
+    }
+
+    public void monsterOut() {
+        for(int i = 0; i < monsterController.getMonsterList().size(); i++) {
+            monster = monsterController.getMonsterList().get(i);
+            if(monster.getyPOS() > getHeight()) {
+                monsterController.removeMonster(monster);
+                heartController.removeHeart();
             }
         }
     }
@@ -352,10 +361,14 @@ public class MainClass extends Canvas implements Runnable {
 
     public void gameFinished() {
         if(heartController.getHeartList().size() == 0) {
+
+            explosion = new Explosion(player.getxPOS(), player.getyPOS(), this);
+
             RUNNING = false;
         }
     }
 
+    // main game runnable methods
     Runnable removeExplosion = new Runnable() {
         @Override
         public void run() {

@@ -14,13 +14,12 @@ public class Explosion {
 
     private BufferedImage explosion;
 
-    public Explosion(double xPOS, double yPOS, MainClass main, int explosionStage) {
+    public Explosion(double xPOS, double yPOS, MainClass main) {
         this.xPOS = xPOS;
         this.yPOS = yPOS;
-        this.explosionStage = explosionStage;
 
         SprideSheet sprite = new SprideSheet(main.getSpriteSheet());
-        explosion = sprite.grabImage(explosionStage, 2, 32, 32);
+        explosion = sprite.grabImage(4, 2, 32, 32);
     }
 
     public void tick() {
