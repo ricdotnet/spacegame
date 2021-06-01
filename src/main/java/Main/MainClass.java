@@ -7,6 +7,8 @@ import Player.*;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
@@ -55,24 +57,57 @@ public class MainClass extends Canvas implements Runnable {
     private double delta;
     private double RANDOM_X, RANDOM_Y; // ?????????
     private int SPAWN_SIZE;
+    private int score = 0;
+
+    static JFrame window = new JFrame(TITLE);
+    static MainClass main = new MainClass();
+    static JPanel menu;
 
     public static void main(String[] args) {
-        MainClass main = new MainClass();
-        MainMenu menu = new MainMenu();
-        main.setPreferredSize(new Dimension(WIDTH * SCALE, HEIGHT * SCALE));
-        main.setMaximumSize(new Dimension(WIDTH * SCALE, HEIGHT * SCALE));
-        main.setMinimumSize(new Dimension(WIDTH * SCALE, HEIGHT * SCALE));
-        main.setBackground(Color.CYAN);
 
-        JFrame window = new JFrame(TITLE);
-        window.add(main);
+        menu = new JPanel();
+        JButton start = new JButton();
+        start.setText("Start");
+        start.setSize(100, 50);
+        start.setLocation(50, 50);
+        start.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                startGame(e);
+            }
+        });
+
+        menu.add(start);
+        menu.setPreferredSize(new Dimension(WIDTH * SCALE, HEIGHT * SCALE));
+        menu.setMaximumSize(new Dimension(WIDTH * SCALE, HEIGHT * SCALE));
+        menu.setMinimumSize(new Dimension(WIDTH * SCALE, HEIGHT * SCALE));
+        menu.setBackground(Color.CYAN);
+
+        window.add(menu);
         window.pack();
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        window.setResizable(false);
+        window.setResizable(true);
         window.setLocationRelativeTo(null);
         window.setVisible(true);
 
+//        main.start();
+        main.keys();
+    }
+
+    private static void startGame(ActionEvent e) {
+        window.remove(menu);
+        window.add(main);
+        SwingUtilities.updateComponentTreeUI(window);
         main.start();
+    }
+
+    /*
+    Key starter.
+    this avoids multiple key listeners on restart.
+     */
+    private void keys() {
+        System.out.println("keys started");
+        addKeyListener(new KeyInput(this));
     }
 
     public void init() {
@@ -81,7 +116,7 @@ public class MainClass extends Canvas implements Runnable {
         spriteSheet = imageLoader.loadImage("/sprites.png");
         icons = imageLoader.loadImage("/icons.png");
 
-        addKeyListener(new KeyInput(this));
+//        addKeyListener(new KeyInput(this));
 
         player = new Player((getWidth() / 2) - 16, getHeight() - 64, this);
 
@@ -185,6 +220,8 @@ public class MainClass extends Canvas implements Runnable {
         graphics.setColor(Color.CYAN);
         graphics.fillRect(0, 0, getWidth(), getHeight());
 
+        drawScore(graphics);
+
         player.render(graphics);
         bulletController.render(graphics);
         monsterController.render(graphics);
@@ -198,6 +235,13 @@ public class MainClass extends Canvas implements Runnable {
         // ---------- //
         graphics.dispose();
         bufferStrategy.show();
+    }
+
+    private void drawScore(Graphics g) {
+        g.setColor(Color.black);
+        Font small = new Font("Monospace", Font.BOLD, 14);
+        g.setFont(small);
+        g.drawString("Current score: " + score, 50, getHeight()-15);
     }
 
     public BufferedImage getSpriteSheet() {
@@ -239,7 +283,8 @@ public class MainClass extends Canvas implements Runnable {
          * TEMP KEY COMMANDS
          */
         if(e.getKeyCode() == KeyEvent.VK_ENTER) {
-//            monsterController.addMonster(new Monster(setRandomX(), setRandomY(), this));
+            monsterController.addMonster(new Monster(setRandomX(), setRandomY(), this));
+            System.out.println(monsterController.getMonsterList().size());
         }
     }
     public void keyReleased(KeyEvent e) {
@@ -296,9 +341,7 @@ public class MainClass extends Canvas implements Runnable {
                         //spawn explosion image
                         explosion = new Explosion(tempX, tempY, this);
 
-                        System.out.println(explosion);
                         service.schedule(removeExplosion, 150, TimeUnit.MILLISECONDS);
-                        System.out.println(explosion);
 
                         if(Time.chance() < 0.01) {
                             SPAWN_SIZE = 6;
@@ -316,6 +359,9 @@ public class MainClass extends Canvas implements Runnable {
 
                             monsterController.addMonster(new Monster(RANDOM_X, RANDOM_Y, this));
                         }
+
+                        //increase score by 1
+                        score++;
                     }
                 }
             }
@@ -362,9 +408,11 @@ public class MainClass extends Canvas implements Runnable {
     public void gameFinished() {
         if(heartController.getHeartList().size() == 0) {
 
-            explosion = new Explosion(player.getxPOS(), player.getyPOS(), this);
+            //explosion = new Explosion(player.getxPOS(), player.getyPOS(), this);
 
             RUNNING = false;
+            sound.playSound("/gameOver.wav");
+            service.schedule(restart, 2, TimeUnit.SECONDS);
         }
     }
 
@@ -373,6 +421,16 @@ public class MainClass extends Canvas implements Runnable {
         @Override
         public void run() {
             explosion = null;
+        }
+    };
+
+    Runnable restart = new Runnable() {
+        @Override
+        public void run() {
+            window.remove(main);
+            score = 0;
+            window.add(menu);
+            SwingUtilities.updateComponentTreeUI(window);
         }
     };
 
