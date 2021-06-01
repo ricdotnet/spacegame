@@ -8,7 +8,6 @@ import Player.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
@@ -67,17 +66,21 @@ public class MainClass extends Canvas implements Runnable {
 
         menu = new JPanel();
         JButton start = new JButton();
+        JButton quit = new JButton();
+
         start.setText("Start");
         start.setSize(100, 50);
         start.setLocation(50, 50);
-        start.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                startGame(e);
-            }
-        });
+        quit.setText("Quit");
+        quit.setSize(100, 50);
+        quit.setLocation(50, 110);
+
+        //start the buttons
+        main.buttons(start); //start button
+        main.buttons(quit);
 
         menu.add(start);
+        menu.add(quit);
         menu.setPreferredSize(new Dimension(WIDTH * SCALE, HEIGHT * SCALE));
         menu.setMaximumSize(new Dimension(WIDTH * SCALE, HEIGHT * SCALE));
         menu.setMinimumSize(new Dimension(WIDTH * SCALE, HEIGHT * SCALE));
@@ -90,15 +93,18 @@ public class MainClass extends Canvas implements Runnable {
         window.setLocationRelativeTo(null);
         window.setVisible(true);
 
-//        main.start();
         main.keys();
     }
 
-    private static void startGame(ActionEvent e) {
+    // main game methods
+    public void startGame(ActionEvent e) {
         window.remove(menu);
         window.add(main);
         SwingUtilities.updateComponentTreeUI(window);
         main.start();
+    }
+    public void quitGame(ActionEvent e) {
+        System.exit(1);
     }
 
     /*
@@ -109,14 +115,18 @@ public class MainClass extends Canvas implements Runnable {
         System.out.println("keys started");
         addKeyListener(new KeyInput(this));
     }
+    /*
+    Buttons starter method
+     */
+    private void buttons(JButton button) {
+        button.addActionListener(new ButtonClick(this));
+    }
 
     public void init() {
         requestFocus();
         ImageLoader imageLoader = new ImageLoader();
         spriteSheet = imageLoader.loadImage("/sprites.png");
         icons = imageLoader.loadImage("/icons.png");
-
-//        addKeyListener(new KeyInput(this));
 
         player = new Player((getWidth() / 2) - 16, getHeight() - 64, this);
 
