@@ -58,6 +58,8 @@ public class MainClass extends Canvas implements Runnable {
     private int SPAWN_SIZE;
     private int score = 0;
 
+    Scores scores = new Scores();
+
     static JFrame window = new JFrame(TITLE);
     static MainClass main = new MainClass();
     static JPanel menu;
@@ -419,6 +421,8 @@ public class MainClass extends Canvas implements Runnable {
         if(heartController.getHeartList().size() == 0) {
 
             //explosion = new Explosion(player.getxPOS(), player.getyPOS(), this);
+
+            scores.addScore(score);
 
             RUNNING = false;
             sound.playSound("/gameOver.wav");
