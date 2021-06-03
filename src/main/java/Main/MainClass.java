@@ -50,7 +50,7 @@ public class MainClass extends Canvas implements Runnable {
     private Bomb bomb;
     private BombController bombController;
 
-    private Heart heart;
+//    private Heart heart;
     private HeartController heartController;
 
     private long lastSecond, lastFrame;
