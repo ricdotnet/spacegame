@@ -31,6 +31,8 @@ public class MainClass extends Canvas implements Runnable {
 
     private BufferedImage image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
     private BufferStrategy bufferStrategy;
+    private static BufferStrategy test;
+
     private BufferedImage spriteSheet = null;
     private BufferedImage icons = null;
 
@@ -64,6 +66,7 @@ public class MainClass extends Canvas implements Runnable {
     static MainClass main = new MainClass();
     static JPanel menu;
 
+    static JTextArea scoresList = new JTextArea();
     public static void main(String[] args) {
 
         menu = new JPanel();
@@ -77,12 +80,24 @@ public class MainClass extends Canvas implements Runnable {
         quit.setSize(100, 50);
         quit.setLocation(50, 110);
 
+
+        JButton scoresButton = new JButton();
+        scoresButton.setText("Scores");
+        scoresButton.setSize(100, 50);
+        main.buttons(scoresButton);
+        menu.add(scoresButton);
+
         //start the buttons
         main.buttons(start); //start button
         main.buttons(quit);
 
         menu.add(start);
         menu.add(quit);
+
+        main.drawScoresTable();
+        scoresList.setEditable(false);
+        menu.add(scoresList);
+
         menu.setPreferredSize(new Dimension(WIDTH * SCALE, HEIGHT * SCALE));
         menu.setMaximumSize(new Dimension(WIDTH * SCALE, HEIGHT * SCALE));
         menu.setMinimumSize(new Dimension(WIDTH * SCALE, HEIGHT * SCALE));
@@ -256,6 +271,22 @@ public class MainClass extends Canvas implements Runnable {
         g.drawString("Current score: " + score, 50, getHeight()-15);
     }
 
+    private void drawScoresTable() {
+
+//        StringBuilder scoresList = new StringBuilder();
+        scoresList.setText("");
+
+        if(scores.printScores().size() > 0) {
+            for (int i = 0; i < scores.printScores().size(); i++) {
+                scoresList.append(String.valueOf(scores.printScores().get(i)) + "\n");
+            }
+        } else {
+            scoresList.append("No scores...");
+        }
+
+//        g.drawString(String.valueOf(scoresList), 50, getHeight()-15);
+    }
+
     public BufferedImage getSpriteSheet() {
         return spriteSheet;
     }
@@ -422,7 +453,9 @@ public class MainClass extends Canvas implements Runnable {
 
             //explosion = new Explosion(player.getxPOS(), player.getyPOS(), this);
 
+            System.out.println(score);
             scores.addScore(score);
+            drawScoresTable();
 
             RUNNING = false;
             sound.playSound("/gameOver.wav");

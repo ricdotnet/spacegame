@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 public class ButtonClick implements ActionListener {
 
     MainClass main;
+    Scores scores = new Scores();
 
     public ButtonClick(MainClass main) {
         this.main = main;
@@ -22,6 +23,11 @@ public class ButtonClick implements ActionListener {
         // quit button command
         if(e.getActionCommand().equals("Quit")) {
             main.quitGame(e);
+        }
+
+        // scores button command
+        if(e.getActionCommand().equals("Scores")) {
+            System.out.println(scores.printScores());
         }
 
     }
