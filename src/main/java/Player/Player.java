@@ -16,8 +16,6 @@ public class Player {
 
     private BufferedImage player;
 
-    private static String playerName;
-
     public Player(double xPOS, double yPOS, MainClass main) {
         this.xPOS = xPOS;
         this.yPOS = yPOS;
@@ -77,13 +75,6 @@ public class Player {
     }
     public void setVelY(double velY) {
         this.velY = velY;
-    }
-
-    public void setPlayerName(String name) {
-        this.playerName = name;
-    }
-    public String getPlayerName() {
-        return playerName;
     }
 
 }

@@ -1,7 +1,5 @@
 package Main;
 
-import Player.Player;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -9,8 +7,6 @@ public class ButtonClick implements ActionListener {
 
     MainClass main;
     Scores scores = new Scores();
-    AskName name = new AskName(main);
-    Player player = new Player();
 
     public ButtonClick(MainClass main) {
         this.main = main;
@@ -26,8 +22,7 @@ public class ButtonClick implements ActionListener {
 
         // quit button command
         if(e.getActionCommand().equals("Quit")) {
-            //main.quitGame(e);
-            System.out.println(player.getPlayerName());
+            main.quitGame(e);
         }
 
         // scores button command
@@ -37,7 +32,7 @@ public class ButtonClick implements ActionListener {
 
         // confirm name button
         if(e.getActionCommand().equals("Confirm")) {
-
+            main.restart();
         }
 
     }

@@ -1,28 +1,17 @@
 package Main;
 
-import Player.Player;
-
 import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.concurrent.TimeUnit;
 
 public class AskName extends JDialog {
 
-    private JLabel nameLabel;
-    private JTextField nameField;
-    private JButton confirmButton;
-
-    Player player = new Player();
-    MainClass mainClass;
-    Scores scores = new Scores();
+    public JLabel nameLabel;
+    public JTextField nameField;
+    public JButton confirmButton = new JButton();
 
     public AskName(MainClass main) {
 
         nameLabel = new JLabel();
         nameField = new JTextField();
-        confirmButton = new JButton();
 
         setTitle("Player Name");
         setLocationRelativeTo(main);
@@ -46,24 +35,6 @@ public class AskName extends JDialog {
         add(nameLabel);
         add(nameField);
         add(confirmButton);
-
-        confirmButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                if(!nameField.getText().isEmpty()) {
-                    player.setPlayerName(nameField.getText());
-                    nameField.setBackground(Color.white);
-                    nameField.setText("");
-                    setVisible(false);
-
-                    scores.addScore(main.score);
-
-                    return;
-                }
-
-                nameField.setBackground(Color.red);
-            }
-        });
     }
 
 }

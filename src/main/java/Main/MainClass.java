@@ -39,6 +39,7 @@ public class MainClass extends Canvas implements Runnable {
     SoundLoader sound = new SoundLoader();
 
     private Player player;
+    private PlayerVars playerVars = new PlayerVars();
 
     private Bullet bullet;
     private BulletController bulletController;
@@ -58,7 +59,6 @@ public class MainClass extends Canvas implements Runnable {
     private double delta;
     private double RANDOM_X, RANDOM_Y; // ?????????
     private int SPAWN_SIZE;
-    public int score = 0;
 
     Scores scores = new Scores();
     AskName askName = new AskName(main);
@@ -66,6 +66,8 @@ public class MainClass extends Canvas implements Runnable {
     static JFrame window = new JFrame(TITLE);
     static MainClass main = new MainClass();
     static JPanel menu;
+
+    public MainClass() { }
 
     static JTextArea scoresList = new JTextArea();
     public static void main(String[] args) {
@@ -269,7 +271,7 @@ public class MainClass extends Canvas implements Runnable {
         g.setColor(Color.black);
         Font small = new Font("Monospace", Font.BOLD, 14);
         g.setFont(small);
-        g.drawString("Current score: " + score, 50, getHeight()-15);
+        g.drawString("Current score: " + playerVars.getPlayerScore(), 50, getHeight()-15);
     }
 
     private void drawScoresTable() {
@@ -405,7 +407,7 @@ public class MainClass extends Canvas implements Runnable {
                         }
 
                         //increase score by 1
-                        score++;
+                        playerVars.setPlayerScore();
                     }
                 }
             }
@@ -471,17 +473,29 @@ public class MainClass extends Canvas implements Runnable {
     Runnable restart = new Runnable() {
         @Override
         public void run() {
+            window.remove(main);
+
             askName.setVisible(true);
 
-//            scores.addScore(score);
-//            drawScoresTable();
-//
-//
-            window.remove(main);
-//            score = 0;
-            window.add(menu);
-            SwingUtilities.updateComponentTreeUI(window);
+            askName.confirmButton.addActionListener(new ButtonClick(main));
         }
     };
+
+    public void restart() {
+        if(!askName.nameField.getText().isEmpty()) {
+            playerVars.setPlayerName(askName.nameField.getText());
+            askName.nameField.setBackground(Color.white);
+            askName.nameField.setText("");
+            askName.setVisible(false);
+            scores.addScore(playerVars.getPlayerScore());
+
+            drawScoresTable();
+            window.add(menu);
+            SwingUtilities.updateComponentTreeUI(window);
+        } else {
+            askName.nameField.setBackground(Color.red);
+            return;
+        }
+    }
 
 }
