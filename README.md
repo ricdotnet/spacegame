@@ -19,5 +19,7 @@ The names are randomly generated from a pool of names.
  - menu frame ✅
  - power ups
  - difficulty increase
- - ask for player name before start
- - scoreboard with real names
+ - ~~ask for player name before start~~
+ - ask for player name after losing ✅
+ - scoreboard with real names ✅
+ - online scoreboard to show on menu screen
