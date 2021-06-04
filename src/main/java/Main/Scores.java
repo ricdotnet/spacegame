@@ -1,16 +1,20 @@
 package Main;
 
+import Player.Player;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class Scores {
+
+    Player player = new Player();
 
     private static List<PlayerScore> scores = new ArrayList<PlayerScore>();
 
     String[] names = {"Ricardo", "Adriana", "Igor", "Pedro", "Andre", "Carl", "John", "Jane"};
 
     public void addScore(Integer score) {
-        scores.add(new PlayerScore(names[(int) Math.round(Math.random() * names.length)], score));
+        scores.add(new PlayerScore(player.getPlayerName(), score));
     }
 
     public List<PlayerScore> printScores() {

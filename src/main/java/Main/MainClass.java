@@ -58,9 +58,10 @@ public class MainClass extends Canvas implements Runnable {
     private double delta;
     private double RANDOM_X, RANDOM_Y; // ?????????
     private int SPAWN_SIZE;
-    private int score = 0;
+    public int score = 0;
 
     Scores scores = new Scores();
+    AskName askName = new AskName(main);
 
     static JFrame window = new JFrame(TITLE);
     static MainClass main = new MainClass();
@@ -453,12 +454,8 @@ public class MainClass extends Canvas implements Runnable {
 
             //explosion = new Explosion(player.getxPOS(), player.getyPOS(), this);
 
-            System.out.println(score);
-            scores.addScore(score);
-            drawScoresTable();
-
-            RUNNING = false;
             sound.playSound("/gameOver.wav");
+            RUNNING = false;
             service.schedule(restart, 2, TimeUnit.SECONDS);
         }
     }
@@ -474,8 +471,14 @@ public class MainClass extends Canvas implements Runnable {
     Runnable restart = new Runnable() {
         @Override
         public void run() {
+            askName.setVisible(true);
+
+//            scores.addScore(score);
+//            drawScoresTable();
+//
+//
             window.remove(main);
-            score = 0;
+//            score = 0;
             window.add(menu);
             SwingUtilities.updateComponentTreeUI(window);
         }
