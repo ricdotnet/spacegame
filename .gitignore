@@ -26,3 +26,6 @@ hs_err_pid*
 .idea
 out
 .run
+
+# Game files
+src/main/java/Database/Database.java

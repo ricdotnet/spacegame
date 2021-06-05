@@ -2,6 +2,7 @@ package Main;
 
 import Bomb.*;
 import Bullet.*;
+import Database.Database;
 import Monster.*;
 import Player.*;
 
@@ -62,33 +63,41 @@ public class MainClass extends Canvas implements Runnable {
 
     Scores scores = new Scores();
     AskName askName = new AskName(main);
+    static Database connect = new Database();
 
     static JFrame window = new JFrame(TITLE);
     static MainClass main = new MainClass();
     static JPanel menu;
+    static ScoresTable scoresTable = new ScoresTable(WIDTH, SCALE);
+    static MainMenu mainMenu = new MainMenu();
 
     public MainClass() { }
 
     static JTextArea scoresList = new JTextArea();
     public static void main(String[] args) {
 
+        if(connect.getConnection() != null) {
+            System.out.println("Connected to the database.");
+        }
+
         menu = new JPanel();
+        menu.setLayout(null);
         JButton start = new JButton();
         JButton quit = new JButton();
 
         start.setText("Start");
-        start.setSize(100, 50);
-        start.setLocation(50, 50);
+        start.setSize(100, 30);
+        start.setLocation(((WIDTH * SCALE) / 2) - 105, 10);
         quit.setText("Quit");
-        quit.setSize(100, 50);
-        quit.setLocation(50, 110);
-
+        quit.setSize(100, 30);
+        quit.setLocation(((WIDTH * SCALE) / 2) + 5, 10);
+//        scoresTable.setLocation(15, 50);
 
         JButton scoresButton = new JButton();
         scoresButton.setText("Scores");
         scoresButton.setSize(100, 50);
         main.buttons(scoresButton);
-        menu.add(scoresButton);
+//        menu.add(scoresButton); // remove scores button temporarily
 
         //start the buttons
         main.buttons(start); //start button
@@ -96,6 +105,8 @@ public class MainClass extends Canvas implements Runnable {
 
         menu.add(start);
         menu.add(quit);
+        menu.add(scoresTable);
+        menu.add(mainMenu);
 
         main.drawScoresTable();
         scoresList.setEditable(false);
@@ -104,7 +115,7 @@ public class MainClass extends Canvas implements Runnable {
         menu.setPreferredSize(new Dimension(WIDTH * SCALE, HEIGHT * SCALE));
         menu.setMaximumSize(new Dimension(WIDTH * SCALE, HEIGHT * SCALE));
         menu.setMinimumSize(new Dimension(WIDTH * SCALE, HEIGHT * SCALE));
-        menu.setBackground(Color.CYAN);
+        menu.setBackground(Colors.DEEP_BLUE);
 
         window.add(menu);
         window.pack();
@@ -496,6 +507,11 @@ public class MainClass extends Canvas implements Runnable {
             askName.nameField.setBackground(Color.red);
             return;
         }
+    }
+
+    public void changeBg(Color color) {
+        menu.setBackground(color);
+        menu.repaint();
     }
 
 }
