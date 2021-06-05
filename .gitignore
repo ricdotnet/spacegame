@@ -28,4 +28,4 @@ out
 .run
 
 # Game files
-src/main/java/Database/Database.java
+/src/main/java/Database/Database.java
