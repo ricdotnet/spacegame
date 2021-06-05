@@ -23,6 +23,7 @@ public class AskName extends JDialog {
         nameLabel.setText("Enter your name");
         nameField.setText("");
         confirmButton.setText("Confirm");
+        confirmButton.setName("CONFIRM_NAME");
 
         nameLabel.setSize(250, 20);
         nameField.setSize(250, 20);

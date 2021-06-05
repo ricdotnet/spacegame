@@ -8,7 +8,7 @@ public class ButtonClick implements ActionListener {
 
     MainClass main;
     Scores scores = new Scores();
-    MainClass click = new MainClass(); //for button click purposes
+    MainClass mainClass = new MainClass(); //for button click purposes
 
     public ButtonClick(MainClass main) {
         this.main = main;
@@ -21,28 +21,18 @@ public class ButtonClick implements ActionListener {
         String name = button.getName();
 
         // start button command
-        if(e.getActionCommand().equals("Start")) {
-            main.startGame(e);
+        if(name.equals("START_GAME")) {
+            mainClass.startGame(e);
         }
 
         // quit button command
-        if(e.getActionCommand().equals("Quit")) {
-            main.quitGame(e);
-        }
-
-        // scores button command
-        if(e.getActionCommand().equals("Scores")) {
-            System.out.println(scores.printScores());
+        if(name.equals("QUIT_GAME")) {
+            mainClass.quitGame(e);
         }
 
         // confirm name button
-        if(e.getActionCommand().equals("Confirm")) {
+        if(name.equals("CONFIRM_NAME")) {
             main.restart();
-        }
-
-        if(name.equals("BLOOD_RED")) {
-            click.changeBg(Colors.BLOOD_RED);
-            System.out.println("red....");
         }
 
     }

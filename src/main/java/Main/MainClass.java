@@ -68,8 +68,7 @@ public class MainClass extends Canvas implements Runnable {
     static JFrame window = new JFrame(TITLE);
     static MainClass main = new MainClass();
     static JPanel menu;
-    static ScoresTable scoresTable = new ScoresTable(WIDTH, SCALE);
-    static MainMenu mainMenu = new MainMenu();
+    static MainMenu mainMenu = new MainMenu(WIDTH, HEIGHT, SCALE);
 
     public MainClass() { }
 
@@ -80,47 +79,10 @@ public class MainClass extends Canvas implements Runnable {
             System.out.println("Connected to the database.");
         }
 
-        menu = new JPanel();
-        menu.setLayout(null);
-        JButton start = new JButton();
-        JButton quit = new JButton();
-
-        start.setText("Start");
-        start.setSize(100, 30);
-        start.setLocation(((WIDTH * SCALE) / 2) - 105, 10);
-        quit.setText("Quit");
-        quit.setSize(100, 30);
-        quit.setLocation(((WIDTH * SCALE) / 2) + 5, 10);
-//        scoresTable.setLocation(15, 50);
-
-        JButton scoresButton = new JButton();
-        scoresButton.setText("Scores");
-        scoresButton.setSize(100, 50);
-        main.buttons(scoresButton);
-//        menu.add(scoresButton); // remove scores button temporarily
-
-        //start the buttons
-        main.buttons(start); //start button
-        main.buttons(quit);
-
-        menu.add(start);
-        menu.add(quit);
-        menu.add(scoresTable);
-        menu.add(mainMenu);
-
-        main.drawScoresTable();
-        scoresList.setEditable(false);
-        menu.add(scoresList);
-
-        menu.setPreferredSize(new Dimension(WIDTH * SCALE, HEIGHT * SCALE));
-        menu.setMaximumSize(new Dimension(WIDTH * SCALE, HEIGHT * SCALE));
-        menu.setMinimumSize(new Dimension(WIDTH * SCALE, HEIGHT * SCALE));
-        menu.setBackground(Colors.DEEP_BLUE);
-
-        window.add(menu);
+        window.add(mainMenu);
         window.pack();
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        window.setResizable(true);
+        window.setResizable(false);
         window.setLocationRelativeTo(null);
         window.setVisible(true);
 
@@ -129,7 +91,7 @@ public class MainClass extends Canvas implements Runnable {
 
     // main game methods
     public void startGame(ActionEvent e) {
-        window.remove(menu);
+        window.remove(mainMenu);
         window.add(main);
         SwingUtilities.updateComponentTreeUI(window);
         main.start();
@@ -258,7 +220,7 @@ public class MainClass extends Canvas implements Runnable {
         Graphics graphics = bufferStrategy.getDrawGraphics();
         // ---------- //
 
-        graphics.setColor(Color.CYAN);
+        graphics.setColor(Colors.DEEP_BLUE);
         graphics.fillRect(0, 0, getWidth(), getHeight());
 
         drawScore(graphics);
@@ -501,17 +463,11 @@ public class MainClass extends Canvas implements Runnable {
             scores.addScore(playerVars.getPlayerScore());
 
             drawScoresTable();
-            window.add(menu);
+            window.add(mainMenu);
             SwingUtilities.updateComponentTreeUI(window);
         } else {
             askName.nameField.setBackground(Color.red);
-            return;
         }
-    }
-
-    public void changeBg(Color color) {
-        menu.setBackground(color);
-        menu.repaint();
     }
 
 }

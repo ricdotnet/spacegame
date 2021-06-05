@@ -1,49 +1,62 @@
 package Main;
 
 import javax.swing.*;
+import java.awt.*;
+import java.awt.image.BufferedImage;
 
 public class MainMenu extends JPanel {
 
-    MainClass main;
+    MainClass main = new MainClass();
+    ImageLoader image = new ImageLoader();
+    ScoresTable scoresTable = new ScoresTable();
 
-    public JButton color1 = new JButton();
-    public JButton color2 = new JButton();
-    public JButton color3 = new JButton();
+    private BufferedImage background;
 
-    public MainMenu() {
+    private final JButton startButton = new JButton();
+    private final JButton quitButton = new JButton();
+
+    public MainMenu(int WIDTH, int HEIGHT, int SCALE) {
+
+        background = image.loadImage("/spaceGame.png");
 
         //set main menu options
-        setSize(300, 50);
-        setLocation(10, 320);
-        setOpaque(false);
+        setPreferredSize(new Dimension(WIDTH * SCALE, HEIGHT * SCALE));
+        setSize((WIDTH * SCALE), (HEIGHT * SCALE));
+        setLocation(0, 0);
+
+        setOpaque(true);
+        setLayout(null);
+
+        //set button texts
+        startButton.setText("Start");
+        startButton.setName("START_GAME");
+        quitButton.setText("Quit");
+        quitButton.setName("QUIT_GAME");
 
         //set button sizes
-        color1.setSize(25, 25);
-        color2.setSize(25, 25);
-        color3.setSize(25, 25);
+        startButton.setSize(100, 30);
+        quitButton.setSize(100, 30);
 
         //set button positions
-        color1.setLocation(15, 250);
-        color3.setLocation(35, 250);
-        color2.setLocation(65, 250);
-
-        color1.setBackground(Colors.DEEP_BLUE);
-        color2.setBackground(Colors.BLOOD_RED);
-        color3.setBackground(Colors.CUTE_PINK);
-
-        color1.setName("DEEP_BLUE");
-        color2.setName("BLOOD_RED");
-        color3.setName("CUTE_PINK");
+        startButton.setLocation(((WIDTH * SCALE) / 2) - 105, 10);
+        quitButton.setLocation(((WIDTH * SCALE) / 2) + 5, 10);
 
         //add buttons to jPanel
-        add(color1);
-        add(color2);
-        add(color3);
+        add(startButton);
+        add(quitButton);
+        add(scoresTable);
 
-        color1.addActionListener(new ButtonClick(main));
-        color2.addActionListener(new ButtonClick(main));
-        color3.addActionListener(new ButtonClick(main));
+        //action listeners
+        startButton.addActionListener(new ButtonClick(main));
+        quitButton.addActionListener(new ButtonClick(main));
 
+    }
+
+    @Override
+    protected void paintComponent(Graphics g)
+    {
+        super.paintComponent(g);
+        g.drawImage(background, 0, 0, this);
     }
 
 }

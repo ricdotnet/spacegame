@@ -1,20 +1,35 @@
 package Main;
 
+import Database.Database;
 import Player.*;
 
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Scores {
 
     PlayerVars playerVars = new PlayerVars();
+    Database connect = new Database();
 
     private static List<PlayerScore> scores = new ArrayList<PlayerScore>();
 
-    String[] names = {"Ricardo", "Adriana", "Igor", "Pedro", "Andre", "Carl", "John", "Jane"};
+//    String[] names = {"Ricardo", "Adriana", "Igor", "Pedro", "Andre", "Carl", "John", "Jane"};
 
     public void addScore(Integer score) {
         scores.add(new PlayerScore(playerVars.getPlayerName(), score));
+
+//        try {
+//            PreparedStatement addScore = connect.getConnection().prepareStatement("insert into scores (name, score) values(?, ?)");
+//            addScore.setString(1, playerVars.getPlayerName());
+//            addScore.setInt(2, score);
+//            addScore.execute();
+//
+//        } catch (SQLException e) {
+//            System.out.println(e.toString());
+//        }
+
     }
 
     public List<PlayerScore> printScores() {
