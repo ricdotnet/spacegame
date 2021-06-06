@@ -18,5 +18,8 @@ public class PlayerVars {
     public Integer getPlayerScore() {
         return playerScore;
     }
+    public void resetPlayerScore() {
+        playerScore = 0;
+    }
 
 }

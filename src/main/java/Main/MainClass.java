@@ -462,6 +462,8 @@ public class MainClass extends Canvas implements Runnable {
             askName.setVisible(false);
             scores.addScore(playerVars.getPlayerScore());
 
+            playerVars.resetPlayerScore();
+
             drawScoresTable();
             window.add(mainMenu);
             SwingUtilities.updateComponentTreeUI(window);
