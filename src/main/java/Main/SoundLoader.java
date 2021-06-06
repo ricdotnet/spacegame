@@ -21,7 +21,8 @@ public class SoundLoader {
 
             clip.start();
         } catch (Exception e) {
-            System.out.println(e.toString());
+//            System.out.println(e);
+            e.getStackTrace();
         }
     }
 

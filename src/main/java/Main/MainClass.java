@@ -63,12 +63,13 @@ public class MainClass extends Canvas implements Runnable {
 
     Scores scores = new Scores();
     AskName askName = new AskName(main);
+    GameVars gameVars = new GameVars();
     static Database connect = new Database();
 
     static JFrame window = new JFrame(TITLE);
     static MainClass main = new MainClass();
     static JPanel menu;
-    static MainMenu mainMenu = new MainMenu(WIDTH, HEIGHT, SCALE);
+    static MainMenu mainMenu = new MainMenu(HEIGHT);
 
     public MainClass() { }
 
@@ -144,6 +145,12 @@ public class MainClass extends Canvas implements Runnable {
             return;
 
         RUNNING = true;
+
+        //if difficulty is not set play easy
+        if(gameVars.getDifficulty() == null) {
+            gameVars.setDifficulty("Easy");
+        }
+
         thread = new Thread(this);
         thread.start();
     }
@@ -288,6 +295,7 @@ public class MainClass extends Canvas implements Runnable {
         }
 
         if(e.getKeyCode() == KeyEvent.VK_SPACE) {
+            playerShoot();
 
             //allow only 2 bullets on the screen at once
             if(bulletController.getBulletList().size() < 2) {
@@ -339,6 +347,10 @@ public class MainClass extends Canvas implements Runnable {
     /**
      * TEMP CODES
      */
+    public void playerShoot() {
+        System.out.println(gameVars.getDifficulty());
+    }
+
     public void monsterKilled() {
         if(bulletController.getBulletList().size() > 0) {
             for (int i = 0; i < monsterController.getMonsterList().size(); i++) {
@@ -467,8 +479,6 @@ public class MainClass extends Canvas implements Runnable {
             drawScoresTable();
             window.add(mainMenu);
             SwingUtilities.updateComponentTreeUI(window);
-        } else {
-            askName.nameField.setBackground(Color.red);
         }
     }
 

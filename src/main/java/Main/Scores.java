@@ -11,7 +11,7 @@ import java.util.List;
 public class Scores {
 
     PlayerVars playerVars = new PlayerVars();
-    Database connect = new Database();
+//    Database connect = new Database();
 
     private static List<PlayerScore> scores = new ArrayList<PlayerScore>();
 

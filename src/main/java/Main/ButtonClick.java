@@ -7,8 +7,10 @@ import java.awt.event.ActionListener;
 public class ButtonClick implements ActionListener {
 
     MainClass main;
-    Scores scores = new Scores();
     MainClass mainClass = new MainClass(); //for button click purposes
+    AskName askName = new AskName(main);
+    GameVars gameVars = new GameVars();
+    MainMenu mainMenu = new MainMenu();
 
     public ButtonClick(MainClass main) {
         this.main = main;
@@ -32,7 +34,32 @@ public class ButtonClick implements ActionListener {
 
         // confirm name button
         if(name.equals("CONFIRM_NAME")) {
-            main.restart();
+            if(!askName.nameField.getText().isEmpty()) {
+                askName.nameField.setBackground(Colors.BLOOD_RED);
+            } else {
+                main.restart();
+            }
+        }
+
+        // change difficulty button
+        if(name.equals("CHANGE_DIFFICULTY")) {
+
+            switch (gameVars.getDifficulty()) {
+                case "Easy":
+                    gameVars.setDifficulty("Medium");
+                    break;
+                case "Medium":
+                    gameVars.setDifficulty("Hard");
+                    break;
+                case "Hard":
+                    gameVars.setDifficulty("Easy");
+                    break;
+            }
+
+            /**
+             * difficulty not working
+             */
+            mainMenu.difficulty.setText("sdfsdfsdf");
         }
 
     }
