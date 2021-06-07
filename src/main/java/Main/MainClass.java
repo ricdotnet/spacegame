@@ -62,14 +62,13 @@ public class MainClass extends Canvas implements Runnable {
     private int SPAWN_SIZE;
 
     Scores scores = new Scores();
-    AskName askName = new AskName(main);
+    AskName askName = new AskName();
     GameVars gameVars = new GameVars();
     static Database connect = new Database();
 
     static JFrame window = new JFrame(TITLE);
     static MainClass main = new MainClass();
-    static JPanel menu;
-    static MainMenu mainMenu = new MainMenu(HEIGHT);
+    static MainMenu mainMenu = new MainMenu();
 
     public MainClass() { }
 
@@ -145,11 +144,6 @@ public class MainClass extends Canvas implements Runnable {
             return;
 
         RUNNING = true;
-
-        //if difficulty is not set play easy
-        if(gameVars.getDifficulty() == null) {
-            gameVars.setDifficulty("Easy");
-        }
 
         thread = new Thread(this);
         thread.start();
@@ -296,14 +290,6 @@ public class MainClass extends Canvas implements Runnable {
 
         if(e.getKeyCode() == KeyEvent.VK_SPACE) {
             playerShoot();
-
-            //allow only 2 bullets on the screen at once
-            if(bulletController.getBulletList().size() < 2) {
-                bulletController.addBullet(new Bullet(player.getxPOS(), player.getyPOS() - 32, this));
-
-                sound.playSound("/playerShoot.wav");
-            }
-
         }
 
         /**
@@ -348,7 +334,30 @@ public class MainClass extends Canvas implements Runnable {
      * TEMP CODES
      */
     public void playerShoot() {
-        System.out.println(gameVars.getDifficulty());
+
+        switch (gameVars.getDifficulty()) {
+            case ("Easy"):
+                //allow only 2 bullets on the screen at once
+                if(bulletController.getBulletList().size() < 10) {
+                    bulletController.addBullet(new Bullet(player.getxPOS(), player.getyPOS() - 32, this));
+                    sound.playSound("/playerShoot.wav");
+                }
+                break;
+            case ("Medium"):
+                //allow only 2 bullets on the screen at once
+                if(bulletController.getBulletList().size() < 5) {
+                    bulletController.addBullet(new Bullet(player.getxPOS(), player.getyPOS() - 32, this));
+                    sound.playSound("/playerShoot.wav");
+                }
+                break;
+            case ("Hard"):
+                //allow only 2 bullets on the screen at once
+                if(bulletController.getBulletList().size() < 2) {
+                    bulletController.addBullet(new Bullet(player.getxPOS(), player.getyPOS() - 32, this));
+                    sound.playSound("/playerShoot.wav");
+                }
+                break;
+        }
     }
 
     public void monsterKilled() {

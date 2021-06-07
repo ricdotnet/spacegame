@@ -2,11 +2,13 @@ package Main;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 
 public class MainMenu extends JPanel {
 
-    MainClass main = new MainClass();
+    MainClass main;
     ImageLoader image = new ImageLoader();
     ScoresTable scoresTable = new ScoresTable();
     GameVars gameVars = new GameVars();
@@ -16,13 +18,10 @@ public class MainMenu extends JPanel {
     private final JButton startButton = new JButton();
     private final JButton quitButton = new JButton();
     private final JButton changeDifficulty = new JButton();
-    public final JLabel difficulty = new JLabel();
 
-    public MainMenu() {}
+    private static final JLabel gameDifficulty = Labels.gameDifficulty;
 
-    public MainMenu(int HEIGHT) {
-
-        background = image.loadImage("/spaceGame.png");
+    public MainMenu() {
 
         //set main menu options
         setPreferredSize(new Dimension(MainClass.WIDTH * MainClass.SCALE, MainClass.HEIGHT * MainClass.SCALE));
@@ -38,28 +37,30 @@ public class MainMenu extends JPanel {
         quitButton.setText("Quit");
         quitButton.setName("QUIT_GAME");
         changeDifficulty.setText("Change Difficulty");
-        changeDifficulty.setName("CHANGE_DIFFICULTY");
-        difficulty.setForeground(Colors.WHITE);
-        difficulty.setText(gameVars.getDifficulty());
+        changeDifficulty.setName("DIFFICULTY_CHANGE");
+        gameDifficulty.setText(gameVars.getDifficulty());
 
         //set component sizes
         startButton.setSize(100, 30);
         quitButton.setSize(100, 30);
         changeDifficulty.setSize(140, 30);
-        difficulty.setSize(140, 30);
+        gameDifficulty.setSize(100, 30);
 
         //set component positions
         startButton.setLocation(((MainClass.WIDTH * MainClass.SCALE) / 2) - 105, 10);
         quitButton.setLocation(((MainClass.WIDTH * MainClass.SCALE) / 2) + 5, 10);
         changeDifficulty.setLocation((MainClass.WIDTH * 2) - 165, (MainClass.HEIGHT * MainClass.SCALE) - 45);
-        difficulty.setLocation((MainClass.WIDTH * 2) - 165, (MainClass.HEIGHT * MainClass.SCALE) - 80);
+        gameDifficulty.setLocation(changeDifficulty.getX(), changeDifficulty.getY() - 40);
+
+        //set component colors
+        gameDifficulty.setForeground(Colors.WHITE);
 
         //add buttons to jPanel
         add(startButton);
         add(quitButton);
         add(scoresTable);
         add(changeDifficulty);
-        add(difficulty);
+        add(gameDifficulty);
 
         //action listeners
         startButton.addActionListener(new ButtonClick(main));
@@ -69,10 +70,17 @@ public class MainMenu extends JPanel {
     }
 
     @Override
-    protected void paintComponent(Graphics g)
-    {
+    protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        g.drawImage(background, 0, 0, this);
+        g.drawImage(backgroundImage(), 0, 0, this);
+    }
+
+    public static void setGameDifficulty(String difficulty) {
+        gameDifficulty.setText(difficulty);
+    }
+
+    private BufferedImage backgroundImage() {
+        return image.loadImage("/spaceGame.png");
     }
 
 }

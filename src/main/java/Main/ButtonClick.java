@@ -8,9 +8,8 @@ public class ButtonClick implements ActionListener {
 
     MainClass main;
     MainClass mainClass = new MainClass(); //for button click purposes
-    AskName askName = new AskName(main);
+    AskName askName = new AskName();
     GameVars gameVars = new GameVars();
-    MainMenu mainMenu = new MainMenu();
 
     public ButtonClick(MainClass main) {
         this.main = main;
@@ -41,25 +40,20 @@ public class ButtonClick implements ActionListener {
             }
         }
 
-        // change difficulty button
-        if(name.equals("CHANGE_DIFFICULTY")) {
-
+        //
+        if(name.equals("DIFFICULTY_CHANGE")) {
             switch (gameVars.getDifficulty()) {
-                case "Easy":
+                case ("Easy"):
                     gameVars.setDifficulty("Medium");
                     break;
-                case "Medium":
+                case ("Medium"):
                     gameVars.setDifficulty("Hard");
                     break;
-                case "Hard":
+                default:
                     gameVars.setDifficulty("Easy");
-                    break;
             }
 
-            /**
-             * difficulty not working
-             */
-            mainMenu.difficulty.setText("sdfsdfsdf");
+            MainMenu.setGameDifficulty(gameVars.getDifficulty());
         }
 
     }

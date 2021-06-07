@@ -8,13 +8,13 @@ public class AskName extends JDialog {
     public JTextField nameField;
     public JButton confirmButton = new JButton();
 
-    public AskName(MainClass main) {
+    public AskName() {
 
         nameLabel = new JLabel();
         nameField = new JTextField();
 
         setTitle("Player Name");
-        setLocationRelativeTo(main);
+        setLocationRelativeTo(null);
         setSize(275, 120);
         setResizable(false);
         setLayout(null);
