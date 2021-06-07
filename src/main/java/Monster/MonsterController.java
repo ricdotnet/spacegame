@@ -1,5 +1,6 @@
 package Monster;
 
+import Main.GameVars;
 import Main.MainClass;
 import Main.Time;
 
@@ -14,6 +15,7 @@ public class MonsterController {
 
     Monster monster;
     MainClass main;
+    GameVars gameVars = new GameVars();
 
     public MonsterController(MainClass main) {
         this.main = main;
@@ -23,9 +25,26 @@ public class MonsterController {
         for(int i = 0; i < monsterList.size(); i++) {
             monster = monsterList.get(i);
             monster.tick();
-            if(Time.chance() < 0.02) {
-                moveMonster(monster);
+            double chance = Time.chance();
+
+            switch (gameVars.getDifficulty()) {
+                case ("Easy"):
+                    if(chance < 0.01) {
+                        moveMonster(monster, 1);
+                    }
+                    break;
+                case ("Medium"):
+                    if(chance < 0.02) {
+                        moveMonster(monster, 2);
+                    }
+                    break;
+                case ("Hard"):
+                    if(chance < 0.03) {
+                        moveMonster(monster, 3);
+                    }
+                    break;
             }
+
         }
     }
 
@@ -44,9 +63,9 @@ public class MonsterController {
         monsterList.remove(monster);
     }
 
-    public void moveMonster(Monster monster) {
+    public void moveMonster(Monster monster, int stepSize) {
         if(move) {
-            monster.setyPOS(5);
+            monster.setyPOS(stepSize);
         }
     }
 

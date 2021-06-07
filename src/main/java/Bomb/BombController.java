@@ -1,6 +1,7 @@
 package Bomb;
 
 import Main.MainClass;
+import Monster.MonsterController;
 
 import java.awt.*;
 import java.util.LinkedList;

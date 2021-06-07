@@ -430,14 +430,29 @@ public class MainClass extends Canvas implements Runnable {
     }
 
     public void addBomb() {
-        Monster randomMonster = null;
+        Monster randomMonster = monsterController.getMonsterList().get(0);
 
         if(monsterController.getMonsterList().size() > 1) {
-            randomMonster = monsterController.getMonsterList().get((int) Math.ceil(Math.random() * (monsterController.getMonsterList().size() - 1)));
-        } else if(monsterController.getMonsterList().size() == 1) {
-            randomMonster = monsterController.getMonsterList().get(0);
+            for(int i = 0; i < monsterController.getMonsterList().size(); i++) {
+
+                //if the next monster position is closer to the player then assign a new monster
+                if(Math.abs(randomMonster.getxPOS() - player.getxPOS()) > Math.abs(monsterController.getMonsterList().get(i+1).getxPOS() - player.getxPOS())) {
+                    randomMonster = monsterController.getMonsterList().get(i+1);
+                    // System.out.println("found a closer monster"); //message to say a closer monster has been found
+                }
+
+                //break the loop when there are no more monsters to count with
+                if(i+1 == monsterController.getMonsterList().size() - 1) {
+                    break;
+                }
+
+            }
         }
 
+        /**
+         * Let the monster shoot only if there are no bombs in the screen
+         * Will change this with the difficulty level
+         */
         if(bombController.getBombList().size() == 0 && randomMonster != null) {
             bombController.addBomb(new Bomb(randomMonster.getxPOS(), randomMonster.getyPOS() + 32, this));
 

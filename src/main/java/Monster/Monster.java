@@ -3,6 +3,7 @@ package Monster;
 import Main.MainClass;
 import Images.SprideSheet;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
@@ -28,6 +29,11 @@ public class Monster {
 
     public void render(Graphics graphic) {
         graphic.drawImage(monster, (int) xPOS, (int) yPOS, null);
+
+        graphic.setColor(Color.black);
+        Font small = new Font("Monospace", Font.BOLD, 14);
+        graphic.setFont(small);
+        graphic.drawString(String.valueOf(xPOS), (int) xPOS, (int) yPOS - 5);
     }
 
     public double getyPOS() {
