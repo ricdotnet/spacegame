@@ -23,3 +23,4 @@ The names are randomly generated from a pool of names.
  - ask for player name after losing ✅
  - scoreboard with real names ✅
  - online scoreboard to show on menu screen
+ - add a playerActions class
