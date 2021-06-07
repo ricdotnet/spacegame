@@ -30,9 +30,8 @@ public class MainClass extends Canvas implements Runnable {
     public static final int SCALE = 2;
     public static final String TITLE = "Space Game";
 
-    private BufferedImage image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
+//    private BufferedImage image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
     private BufferStrategy bufferStrategy;
-    private static BufferStrategy test;
 
     private BufferedImage spriteSheet = null;
     private BufferedImage icons = null;
@@ -455,7 +454,6 @@ public class MainClass extends Canvas implements Runnable {
          */
         if(bombController.getBombList().size() == 0 && randomMonster != null) {
             bombController.addBomb(new Bomb(randomMonster.getxPOS(), randomMonster.getyPOS() + 32, this));
-
             sound.playSound("/enemyShoot.wav");
         }
     }
