@@ -11,7 +11,8 @@ import java.util.List;
 public class Scores {
 
     PlayerVars playerVars = new PlayerVars();
-//    Database connect = new Database();
+    Database connect = new Database();
+    GameVars gameVars = new GameVars();
 
     private static List<PlayerScore> scores = new ArrayList<PlayerScore>();
 
@@ -20,15 +21,16 @@ public class Scores {
     public void addScore(Integer score) {
         scores.add(new PlayerScore(playerVars.getPlayerName(), score));
 
-//        try {
-//            PreparedStatement addScore = connect.getConnection().prepareStatement("insert into scores (name, score) values(?, ?)");
-//            addScore.setString(1, playerVars.getPlayerName());
-//            addScore.setInt(2, score);
-//            addScore.execute();
-//
-//        } catch (SQLException e) {
-//            System.out.println(e.toString());
-//        }
+        try {
+            PreparedStatement addScore = connect.getConnection().prepareStatement("insert into scores (name, score, difficulty) values(?, ?, ?)");
+            addScore.setString(1, playerVars.getPlayerName());
+            addScore.setInt(2, score);
+            addScore.setString(3, gameVars.getDifficulty());
+            addScore.execute();
+
+        } catch (SQLException e) {
+            System.out.println(e.toString());
+        }
 
     }
 
