@@ -64,6 +64,11 @@ public class ButtonClick implements ActionListener {
         if(name.equals("TEST_GAME")) {
             gameVars.setIsTesting(true); //set testing mode on
             mainClass.startGame(e);
+//            String monster = gameVars.monsterObject();
+//            String monsterType = monster.substring(1, monster.length() - 4);
+//            String monsterHearts = monster.substring(monster.length() - 2, monster.length() - 1);
+//
+//            System.out.println(monsterType + " :: " + monsterHearts);
         }
 
     }

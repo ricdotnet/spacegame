@@ -372,35 +372,43 @@ public class MainClass extends Canvas implements Runnable {
                         double tempX = monster.getxPOS();
                         double tempY = monster.getyPOS();
 
-                        monsterController.removeMonster(monster);
-                        bulletController.removeBullet(bullet);
+                        if(monster.getMonsterHearts() == 1) {
+                            System.out.println("hit a weak monster");
+                            monsterController.removeMonster(monster);
+                            bulletController.removeBullet(bullet);
 
-                        sound.playSound("/enemyExplode.wav");
+                            sound.playSound("/enemyExplode.wav");
 
-                        //spawn explosion image
-                        explosion = new Explosion(tempX, tempY, this);
+                            //spawn explosion image
+                            explosion = new Explosion(tempX, tempY, this);
 
-                        service.schedule(removeExplosion, 150, TimeUnit.MILLISECONDS);
+                            service.schedule(removeExplosion, 150, TimeUnit.MILLISECONDS);
 
-                        if(Time.chance() < 0.01) {
-                            SPAWN_SIZE = 6;
-                        } else if(Time.chance() < 0.15) {
-                            SPAWN_SIZE = 3;
-                        } else if(Time.chance() < 0.30) {
-                            SPAWN_SIZE = 2;
+                            if (Time.chance() < 0.01) {
+                                SPAWN_SIZE = 6;
+                            } else if (Time.chance() < 0.15) {
+                                SPAWN_SIZE = 3;
+                            } else if (Time.chance() < 0.30) {
+                                SPAWN_SIZE = 2;
+                            } else {
+                                SPAWN_SIZE = 1;
+                            }
+
+                            for (int k = 0; k < SPAWN_SIZE; k++) {
+                                RANDOM_X = setRandomX();
+                                RANDOM_Y = setRandomY();
+
+                                monsterController.addMonster(new Monster(RANDOM_X, RANDOM_Y, this));
+                            }
+
+                            //increase score by 1
+                            playerVars.setPlayerScore();
                         } else {
-                            SPAWN_SIZE = 1;
+                            System.out.println("hit a tough monster");
+                            monster.setMonsterHearts();
+                            sound.playSound("/monsterHit.wav");
+                            bulletController.removeBullet(bullet);
                         }
-
-                        for(int k = 0; k < SPAWN_SIZE; k++) {
-                            RANDOM_X = setRandomX();
-                            RANDOM_Y = setRandomY();
-
-                            monsterController.addMonster(new Monster(RANDOM_X, RANDOM_Y, this));
-                        }
-
-                        //increase score by 1
-                        playerVars.setPlayerScore();
                     }
                 }
             }
