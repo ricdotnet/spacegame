@@ -367,7 +367,7 @@ public class MainClass extends Canvas implements Runnable {
                     bullet = bulletController.getBulletList().get(j);
 
                     //kill monster and add another one
-                    if((bullet.getxPOS() + 16 > monster.getxPOS() && bullet.getxPOS() + 16 < monster.getxPOS() + 32) && (bullet.getyPOS() > monster.getyPOS() && bullet.getyPOS() < monster.getyPOS() + 32)) {
+                    if((bullet.getxPOS() + 20 > monster.getxPOS() && bullet.getxPOS() + 10 < monster.getxPOS() + 32) && (bullet.getyPOS() > monster.getyPOS() && bullet.getyPOS() < monster.getyPOS() + 32)) {
 
                         double tempX = monster.getxPOS();
                         double tempY = monster.getyPOS();
@@ -421,7 +421,7 @@ public class MainClass extends Canvas implements Runnable {
         for(int i = 0; i < bombController.getBombList().size(); i++) {
             bomb = bombController.getBombList().get(i);
 
-            if(((bomb.getyPOS() > player.getyPOS() - 32) && bomb.getyPOS() < player.getyPOS()) && (bomb.getxPOS() + 32 > player.getxPOS() && bomb.getxPOS() < player.getxPOS() + 32)) {
+            if(((bomb.getyPOS() > player.getyPOS() - 32) && bomb.getyPOS() < player.getyPOS()) && (bomb.getxPOS() + 34 > player.getxPOS() && bomb.getxPOS() < player.getxPOS() + 32)) {
                 bombController.removeBomb(bomb);
                 heartController.removeHeart();
             }
@@ -429,6 +429,7 @@ public class MainClass extends Canvas implements Runnable {
     }
 
     public void addBomb() {
+
         Monster randomMonster = monsterController.getMonsterList().get(0);
 
         if(monsterController.getMonsterList().size() > 1) {
@@ -452,7 +453,7 @@ public class MainClass extends Canvas implements Runnable {
          * Let the monster shoot only if there are no bombs in the screen
          * Will change this with the difficulty level
          */
-        if(bombController.getBombList().size() == 0 && randomMonster != null) {
+        if(bombController.getBombList().size() == 0 && randomMonster != null && !gameVars.getIsTesting()) {
             bombController.addBomb(new Bomb(randomMonster.getxPOS(), randomMonster.getyPOS() + 32, this));
             sound.playSound("/enemyShoot.wav");
         }
@@ -482,9 +483,15 @@ public class MainClass extends Canvas implements Runnable {
         public void run() {
             window.remove(main);
 
-            askName.setVisible(true);
-
-            askName.confirmButton.addActionListener(new ButtonClick(main));
+            if(!gameVars.getIsTesting()) {
+                askName.setVisible(true);
+                askName.confirmButton.addActionListener(new ButtonClick(main));
+            } else {
+                playerVars.resetPlayerScore();
+                drawScoresTable();
+                window.add(mainMenu);
+                SwingUtilities.updateComponentTreeUI(window);
+            }
         }
     };
 

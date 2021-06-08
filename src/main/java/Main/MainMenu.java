@@ -19,6 +19,8 @@ public class MainMenu extends JPanel {
     private final JButton quitButton = new JButton();
     private final JButton changeDifficulty = new JButton();
 
+    private final JButton testButton = new JButton();
+
     private static final JLabel gameDifficulty = Labels.gameDifficulty;
 
     public MainMenu() {
@@ -39,18 +41,22 @@ public class MainMenu extends JPanel {
         changeDifficulty.setText("Change Difficulty");
         changeDifficulty.setName("DIFFICULTY_CHANGE");
         gameDifficulty.setText(gameVars.getDifficulty());
+        testButton.setText("Test");
+        testButton.setName("TEST_GAME");
 
         //set component sizes
         startButton.setSize(100, 30);
         quitButton.setSize(100, 30);
         changeDifficulty.setSize(140, 30);
         gameDifficulty.setSize(100, 30);
+        testButton.setSize(100, 30);
 
         //set component positions
         startButton.setLocation(((MainClass.WIDTH * MainClass.SCALE) / 2) - 105, 10);
         quitButton.setLocation(((MainClass.WIDTH * MainClass.SCALE) / 2) + 5, 10);
         changeDifficulty.setLocation((MainClass.WIDTH * 2) - 165, (MainClass.HEIGHT * MainClass.SCALE) - 45);
         gameDifficulty.setLocation(changeDifficulty.getX(), changeDifficulty.getY() - 40);
+        testButton.setLocation(15, getHeight() - 45);
 
         //set component colors
         gameDifficulty.setForeground(Colors.WHITE);
@@ -61,11 +67,13 @@ public class MainMenu extends JPanel {
         add(scoresTable);
         add(changeDifficulty);
         add(gameDifficulty);
+        add(testButton);
 
         //action listeners
         startButton.addActionListener(new ButtonClick(main));
         quitButton.addActionListener(new ButtonClick(main));
         changeDifficulty.addActionListener(new ButtonClick(main));
+        testButton.addActionListener(new ButtonClick(main));
 
     }
 

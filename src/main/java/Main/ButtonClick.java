@@ -23,6 +23,7 @@ public class ButtonClick implements ActionListener {
 
         // start button command
         if(name.equals("START_GAME")) {
+            gameVars.setIsTesting(false); //always make sure testing mode is off
             mainClass.startGame(e);
         }
 
@@ -40,7 +41,7 @@ public class ButtonClick implements ActionListener {
             }
         }
 
-        //
+        // difficulty change button
         if(name.equals("DIFFICULTY_CHANGE")) {
             switch (gameVars.getDifficulty()) {
                 case ("Easy"):
@@ -54,6 +55,15 @@ public class ButtonClick implements ActionListener {
             }
 
             MainMenu.setGameDifficulty(gameVars.getDifficulty());
+        }
+
+        /**
+         * Test button
+         * During testing mode monsters don't shoot
+         */
+        if(name.equals("TEST_GAME")) {
+            gameVars.setIsTesting(true); //set testing mode on
+            mainClass.startGame(e);
         }
 
     }

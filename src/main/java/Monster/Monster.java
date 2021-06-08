@@ -12,7 +12,7 @@ public class Monster {
     private double xPOS;
     private double yPOS;
 
-    private BufferedImage monster;
+    private final BufferedImage monster;
 
     public Monster(double xPOS, double yPOS, MainClass main) {
         this.xPOS = xPOS;
