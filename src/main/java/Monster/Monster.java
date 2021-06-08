@@ -19,7 +19,7 @@ public class Monster {
     // TODOs -> implement monster life and types. Tough monsters will have to be shot twice and have 2% probability of spawning <- deprecated
     private final String monsterObject;
     private Integer monsterHearts; //default number of hearts is 1
-    private Integer monsterMaxHearts;
+    private final Integer monsterMaxHearts;
     private String monsterType;
     private Integer healthBar = 32; //will decrease based on monster type
 

@@ -18,9 +18,10 @@ The names are randomly generated from a pool of names.
  - add lives ✅
  - menu frame ✅
  - power ups
- - difficulty increase
+ - difficulty increase ✅
  - ~~ask for player name before start~~
  - ask for player name after losing ✅
  - scoreboard with real names ✅
- - online scoreboard to show on menu screen
+ - online scoreboard to show on menu screen -> half implemented
  - add a playerActions class
+ - different monster colors / images to reflect the type of monster
