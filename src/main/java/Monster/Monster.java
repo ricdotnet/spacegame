@@ -50,29 +50,28 @@ public class Monster {
 //        graphic.drawString(String.valueOf(xPOS), (int) xPOS, (int) yPOS - 5);
 //        graphic.drawString(getMonsterType(), (int) xPOS, (int) yPOS - 5);
 
-        graphic.drawString(getMonsterType() + " -> " + getMonsterHearts(), (int) xPOS, (int) yPOS - 5);
-        healthBar(graphic, (int) xPOS, (int) yPOS, healthBar, monsterHearts);
+//        graphic.drawString(getMonsterType() + " -> " + getMonsterHearts(), (int) xPOS, (int) yPOS - 5);
+        healthBar(graphic, (int) xPOS, (int) yPOS - 5, healthBar, monsterHearts);
     }
 
     private void healthBar(Graphics g, int xPOS, int yPOS, Integer healthBar, Integer heartsLeft) {
 
+        g.setColor(Color.BLACK);
+        g.drawRect(xPOS, yPOS, 32, 3);
+
         if(heartsLeft > monsterMaxHearts*0.6) {
             g.setColor(Colors.BRIGHT_GREEN);
-            System.out.println("full");
         }
 
         if(heartsLeft > monsterMaxHearts*0.25 && heartsLeft < monsterMaxHearts*0.6) {
             g.setColor(Colors.ORANGE);
-            System.out.println("half full");
         }
 
         if(heartsLeft < monsterMaxHearts*0.25) {
             g.setColor(Colors.BLOOD_RED);
-            System.out.println("very weak");
         }
 
-        g.drawRect(xPOS, yPOS + 35, 32, 2);
-        g.fillRect(xPOS, yPOS + 35, healthBar, 2);
+        g.fillRect(xPOS, yPOS, healthBar, 3);
     }
 
     public double getyPOS() {
