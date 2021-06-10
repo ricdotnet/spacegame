@@ -20,6 +20,7 @@ public class MainClass extends Canvas implements Runnable {
 
     public static final long serialVersionUID = 1L;
 
+    private Boolean PAUSED = false; //state fo the game; false for not playing <-> true for playing
     private Boolean RUNNING = false;
     private Thread thread;
 
@@ -68,6 +69,7 @@ public class MainClass extends Canvas implements Runnable {
     static JFrame window = new JFrame(TITLE);
     static MainClass main = new MainClass();
     static MainMenu mainMenu = new MainMenu();
+    static PausedScreen pausedScreen = new PausedScreen();
 
     public MainClass() { }
 
@@ -78,6 +80,7 @@ public class MainClass extends Canvas implements Runnable {
             System.out.println("Connected to the database.");
         }
 
+        window.add(pausedScreen);
         window.add(mainMenu);
         window.pack();
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -177,7 +180,7 @@ public class MainClass extends Canvas implements Runnable {
             long now = Time.nsNow();
             delta += (now - lastSecond) / Time.NS_PER_TICK;
             lastSecond = now;
-            if(delta >= 1) {
+            if (delta >= 1) {
                 tick();
                 ticks++;
                 delta--;
@@ -186,10 +189,9 @@ public class MainClass extends Canvas implements Runnable {
             render();
             frames++;
 
-            if(Time.msNow() - lastFrame > 1000) {
+            if (Time.msNow() - lastFrame > 1000) {
                 lastFrame += 1000;
                 System.out.println(ticks + " Ticks, FPS " + frames);
-                addBomb();
                 ticks = 0;
                 frames = 0;
             }
@@ -198,17 +200,24 @@ public class MainClass extends Canvas implements Runnable {
     }
 
     private void tick() {
-        player.tick();
-        bulletController.tick();
-        monsterController.tick();
-        bombController.tick();
-        heartController.tick();
+        if(!PAUSED) {
+            player.tick();
+            bulletController.tick();
+            monsterController.tick();
+            bombController.tick();
+            heartController.tick();
 
-        monsterKilled();
-        userHit();
-        monsterOut();
+            monsterKilled();
+            userHit();
+            monsterOut();
 
-        gameFinished(); //check for when game end
+            //TODO change the tick for bomb drop
+            if(Time.chance() < 0.1) {
+                addBomb();
+            }
+
+            gameFinished(); //check for when game end
+        }
     }
     private void render() {
 
@@ -289,6 +298,10 @@ public class MainClass extends Canvas implements Runnable {
 
         if(e.getKeyCode() == KeyEvent.VK_SPACE) {
             playerShoot();
+        }
+
+        if(e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+            pauseUnpause();
         }
 
         /**
@@ -516,6 +529,18 @@ public class MainClass extends Canvas implements Runnable {
             drawScoresTable();
             window.add(mainMenu);
             SwingUtilities.updateComponentTreeUI(window);
+        }
+    }
+
+    public void pauseUnpause() {
+        if(PAUSED) {
+            pausedScreen.setVisible(false);
+            PAUSED = false;
+            System.out.println("unpaused");
+        } else {
+            pausedScreen.setVisible(true);
+            PAUSED = true;
+            System.out.println("paused");
         }
     }
 
