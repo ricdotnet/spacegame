@@ -6,12 +6,12 @@
 
 package Monster;
 
-import Bullet.Bullet;
-import Bullet.BulletController;
+import Bomb.*;
+import Bullet.*;
+import Main.GameVars;
 import Main.MainClass;
 import Main.SoundLoader;
-import Player.HeartController;
-import Player.PlayerVars;
+import Player.*;
 import Util.*;
 
 import java.util.concurrent.Executors;
@@ -27,6 +27,7 @@ public class MonsterEvents {
     MainClass main;
     SoundLoader soundLoader = new SoundLoader();
     PlayerVars playerVars = new PlayerVars();
+    GameVars gameVars = new GameVars();
     Util util = new Util();
 
     Bullet bullet;
@@ -38,10 +39,14 @@ public class MonsterEvents {
     Explosion explosion;
     ExplosionController explosionController = new ExplosionController(main);
 
+    BombController bombController = new BombController(main);
+
+    Player player;
     HeartController heartController = new HeartController(main);
 
-    public MonsterEvents(MainClass main) {
+    public MonsterEvents(MainClass main, Player player) {
         this.main = main;
+        this.player = player;
     }
 
     public void monsterKilled() {
@@ -70,6 +75,40 @@ public class MonsterEvents {
                     }
                 }
             }
+        }
+    }
+
+    /**
+     * ACTION FOR THE MONSTER SHOOTING
+     */
+    public void addBomb() {
+
+        Monster randomMonster = monsterController.getMonsterList().get(0);
+
+        if(monsterController.getMonsterList().size() > 1) {
+            for(int i = 0; i < monsterController.getMonsterList().size(); i++) {
+
+                //if the next monster position is closer to the player then assign a new monster
+                if(Math.abs(randomMonster.getxPOS() - player.getxPOS()) > Math.abs(monsterController.getMonsterList().get(i+1).getxPOS() - player.getxPOS())) {
+                    randomMonster = monsterController.getMonsterList().get(i+1);
+//                    System.out.println("found a closer monster"); //message to say a closer monster has been found
+                }
+
+                //break the loop when there are no more monsters to count with
+                if(i+1 == monsterController.getMonsterList().size() - 1) {
+                    break;
+                }
+
+            }
+        }
+
+        /**
+         * Let the monster shoot only if there are no bombs in the screen
+         * Will change this with the difficulty level
+         */
+        if(bombController.getBombList().size() == 0 && randomMonster != null && !gameVars.getIsTesting()) {
+            bombController.addBomb(new Bomb(randomMonster.getxPOS(), randomMonster.getyPOS() + 32, main));
+            soundLoader.playSound("/enemyShoot.wav");
         }
     }
 
@@ -111,8 +150,9 @@ public class MonsterEvents {
         bulletController.removeBullet(bullet);
     }
 
-
-
+    /**
+     * CHECK WHEN THE MONSTER IS OUT OF THE SCREEN
+     */
     public void monsterOut() {
         for(int i = 0; i < monsterController.getMonsterList().size(); i++) {
             monster = monsterController.getMonsterList().get(i);

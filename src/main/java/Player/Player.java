@@ -25,9 +25,6 @@ public class Player {
         player = sprite.grabImage(1, 1, 32, 32);
     }
 
-    public Player() {
-    }
-
     public void tick() {
         xPOS += velX;
         yPOS += velY;

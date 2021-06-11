@@ -5,9 +5,7 @@ import Bullet.*;
 import Database.Database;
 import Monster.*;
 import Player.*;
-import Util.Colors;
-import Util.Time;
-import Util.Util;
+import Util.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -45,18 +43,14 @@ public class MainClass extends Canvas implements Runnable {
     private Player player;
     private PlayerVars playerVars = new PlayerVars();
 
-    private Bullet bullet;
     private BulletController bulletController;
 
-    private Monster monster;
     private MonsterController monsterController;
-    private MonsterEvents monsterEvents = new MonsterEvents(this);
-    public Explosion explosion = null;
+    private MonsterEvents monsterEvents;
 
     private Bomb bomb;
     private BombController bombController;
 
-//    private Heart heart;
     private HeartController heartController;
 
     private ExplosionController explosionController;
@@ -64,7 +58,6 @@ public class MainClass extends Canvas implements Runnable {
     private long lastSecond, lastFrame;
     private int ticks, frames;
     private double delta;
-    private double RANDOM_X, RANDOM_Y; // ?????????
 
     Scores scores = new Scores();
     AskName askName = new AskName();
@@ -117,7 +110,7 @@ public class MainClass extends Canvas implements Runnable {
         addKeyListener(new KeyInput(this));
     }
     /*
-    Buttons starter method
+    Buttons starter method example
      */
     private void buttons(JButton button) {
         button.addActionListener(new ButtonClick(this));
@@ -130,6 +123,7 @@ public class MainClass extends Canvas implements Runnable {
         icons = imageLoader.loadImage("/icons.png");
 
         player = new Player((getWidth() / 2) - 16, getHeight() - 64, this);
+        monsterEvents = new MonsterEvents(this, player);
 
         bulletController = new BulletController(this);
         monsterController = new MonsterController(this);
@@ -225,7 +219,7 @@ public class MainClass extends Canvas implements Runnable {
 
             //TODO change the tick for bomb drop
             if(util.chance() < 0.1) {
-                addBomb();
+                monsterEvents.addBomb();
             }
         }
     }
@@ -365,37 +359,6 @@ public class MainClass extends Canvas implements Runnable {
                 bombController.removeBomb(bomb);
                 heartController.removeHeart();
             }
-        }
-    }
-
-    public void addBomb() {
-
-        Monster randomMonster = monsterController.getMonsterList().get(0);
-
-        if(monsterController.getMonsterList().size() > 1) {
-            for(int i = 0; i < monsterController.getMonsterList().size(); i++) {
-
-                //if the next monster position is closer to the player then assign a new monster
-                if(Math.abs(randomMonster.getxPOS() - player.getxPOS()) > Math.abs(monsterController.getMonsterList().get(i+1).getxPOS() - player.getxPOS())) {
-                    randomMonster = monsterController.getMonsterList().get(i+1);
-                    // System.out.println("found a closer monster"); //message to say a closer monster has been found
-                }
-
-                //break the loop when there are no more monsters to count with
-                if(i+1 == monsterController.getMonsterList().size() - 1) {
-                    break;
-                }
-
-            }
-        }
-
-        /**
-         * Let the monster shoot only if there are no bombs in the screen
-         * Will change this with the difficulty level
-         */
-        if(bombController.getBombList().size() == 0 && randomMonster != null && !gameVars.getIsTesting()) {
-            bombController.addBomb(new Bomb(randomMonster.getxPOS(), randomMonster.getyPOS() + 32, this));
-            sound.playSound("/enemyShoot.wav");
         }
     }
 

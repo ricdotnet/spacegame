@@ -9,7 +9,7 @@ import java.util.List;
 
 public class BombController {
 
-    private List<Bomb> bombList = new LinkedList<Bomb>();
+    private static List<Bomb> bombList = new LinkedList<Bomb>();
 
     Bomb bomb;
     MainClass main;
