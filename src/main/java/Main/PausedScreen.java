@@ -1,30 +1,30 @@
 package Main;
 
-import javax.swing.*;
 import java.awt.*;
 
-public class PausedScreen extends JPanel {
+public class PausedScreen {
 
-    public PausedScreen() {
-        init();
+    private final int WIDTH = MainClass.WIDTH;
+    private final int HEIGHT = MainClass.HEIGHT;
+
+    public void pausedScreen(Graphics g) {
+        g.setColor(Colors.LIGHT_BLACK);
+        g.fillRect(WIDTH-(WIDTH/2), HEIGHT-(HEIGHT/2), WIDTH, HEIGHT);
+
+        pausedText(g);
     }
 
-    private void init() {
-//        setBackground(Colors.BLOOD_RED);
-        setPreferredSize(new Dimension(350, 350));
-        setSize(350, 350);
-        setVisible(false);
-        setOpaque(false);
-    }
+    private void pausedText(Graphics g) {
+        g.setColor(Colors.WHITE);
+        Font title = new Font("Monospace", Font.BOLD, 24);
+        Font info = new Font("Monospace", Font.PLAIN, 18);
 
-    @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
+        g.setFont(title);
+        g.drawString("Paused...", WIDTH-50, HEIGHT-20);
 
-        g.setColor(Colors.BLOOD_RED);
-
-        g.drawRect(0, 0, 300, 300);
-        g.fillRect(0, 0, 300, 300);
+        g.setFont(info);
+        g.drawString("Press R to restart the game.", WIDTH-110, HEIGHT+20);
+        g.drawString("(you will lose all your score)", WIDTH-110, HEIGHT+40);
     }
 
 }

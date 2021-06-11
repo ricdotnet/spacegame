@@ -80,7 +80,6 @@ public class MainClass extends Canvas implements Runnable {
             System.out.println("Connected to the database.");
         }
 
-        window.add(pausedScreen);
         window.add(mainMenu);
         window.pack();
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -244,6 +243,10 @@ public class MainClass extends Canvas implements Runnable {
             explosion.render(graphics);
         }
 
+        if(PAUSED) {
+            pausedScreen.pausedScreen(graphics);
+        }
+
         // ---------- //
         graphics.dispose();
         bufferStrategy.show();
@@ -302,6 +305,16 @@ public class MainClass extends Canvas implements Runnable {
 
         if(e.getKeyCode() == KeyEvent.VK_ESCAPE) {
             pauseUnpause();
+        }
+
+        if(e.getKeyCode() == KeyEvent.VK_R) {
+            if(PAUSED) {
+                window.remove(main);
+                window.add(mainMenu);
+                RUNNING = false;
+                PAUSED = false;
+                playerVars.resetPlayerScore();
+            }
         }
 
         /**
@@ -534,11 +547,11 @@ public class MainClass extends Canvas implements Runnable {
 
     public void pauseUnpause() {
         if(PAUSED) {
-            pausedScreen.setVisible(false);
+//            pausedScreen.setVisible(false);
             PAUSED = false;
             System.out.println("unpaused");
         } else {
-            pausedScreen.setVisible(true);
+//            pausedScreen.setVisible(true);
             PAUSED = true;
             System.out.println("paused");
         }
