@@ -408,7 +408,7 @@ public class MainClass extends Canvas implements Runnable {
                             //spawn explosion image
                             explosion = new Explosion(tempX, tempY, this);
 
-                            service.schedule(removeExplosion, 150, TimeUnit.MILLISECONDS);
+                            service.schedule(removeExplosion, 1000, TimeUnit.MILLISECONDS);
 
                             if (Time.chance() < 0.01) {
                                 SPAWN_SIZE = 6;
@@ -546,15 +546,6 @@ public class MainClass extends Canvas implements Runnable {
     }
 
     public void pauseUnpause() {
-        if(PAUSED) {
-//            pausedScreen.setVisible(false);
-            PAUSED = false;
-            System.out.println("unpaused");
-        } else {
-//            pausedScreen.setVisible(true);
-            PAUSED = true;
-            System.out.println("paused");
-        }
+        PAUSED = !PAUSED;
     }
-
 }

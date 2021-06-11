@@ -1,10 +1,7 @@
 package Monster;
 
-import Main.Colors;
-import Main.GameVars;
-import Main.MainClass;
+import Main.*;
 import Images.SprideSheet;
-import Main.Time;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -12,6 +9,7 @@ import java.awt.image.BufferedImage;
 public class Monster {
 
     GameVars gameVars = new GameVars();
+    ImageLoader imageLoader = new ImageLoader();
 
     private double xPOS;
     private double yPOS;
@@ -34,7 +32,11 @@ public class Monster {
         this.monsterMaxHearts = monsterHearts;
 
         SprideSheet sprite = new SprideSheet(main.getSpriteSheet());
+
+//        monster = imageLoader.loadImage("/fcporto.png");
         monster = sprite.grabImage(3, 1, 32, 32);
+
+        //TODO change monster icon based on type (toughness)
     }
 
     public void tick() {
@@ -52,6 +54,10 @@ public class Monster {
 
 //        graphic.drawString(getMonsterType() + " -> " + getMonsterHearts(), (int) xPOS, (int) yPOS - 5);
         healthBar(graphic, (int) xPOS, (int) yPOS - 5, healthBar, monsterHearts);
+
+//        graphic.setColor(Colors.LIGHT_BLACK);
+//        graphic.drawRect((int) xPOS, (int) yPOS, 32, 32);
+//        graphic.fillRect((int) xPOS, (int) yPOS, 32, 32);
     }
 
     private void healthBar(Graphics g, int xPOS, int yPOS, Integer healthBar, Integer heartsLeft) {

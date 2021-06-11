@@ -1,12 +1,15 @@
 package Player;
 
 import Images.SprideSheet;
+import Main.ImageLoader;
 import Main.MainClass;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public class Player {
+
+    ImageLoader imageLoader = new ImageLoader();
 
     private double xPOS;
     private double yPOS;
@@ -22,6 +25,7 @@ public class Player {
 
         SprideSheet sprite = new SprideSheet(main.getSpriteSheet());
 
+//        player = imageLoader.loadImage("/slbenfica.png");
         player = sprite.grabImage(1, 1, 32, 32);
     }
 

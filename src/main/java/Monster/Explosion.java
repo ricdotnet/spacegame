@@ -1,12 +1,15 @@
 package Monster;
 
 import Images.SprideSheet;
+import Main.ImageLoader;
 import Main.MainClass;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public class Explosion {
+
+    ImageLoader imageLoader = new ImageLoader();
 
     private double xPOS;
     private double yPOS;
@@ -19,6 +22,7 @@ public class Explosion {
         this.yPOS = yPOS;
 
         SprideSheet sprite = new SprideSheet(main.getSpriteSheet());
+//        explosion = imageLoader.loadImage("/poop.png");
         explosion = sprite.grabImage(4, 2, 32, 32);
     }
 
