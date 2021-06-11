@@ -6,12 +6,15 @@ import Database.Database;
 import Monster.*;
 import Player.*;
 
+import javax.sound.sampled.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.net.URL;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -175,6 +178,8 @@ public class MainClass extends Canvas implements Runnable {
         ticks = 0;
         delta = 0;
 
+        sound.playBackgroundMusic("/backgroundMusic.wav");
+
         while (RUNNING) {
             long now = Time.nsNow();
             delta += (now - lastSecond) / Time.NS_PER_TICK;
@@ -314,6 +319,7 @@ public class MainClass extends Canvas implements Runnable {
                 RUNNING = false;
                 PAUSED = false;
                 playerVars.resetPlayerScore();
+                sound.stopBackgroundMusic();
             }
         }
 
@@ -455,7 +461,7 @@ public class MainClass extends Canvas implements Runnable {
         for(int i = 0; i < bombController.getBombList().size(); i++) {
             bomb = bombController.getBombList().get(i);
 
-            if(((bomb.getyPOS() > player.getyPOS() - 5) && bomb.getyPOS() < player.getyPOS()) && (bomb.getxPOS() + 20 > player.getxPOS() && bomb.getxPOS() + 10 < player.getxPOS() + 32)) {
+            if(((bomb.getyPOS() > player.getyPOS() - 15) && bomb.getyPOS() < player.getyPOS()) && (bomb.getxPOS() + 20 > player.getxPOS() && bomb.getxPOS() + 10 < player.getxPOS() + 32)) {
                 bombController.removeBomb(bomb);
                 heartController.removeHeart();
             }
@@ -498,6 +504,7 @@ public class MainClass extends Canvas implements Runnable {
 
             //explosion = new Explosion(player.getxPOS(), player.getyPOS(), this);
 
+            sound.stopBackgroundMusic();
             sound.playSound("/gameOver.wav");
             RUNNING = false;
             service.schedule(restart, 2, TimeUnit.SECONDS);
@@ -546,6 +553,14 @@ public class MainClass extends Canvas implements Runnable {
     }
 
     public void pauseUnpause() {
-        PAUSED = !PAUSED;
+        if(PAUSED) {
+            sound.playSound("/unpauseSound.wav");
+            PAUSED = false;
+            sound.unpauseBackGroundMusic();
+        } else {
+            sound.playSound("/pauseSound.wav");
+            PAUSED = true;
+            sound.pauseBackgroundMusic();
+        }
     }
 }

@@ -8,11 +8,18 @@ import java.net.URL;
 
 public class SoundLoader {
 
+    private URL audioFile;
+    private Clip clip;
+    private AudioInputStream sound;
+
+    private Clip bgMusic;
+    private long bgMusicStoppedAt;
+
     public void playSound(String path) {
         try {
-            URL audioFile = getClass().getResource(path);
-            Clip clip = AudioSystem.getClip();
-            AudioInputStream sound = AudioSystem.getAudioInputStream(audioFile);
+            audioFile = getClass().getResource(path);
+            clip = AudioSystem.getClip();
+            sound = AudioSystem.getAudioInputStream(audioFile);
 
             clip.open(sound);
 
@@ -24,6 +31,36 @@ public class SoundLoader {
 //            System.out.println(e);
             e.getStackTrace();
         }
+    }
+
+    public void playBackgroundMusic(String path) {
+        try {
+            audioFile = getClass().getResource(path);
+            bgMusic = AudioSystem.getClip();
+            sound = AudioSystem.getAudioInputStream(audioFile);
+
+            bgMusic.open(sound);
+
+//            FloatControl volumeControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+//            volumeControl.setValue(-10.0f);
+
+            bgMusic.start();
+        } catch (Exception e) {
+//            System.out.println(e);
+            e.getStackTrace();
+        }
+    }
+    public void stopBackgroundMusic() {
+        bgMusic.stop();
+    }
+
+    public void pauseBackgroundMusic() {
+        bgMusicStoppedAt = bgMusic.getMicrosecondPosition();
+        bgMusic.stop();
+    }
+    public void unpauseBackGroundMusic() {
+        bgMusic.setMicrosecondPosition(bgMusicStoppedAt);
+        bgMusic.start();
     }
 
 }

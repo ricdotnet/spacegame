@@ -34,26 +34,42 @@ public class Monster {
         SprideSheet sprite = new SprideSheet(main.getSpriteSheet());
 
 //        monster = imageLoader.loadImage("/fcporto.png");
-        monster = sprite.grabImage(3, 1, 32, 32);
+//        monster = sprite.grabImage(3, 1, 32, 32);
 
         //TODO change monster icon based on type (toughness)
+        switch (monsterType) {
+            case "Weak":
+                monster = sprite.grabImage(2, 1, 32, 32);
+                break;
+            case "Tough":
+                monster = sprite.grabImage(3, 1, 32, 32);
+                break;
+            default:
+                monster = sprite.grabImage(4, 1, 32, 32);
+                break;
+        }
     }
 
     public void tick() {
 
     }
 
-    public void render(Graphics graphic) {
+    // INDEX VALUE IS TO TEST THE INDEX POSITION OF THE MONSTER
+    public void render(Graphics graphic, int index) {
         graphic.drawImage(monster, (int) xPOS, (int) yPOS, null);
 
-        graphic.setColor(Color.black);
+        graphic.setColor(Color.white);
         Font small = new Font("Monospace", Font.BOLD, 14);
         graphic.setFont(small);
-//        graphic.drawString(String.valueOf(xPOS), (int) xPOS, (int) yPOS - 5);
+//        graphic.drawString(String.valueOf(index), (int) xPOS, (int) yPOS + 40);
 //        graphic.drawString(getMonsterType(), (int) xPOS, (int) yPOS - 5);
 
 //        graphic.drawString(getMonsterType() + " -> " + getMonsterHearts(), (int) xPOS, (int) yPOS - 5);
-        healthBar(graphic, (int) xPOS, (int) yPOS - 5, healthBar, monsterHearts);
+        double barYPOS = yPOS - 5;
+        if(yPOS < 15) {
+            barYPOS = yPOS + 35;
+        }
+        healthBar(graphic, (int) xPOS, (int) barYPOS, healthBar, monsterHearts);
 
 //        graphic.setColor(Colors.LIGHT_BLACK);
 //        graphic.drawRect((int) xPOS, (int) yPOS, 32, 32);

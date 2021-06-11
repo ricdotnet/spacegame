@@ -49,13 +49,23 @@ public class MonsterController {
     }
 
     public void render(Graphics graphic) {
+//        for(Monster current:monsterList) {
+//            monster = current;
+//            monster.render(graphic);
+//        }
         for(int i = 0; i < monsterList.size(); i++) {
             monster = monsterList.get(i);
-            monster.render(graphic);
+            monster.render(graphic, i);
         }
     }
 
     public void addMonster(Monster monster) {
+        for(int i = 0; i < monsterList.size(); i++) {
+            if (monsterList.get(i).getyPOS() > monster.getyPOS()) {
+                monsterList.add(i, monster);
+                return;
+            }
+        }
         monsterList.add(monster);
     }
 
