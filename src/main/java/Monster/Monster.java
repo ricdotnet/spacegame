@@ -10,7 +10,6 @@ import java.awt.image.BufferedImage;
 public class Monster {
 
     GameVars gameVars = new GameVars();
-    ImageLoader imageLoader = new ImageLoader();
 
     private double xPOS;
     private double yPOS;
@@ -34,10 +33,6 @@ public class Monster {
 
         SprideSheet sprite = new SprideSheet(main.getSpriteSheet());
 
-//        monster = imageLoader.loadImage("/fcporto.png");
-//        monster = sprite.grabImage(3, 1, 32, 32);
-
-        //TODO change monster icon based on type (toughness)
         switch (monsterType) {
             case "Weak":
                 monster = sprite.grabImage(2, 1, 32, 32);

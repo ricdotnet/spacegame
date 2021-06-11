@@ -251,10 +251,6 @@ public class MainClass extends Canvas implements Runnable {
         heartController.render(graphics);
         explosionController.render(graphics);
 
-//        if(explosion != null) {
-//            explosion.render(graphics);
-//        }
-
         if(PAUSED) {
             pausedScreen.pausedScreen(graphics);
         }
