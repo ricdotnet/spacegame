@@ -1,5 +1,7 @@
 package Main;
 
+import Util.Colors;
+
 import java.awt.*;
 
 public class PausedScreen {

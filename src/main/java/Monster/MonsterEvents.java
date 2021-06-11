@@ -1,0 +1,12 @@
+/**
+ * MONSTER EVENTS CLASS
+ * HERE WILL BE ALL EVENTS RELATED TO MONSTERS
+ * COLLISION CHECKING, SPAWNING AND MONSTER SHOOTING
+ */
+
+package Monster;
+
+public class MonsterEvents {
+
+    
+}

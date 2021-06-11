@@ -2,7 +2,7 @@ package Monster;
 
 import Main.GameVars;
 import Main.MainClass;
-import Main.Time;
+import Util.Time;
 
 import java.awt.*;
 import java.util.LinkedList;

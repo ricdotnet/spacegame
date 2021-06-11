@@ -1,5 +1,8 @@
 package Main;
 
+import Util.Colors;
+import Util.Label;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -8,7 +11,7 @@ public class MainMenu extends JPanel {
 
     MainClass main;
     ImageLoader image = new ImageLoader();
-    ScoresTable scoresTable = new ScoresTable();
+    ScoresTable scoresTable;
     GameVars gameVars = new GameVars();
 
     private BufferedImage background;
@@ -19,9 +22,12 @@ public class MainMenu extends JPanel {
 
     private final JButton testButton = new JButton();
 
-    private static final JLabel gameDifficulty = Labels.gameDifficulty;
+    private static Label gameDifficulty;
 
     public MainMenu() {
+        if(scoresTable == null)
+            scoresTable = new ScoresTable();
+//        setNewScores();
 
         //set main menu options
         setPreferredSize(new Dimension(MainClass.WIDTH * MainClass.SCALE, MainClass.HEIGHT * MainClass.SCALE));
@@ -31,6 +37,8 @@ public class MainMenu extends JPanel {
         setOpaque(true);
         setLayout(null);
 
+        gameDifficulty = new Label("Game Difficulty", gameVars.getDifficulty());
+
         //set component texts
         startButton.setText("Start");
         startButton.setName("START_GAME");
@@ -38,7 +46,7 @@ public class MainMenu extends JPanel {
         quitButton.setName("QUIT_GAME");
         changeDifficulty.setText("Change Difficulty");
         changeDifficulty.setName("DIFFICULTY_CHANGE");
-        gameDifficulty.setText(gameVars.getDifficulty());
+//        gameDifficulty.setText(gameVars.getDifficulty());
         testButton.setText("Test");
         testButton.setName("TEST_GAME");
 
@@ -82,7 +90,7 @@ public class MainMenu extends JPanel {
     }
 
     public static void setGameDifficulty(String difficulty) {
-        gameDifficulty.setText(difficulty);
+        gameDifficulty.setLabelText(difficulty);
     }
 
     private BufferedImage backgroundImage() {

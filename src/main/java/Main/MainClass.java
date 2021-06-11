@@ -5,16 +5,15 @@ import Bullet.*;
 import Database.Database;
 import Monster.*;
 import Player.*;
+import Util.Colors;
+import Util.Time;
 
-import javax.sound.sampled.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.net.URL;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -90,6 +89,7 @@ public class MainClass extends Canvas implements Runnable {
         window.setLocationRelativeTo(null);
         window.setVisible(true);
 
+//        scores.getScores();
         main.keys();
     }
 
@@ -264,21 +264,21 @@ public class MainClass extends Canvas implements Runnable {
         g.drawString("Current score: " + playerVars.getPlayerScore(), 50, getHeight()-15);
     }
 
-    private void drawScoresTable() {
-
-//        StringBuilder scoresList = new StringBuilder();
-        scoresList.setText("");
-
-        if(scores.printScores().size() > 0) {
-            for (int i = 0; i < scores.printScores().size(); i++) {
-                scoresList.append(String.valueOf(scores.printScores().get(i)) + "\n");
-            }
-        } else {
-            scoresList.append("No scores...");
-        }
-
+//    private void drawScoresTable(Graphics g) {
+//
+////        StringBuilder scoresList = new StringBuilder();
+//        scoresList.setText("");
+//
+//        if(scores.printScores().size() > 0) {
+//            for (int i = 0; i < scores.printScores().size(); i++) {
+//                scoresList.append(String.valueOf(scores.printScores().get(i)) + "\n");
+//            }
+//        } else {
+//            scoresList.append("No scores...");
+//        }
+//
 //        g.drawString(String.valueOf(scoresList), 50, getHeight()-15);
-    }
+//    }
 
     public BufferedImage getSpriteSheet() {
         return spriteSheet;
@@ -392,56 +392,30 @@ public class MainClass extends Canvas implements Runnable {
     }
 
     public void monsterKilled() {
-        if(bulletController.getBulletList().size() > 0) {
-            for (int i = 0; i < monsterController.getMonsterList().size(); i++) {
-                for (int j = 0; j < bulletController.getBulletList().size(); j++) {
-                    monster = monsterController.getMonsterList().get(i);
-                    bullet = bulletController.getBulletList().get(j);
+        if(!(bulletController.getBulletList().size() > 0)) {
+            return;
+        }
+        for (int i = 0; i < monsterController.getMonsterList().size(); i++) {
+            for (int j = 0; j < bulletController.getBulletList().size(); j++) {
+                monster = monsterController.getMonsterList().get(i);
+                bullet = bulletController.getBulletList().get(j);
 
-                    //kill monster and add another one
-                    if((bullet.getxPOS() + 20 > monster.getxPOS() && bullet.getxPOS() + 10 < monster.getxPOS() + 32) && (bullet.getyPOS() > monster.getyPOS() && bullet.getyPOS() < monster.getyPOS() + 16)) {
+                if ((bullet.getxPOS() + 20 > monster.getxPOS() && bullet.getxPOS() + 10 < monster.getxPOS() + 32) && (bullet.getyPOS() > monster.getyPOS() && bullet.getyPOS() < monster.getyPOS() + 16)) {
 
-                        double tempX = monster.getxPOS();
-                        double tempY = monster.getyPOS();
-
-                        if(monster.getMonsterHearts() == 1) {
-                            System.out.println("hit a weak monster");
-                            monsterController.removeMonster(monster);
-                            bulletController.removeBullet(bullet);
-
-                            sound.playSound("/enemyExplode.wav");
-
-                            //spawn explosion image
-                            explosion = new Explosion(tempX, tempY, this);
-
-                            service.schedule(removeExplosion, 200, TimeUnit.MILLISECONDS);
-
-                            if (Time.chance() < 0.01) {
-                                SPAWN_SIZE = 6;
-                            } else if (Time.chance() < 0.15) {
-                                SPAWN_SIZE = 3;
-                            } else if (Time.chance() < 0.30) {
-                                SPAWN_SIZE = 2;
-                            } else {
-                                SPAWN_SIZE = 1;
-                            }
-
-                            for (int k = 0; k < SPAWN_SIZE; k++) {
-                                RANDOM_X = setRandomX();
-                                RANDOM_Y = setRandomY();
-
-                                monsterController.addMonster(new Monster(RANDOM_X, RANDOM_Y, this));
-                            }
-
-                            //increase score by 1
-                            playerVars.setPlayerScore();
-                        } else {
-                            System.out.println("hit a tough monster");
-                            monster.setMonsterHearts();
-                            sound.playSound("/monsterHit.wav");
-                            bulletController.removeBullet(bullet);
-                        }
+                    if (monster.getMonsterHearts() != 1) {
+                        monster.setMonsterHearts();
+                        sound.playSound("/monsterHit.wav");
+                        bulletController.removeBullet(bullet);
+                        return;
                     }
+
+                    removeEntities(monster, bullet); //remove both monster and bullet
+                    showExplosion(monster.getxPOS(), monster.getyPOS()); //show explosion
+                    spawnNewMonsters(); //set a spawn bubble size after the monster dies
+
+                    playerVars.setPlayerScore(); //increase score by 1
+
+                    sound.playSound("/enemyExplode.wav"); //play explosion sound
                 }
             }
         }
@@ -511,6 +485,43 @@ public class MainClass extends Canvas implements Runnable {
         }
     }
 
+    /**
+     * SET A SPAWN SIZE AND SPAWN MONSTERS WHEN A MONSTER DIES
+     */
+    private void spawnNewMonsters() {
+        if (Time.chance() < 0.01) {
+            SPAWN_SIZE = 6;
+        } else if (Time.chance() < 0.15) {
+            SPAWN_SIZE = 3;
+        } else if (Time.chance() < 0.30) {
+            SPAWN_SIZE = 2;
+        } else {
+            SPAWN_SIZE = 1;
+        }
+
+        for (int k = 0; k < SPAWN_SIZE; k++) {
+            monsterController.addMonster(new Monster(setRandomX(), setRandomY(), this));
+        }
+    }
+
+    /**
+     * SHOW EXPLOSION WHEN A MONSTER DIES
+     * @param tempX
+     * @param tempY
+     */
+    private void showExplosion(double tempX, double tempY) {
+        explosion = new Explosion(tempX, tempY, this);
+        service.schedule(removeExplosion, 200, TimeUnit.MILLISECONDS);
+    }
+
+    /**
+     * REMOVE ENTITIES
+     */
+    private void removeEntities(Monster monster, Bullet bullet) {
+        monsterController.removeMonster(monster);
+        bulletController.removeBullet(bullet);
+    }
+
     // main game runnable methods
     Runnable removeExplosion = new Runnable() {
         @Override
@@ -529,7 +540,7 @@ public class MainClass extends Canvas implements Runnable {
                 askName.confirmButton.addActionListener(new ButtonClick(main));
             } else {
                 playerVars.resetPlayerScore();
-                drawScoresTable();
+//                drawScoresTable();
                 window.add(mainMenu);
                 SwingUtilities.updateComponentTreeUI(window);
             }
@@ -546,7 +557,7 @@ public class MainClass extends Canvas implements Runnable {
 
             playerVars.resetPlayerScore();
 
-            drawScoresTable();
+//            drawScoresTable();
             window.add(mainMenu);
             SwingUtilities.updateComponentTreeUI(window);
         }
