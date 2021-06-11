@@ -25,6 +25,7 @@ The names are randomly generated from a pool of names.
  - online scoreboard to show on menu screen -> half implemented
  - add a playerActions class
  - different monster colors / images to reflect the type of monster
+ - new player projectile icon
 
 #### Game screenshots
 
