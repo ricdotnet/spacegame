@@ -39,4 +39,8 @@ public class ExplosionController {
         explosionsList.remove(explosion);
     }
 
+    public List<Explosion> getExplosionsList() {
+        return explosionsList;
+    }
+
 }

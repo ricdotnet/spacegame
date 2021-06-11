@@ -10,6 +10,7 @@ import Bullet.Bullet;
 import Bullet.BulletController;
 import Main.MainClass;
 import Main.SoundLoader;
+import Player.HeartController;
 import Player.PlayerVars;
 import Util.*;
 
@@ -36,6 +37,8 @@ public class MonsterEvents {
 
     Explosion explosion;
     ExplosionController explosionController = new ExplosionController(main);
+
+    HeartController heartController = new HeartController(main);
 
     public MonsterEvents(MainClass main) {
         this.main = main;
@@ -106,6 +109,18 @@ public class MonsterEvents {
     private void removeEntities(Monster monster, Bullet bullet) {
         monsterController.removeMonster(monster);
         bulletController.removeBullet(bullet);
+    }
+
+
+
+    public void monsterOut() {
+        for(int i = 0; i < monsterController.getMonsterList().size(); i++) {
+            monster = monsterController.getMonsterList().get(i);
+            if(monster.getyPOS() > (MainClass.HEIGHT * MainClass.SCALE)) {
+                monsterController.removeMonster(monster);
+                heartController.removeHeart();
+            }
+        }
     }
 
     Runnable removeExplosion = new Runnable() {

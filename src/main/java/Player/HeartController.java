@@ -8,7 +8,7 @@ import java.util.List;
 
 public class HeartController {
 
-    private List<Heart> heartList = new LinkedList<Heart>();
+    private static List<Heart> heartList = new LinkedList<Heart>();
 
     Heart heart;
     MainClass main;

@@ -210,6 +210,8 @@ public class MainClass extends Canvas implements Runnable {
 
     private void tick() {
         if(!PAUSED) {
+            gameFinished(); //check for when game end
+
             player.tick();
             bulletController.tick();
             monsterController.tick();
@@ -219,14 +221,12 @@ public class MainClass extends Canvas implements Runnable {
 
             monsterEvents.monsterKilled();
             userHit();
-            monsterOut();
+            monsterEvents.monsterOut();
 
             //TODO change the tick for bomb drop
             if(util.chance() < 0.1) {
                 addBomb();
             }
-
-            gameFinished(); //check for when game end
         }
     }
     private void render() {
@@ -260,34 +260,18 @@ public class MainClass extends Canvas implements Runnable {
         bufferStrategy.show();
     }
 
-    private void drawScore(Graphics g) {
-        g.setColor(Color.black);
-        Font small = new Font("Monospace", Font.BOLD, 14);
-        g.setFont(small);
-        g.drawString("Current score: " + playerVars.getPlayerScore(), 50, getHeight()-15);
-    }
-
-//    private void drawScoresTable(Graphics g) {
-//
-////        StringBuilder scoresList = new StringBuilder();
-//        scoresList.setText("");
-//
-//        if(scores.printScores().size() > 0) {
-//            for (int i = 0; i < scores.printScores().size(); i++) {
-//                scoresList.append(String.valueOf(scores.printScores().get(i)) + "\n");
-//            }
-//        } else {
-//            scoresList.append("No scores...");
-//        }
-//
-//        g.drawString(String.valueOf(scoresList), 50, getHeight()-15);
-//    }
-
     public BufferedImage getSpriteSheet() {
         return spriteSheet;
     }
     public BufferedImage getIconsSheet() {
         return icons;
+    }
+
+    private void drawScore(Graphics g) {
+        g.setColor(Color.black);
+        Font small = new Font("Monospace", Font.BOLD, 14);
+        g.setFont(small);
+        g.drawString("Current score: " + playerVars.getPlayerScore(), 50, getHeight()-15);
     }
 
     /*
@@ -323,6 +307,7 @@ public class MainClass extends Canvas implements Runnable {
                 PAUSED = false;
                 playerVars.resetPlayerScore();
                 sound.stopBackgroundMusic();
+                resetGameLists();
             }
         }
 
@@ -372,16 +357,6 @@ public class MainClass extends Canvas implements Runnable {
         }
     }
 
-    public void monsterOut() {
-        for(int i = 0; i < monsterController.getMonsterList().size(); i++) {
-            monster = monsterController.getMonsterList().get(i);
-            if(monster.getyPOS() > getHeight()) {
-                monsterController.removeMonster(monster);
-                heartController.removeHeart();
-            }
-        }
-    }
-
     public void userHit() {
         for(int i = 0; i < bombController.getBombList().size(); i++) {
             bomb = bombController.getBombList().get(i);
@@ -425,7 +400,7 @@ public class MainClass extends Canvas implements Runnable {
     }
 
     public void gameFinished() {
-        if(heartController.getHeartList().size() == 0) {
+        if(heartController.getHeartList().size() == 0 || monsterController.getMonsterList().size() == 0) {
 
             //explosion = new Explosion(player.getxPOS(), player.getyPOS(), this);
 
@@ -462,6 +437,7 @@ public class MainClass extends Canvas implements Runnable {
             scores.addScore(playerVars.getPlayerScore());
 
             playerVars.resetPlayerScore();
+            resetGameLists();
 
 //            drawScoresTable();
             window.add(mainMenu);
@@ -479,5 +455,12 @@ public class MainClass extends Canvas implements Runnable {
             PAUSED = true;
             sound.pauseBackgroundMusic();
         }
+    }
+
+    private void resetGameLists() {
+        bulletController.getBulletList().clear();
+        explosionController.getExplosionsList().clear();
+        bombController.getBombList().clear();
+        monsterController.getMonsterList().clear();
     }
 }
