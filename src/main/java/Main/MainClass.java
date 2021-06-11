@@ -41,6 +41,7 @@ public class MainClass extends Canvas implements Runnable {
     SoundLoader sound = new SoundLoader();
 
     private Player player;
+    private PlayerEvents playerEvents;
     private PlayerVars playerVars = new PlayerVars();
 
     private BulletController bulletController;
@@ -124,6 +125,7 @@ public class MainClass extends Canvas implements Runnable {
 
         player = new Player((getWidth() / 2) - 16, getHeight() - 64, this);
         monsterEvents = new MonsterEvents(this, player);
+        playerEvents = new PlayerEvents(this, player);
 
         bulletController = new BulletController(this);
         monsterController = new MonsterController(this);
@@ -214,8 +216,8 @@ public class MainClass extends Canvas implements Runnable {
             explosionController.tick();
 
             monsterEvents.monsterKilled();
-            userHit();
             monsterEvents.monsterOut();
+            playerEvents.userHit();
 
             //TODO change the tick for bomb drop
             if(util.chance() < 0.1) {
@@ -286,7 +288,7 @@ public class MainClass extends Canvas implements Runnable {
         }
 
         if(e.getKeyCode() == KeyEvent.VK_SPACE) {
-            playerShoot();
+            playerEvents.playerShoot();
         }
 
         if(e.getKeyCode() == KeyEvent.VK_ESCAPE) {
@@ -318,47 +320,6 @@ public class MainClass extends Canvas implements Runnable {
         }
         if(e.getKeyCode() == KeyEvent.VK_DOWN) {
             player.setVelY(0);
-        }
-    }
-
-    /**
-     * TEMP CODES
-     */
-    public void playerShoot() {
-
-        switch (gameVars.getDifficulty()) {
-            case ("Easy"):
-                //allow only 2 bullets on the screen at once
-                if(bulletController.getBulletList().size() < 10) {
-                    bulletController.addBullet(new Bullet(player.getxPOS(), player.getyPOS() - 32, this));
-                    sound.playSound("/playerShoot.wav");
-                }
-                break;
-            case ("Medium"):
-                //allow only 2 bullets on the screen at once
-                if(bulletController.getBulletList().size() < 5) {
-                    bulletController.addBullet(new Bullet(player.getxPOS(), player.getyPOS() - 32, this));
-                    sound.playSound("/playerShoot.wav");
-                }
-                break;
-            case ("Hard"):
-                //allow only 2 bullets on the screen at once
-                if(bulletController.getBulletList().size() < 2) {
-                    bulletController.addBullet(new Bullet(player.getxPOS(), player.getyPOS() - 32, this));
-                    sound.playSound("/playerShoot.wav");
-                }
-                break;
-        }
-    }
-
-    public void userHit() {
-        for(int i = 0; i < bombController.getBombList().size(); i++) {
-            bomb = bombController.getBombList().get(i);
-
-            if(((bomb.getyPOS() > player.getyPOS() - 15) && bomb.getyPOS() < player.getyPOS()) && (bomb.getxPOS() + 20 > player.getxPOS() && bomb.getxPOS() + 10 < player.getxPOS() + 32)) {
-                bombController.removeBomb(bomb);
-                heartController.removeHeart();
-            }
         }
     }
 
