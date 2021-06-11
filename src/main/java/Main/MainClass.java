@@ -393,7 +393,7 @@ public class MainClass extends Canvas implements Runnable {
                     bullet = bulletController.getBulletList().get(j);
 
                     //kill monster and add another one
-                    if((bullet.getxPOS() + 20 > monster.getxPOS() && bullet.getxPOS() + 10 < monster.getxPOS() + 32) && (bullet.getyPOS() > monster.getyPOS() && bullet.getyPOS() < monster.getyPOS() + 32)) {
+                    if((bullet.getxPOS() + 20 > monster.getxPOS() && bullet.getxPOS() + 10 < monster.getxPOS() + 32) && (bullet.getyPOS() > monster.getyPOS() && bullet.getyPOS() < monster.getyPOS() + 16)) {
 
                         double tempX = monster.getxPOS();
                         double tempY = monster.getyPOS();
@@ -408,7 +408,7 @@ public class MainClass extends Canvas implements Runnable {
                             //spawn explosion image
                             explosion = new Explosion(tempX, tempY, this);
 
-                            service.schedule(removeExplosion, 1000, TimeUnit.MILLISECONDS);
+                            service.schedule(removeExplosion, 200, TimeUnit.MILLISECONDS);
 
                             if (Time.chance() < 0.01) {
                                 SPAWN_SIZE = 6;
@@ -455,7 +455,7 @@ public class MainClass extends Canvas implements Runnable {
         for(int i = 0; i < bombController.getBombList().size(); i++) {
             bomb = bombController.getBombList().get(i);
 
-            if(((bomb.getyPOS() > player.getyPOS() - 32) && bomb.getyPOS() < player.getyPOS()) && (bomb.getxPOS() + 34 > player.getxPOS() && bomb.getxPOS() < player.getxPOS() + 32)) {
+            if(((bomb.getyPOS() > player.getyPOS() - 5) && bomb.getyPOS() < player.getyPOS()) && (bomb.getxPOS() + 20 > player.getxPOS() && bomb.getxPOS() + 10 < player.getxPOS() + 32)) {
                 bombController.removeBomb(bomb);
                 heartController.removeHeart();
             }

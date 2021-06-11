@@ -17,9 +17,8 @@ public class Bomb {
         this.xPOS = xPOS;
         this.yPOS = yPOS;
 
-        SprideSheet sprite = new SprideSheet(main.getSpriteSheet());
-
-        bomb = sprite.grabImage(4, 1, 32, 32);
+        SprideSheet sprite = new SprideSheet(main.getIconsSheet());
+        bomb = sprite.grabIcon(3, 1, 16, 16);
     }
 
     public void tick() {
@@ -27,7 +26,7 @@ public class Bomb {
     }
 
     public void render(Graphics graphic) {
-        graphic.drawImage(bomb, (int) xPOS, (int) yPOS, null);
+        graphic.drawImage(bomb, (int) xPOS + (16/2), (int) yPOS - 3, null);
     }
 
     public double getyPOS() {

@@ -17,9 +17,8 @@ public class Bullet {
         this.xPOS = xPOS;
         this.yPOS = yPOS;
 
-        SprideSheet sprite = new SprideSheet(main.getSpriteSheet());
-
-        bullet = sprite.grabImage(2, 1, 32, 32);
+        SprideSheet sprite = new SprideSheet(main.getIconsSheet());
+        bullet = sprite.grabIcon(2, 1, 16, 16);
     }
 
     public void tick() {
@@ -27,7 +26,7 @@ public class Bullet {
     }
 
     public void render(Graphics graphic) {
-        graphic.drawImage(bullet, (int) xPOS, (int) yPOS, null);
+        graphic.drawImage(bullet, (int) xPOS + (16/2), (int) yPOS + 15, null);
     }
 
     public double getyPOS() {

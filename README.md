@@ -10,7 +10,8 @@ data structure and algorithm skills.
 The current score system only saves scores from the current play session.
 The scores reset on restart.
 
-The names are randomly generated from a pool of names.
+~~The names are randomly generated from a pool of names.~~
+Users enter their name after losing.
 
 #### TODO:
  - add enemies ✅
