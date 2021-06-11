@@ -8,7 +8,7 @@ import java.util.List;
 
 public class BulletController {
 
-    private List<Bullet> bulletList = new LinkedList<Bullet>();
+    private static List<Bullet> bulletList = new LinkedList<Bullet>();
 
     Bullet bullet;
     MainClass main;

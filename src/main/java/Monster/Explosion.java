@@ -14,12 +14,14 @@ public class Explosion {
     private double xPOS;
     private double yPOS;
     private int explosionStage;
+    private long explodedIn;
 
     private BufferedImage explosion;
 
-    public Explosion(double xPOS, double yPOS, MainClass main) {
+    public Explosion(double xPOS, double yPOS, long explodedIn, MainClass main) {
         this.xPOS = xPOS;
         this.yPOS = yPOS;
+        this.explodedIn = explodedIn;
 
         SprideSheet sprite = new SprideSheet(main.getSpriteSheet());
 //        explosion = imageLoader.loadImage("/poop.png");
@@ -32,6 +34,10 @@ public class Explosion {
 
     public void render(Graphics graphic) {
         graphic.drawImage(explosion, (int) xPOS, (int) yPOS, null);
+    }
+
+    public long getExplodedIn() {
+        return explodedIn;
     }
 
 }

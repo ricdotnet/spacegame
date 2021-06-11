@@ -2,7 +2,7 @@ package Monster;
 
 import Main.GameVars;
 import Main.MainClass;
-import Util.Time;
+import Util.Util;
 
 import java.awt.*;
 import java.util.LinkedList;
@@ -10,12 +10,13 @@ import java.util.List;
 
 public class MonsterController {
 
-    private List<Monster> monsterList = new LinkedList<Monster>();
+    private static List<Monster> monsterList = new LinkedList<Monster>();
     private boolean move = true;
 
     Monster monster;
     MainClass main;
     GameVars gameVars = new GameVars();
+    Util util = new Util();
 
     public MonsterController(MainClass main) {
         this.main = main;
@@ -25,7 +26,7 @@ public class MonsterController {
         for(int i = 0; i < monsterList.size(); i++) {
             monster = monsterList.get(i);
             monster.tick();
-            double chance = Time.chance();
+            double chance = util.chance();
 
             switch (gameVars.getDifficulty()) {
                 case ("Easy"):

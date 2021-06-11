@@ -7,6 +7,7 @@ import Monster.*;
 import Player.*;
 import Util.Colors;
 import Util.Time;
+import Util.Util;
 
 import javax.swing.*;
 import java.awt.*;
@@ -49,6 +50,7 @@ public class MainClass extends Canvas implements Runnable {
 
     private Monster monster;
     private MonsterController monsterController;
+    private MonsterEvents monsterEvents = new MonsterEvents(this);
     public Explosion explosion = null;
 
     private Bomb bomb;
@@ -57,15 +59,17 @@ public class MainClass extends Canvas implements Runnable {
 //    private Heart heart;
     private HeartController heartController;
 
+    private ExplosionController explosionController;
+
     private long lastSecond, lastFrame;
     private int ticks, frames;
     private double delta;
     private double RANDOM_X, RANDOM_Y; // ?????????
-    private int SPAWN_SIZE;
 
     Scores scores = new Scores();
     AskName askName = new AskName();
     GameVars gameVars = new GameVars();
+    Util util = new Util();
     static Database connect = new Database();
 
     static JFrame window = new JFrame(TITLE);
@@ -131,8 +135,9 @@ public class MainClass extends Canvas implements Runnable {
         monsterController = new MonsterController(this);
         bombController = new BombController(this);
         heartController = new HeartController(this);
+        explosionController = new ExplosionController(this);
 
-        monsterController.addMonster(new Monster(setRandomX(), setRandomY(), this));
+        monsterController.addMonster(new Monster(util.setRandomX(), util.setRandomY(), this));
 
         // temp lives
         double x = 50;
@@ -210,13 +215,14 @@ public class MainClass extends Canvas implements Runnable {
             monsterController.tick();
             bombController.tick();
             heartController.tick();
+            explosionController.tick();
 
-            monsterKilled();
+            monsterEvents.monsterKilled();
             userHit();
             monsterOut();
 
             //TODO change the tick for bomb drop
-            if(Time.chance() < 0.1) {
+            if(util.chance() < 0.1) {
                 addBomb();
             }
 
@@ -243,10 +249,11 @@ public class MainClass extends Canvas implements Runnable {
         monsterController.render(graphics);
         bombController.render(graphics);
         heartController.render(graphics);
+        explosionController.render(graphics);
 
-        if(explosion != null) {
-            explosion.render(graphics);
-        }
+//        if(explosion != null) {
+//            explosion.render(graphics);
+//        }
 
         if(PAUSED) {
             pausedScreen.pausedScreen(graphics);
@@ -323,13 +330,6 @@ public class MainClass extends Canvas implements Runnable {
             }
         }
 
-        /**
-         * TEMP KEY COMMANDS
-         */
-        if(e.getKeyCode() == KeyEvent.VK_ENTER) {
-            monsterController.addMonster(new Monster(setRandomX(), setRandomY(), this));
-            System.out.println(monsterController.getMonsterList().size());
-        }
     }
     public void keyReleased(KeyEvent e) {
         if(e.getKeyCode() == KeyEvent.VK_RIGHT) {
@@ -344,21 +344,6 @@ public class MainClass extends Canvas implements Runnable {
         if(e.getKeyCode() == KeyEvent.VK_DOWN) {
             player.setVelY(0);
         }
-    }
-
-    /**
-     * Random X and random Y
-     */
-    private double setRandomX() {
-        double x = Math.floor(Math.random() * getWidth());
-
-        if(x >= getWidth() - 32) {
-            x = x - 32;
-        }
-        return x;
-    }
-    private double setRandomY() {
-        return Math.floor(Math.random() * (getHeight() / 2));
     }
 
     /**
@@ -388,36 +373,6 @@ public class MainClass extends Canvas implements Runnable {
                     sound.playSound("/playerShoot.wav");
                 }
                 break;
-        }
-    }
-
-    public void monsterKilled() {
-        if(!(bulletController.getBulletList().size() > 0)) {
-            return;
-        }
-        for (int i = 0; i < monsterController.getMonsterList().size(); i++) {
-            for (int j = 0; j < bulletController.getBulletList().size(); j++) {
-                monster = monsterController.getMonsterList().get(i);
-                bullet = bulletController.getBulletList().get(j);
-
-                if ((bullet.getxPOS() + 20 > monster.getxPOS() && bullet.getxPOS() + 10 < monster.getxPOS() + 32) && (bullet.getyPOS() > monster.getyPOS() && bullet.getyPOS() < monster.getyPOS() + 16)) {
-
-                    if (monster.getMonsterHearts() != 1) {
-                        monster.setMonsterHearts();
-                        sound.playSound("/monsterHit.wav");
-                        bulletController.removeBullet(bullet);
-                        return;
-                    }
-
-                    removeEntities(monster, bullet); //remove both monster and bullet
-                    showExplosion(monster.getxPOS(), monster.getyPOS()); //show explosion
-                    spawnNewMonsters(); //set a spawn bubble size after the monster dies
-
-                    playerVars.setPlayerScore(); //increase score by 1
-
-                    sound.playSound("/enemyExplode.wav"); //play explosion sound
-                }
-            }
         }
     }
 
@@ -484,51 +439,6 @@ public class MainClass extends Canvas implements Runnable {
             service.schedule(restart, 2, TimeUnit.SECONDS);
         }
     }
-
-    /**
-     * SET A SPAWN SIZE AND SPAWN MONSTERS WHEN A MONSTER DIES
-     */
-    private void spawnNewMonsters() {
-        if (Time.chance() < 0.01) {
-            SPAWN_SIZE = 6;
-        } else if (Time.chance() < 0.15) {
-            SPAWN_SIZE = 3;
-        } else if (Time.chance() < 0.30) {
-            SPAWN_SIZE = 2;
-        } else {
-            SPAWN_SIZE = 1;
-        }
-
-        for (int k = 0; k < SPAWN_SIZE; k++) {
-            monsterController.addMonster(new Monster(setRandomX(), setRandomY(), this));
-        }
-    }
-
-    /**
-     * SHOW EXPLOSION WHEN A MONSTER DIES
-     * @param tempX
-     * @param tempY
-     */
-    private void showExplosion(double tempX, double tempY) {
-        explosion = new Explosion(tempX, tempY, this);
-        service.schedule(removeExplosion, 200, TimeUnit.MILLISECONDS);
-    }
-
-    /**
-     * REMOVE ENTITIES
-     */
-    private void removeEntities(Monster monster, Bullet bullet) {
-        monsterController.removeMonster(monster);
-        bulletController.removeBullet(bullet);
-    }
-
-    // main game runnable methods
-    Runnable removeExplosion = new Runnable() {
-        @Override
-        public void run() {
-            explosion = null;
-        }
-    };
 
     Runnable restart = new Runnable() {
         @Override
