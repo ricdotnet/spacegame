@@ -66,6 +66,7 @@ public class Stars {
             }
             g.drawOval((int) starsList.get(i).getxPos(), (int) starsList.get(i).getyPos(), width, height);
             g.fillOval((int) starsList.get(i).getxPos(), (int) starsList.get(i).getyPos(), width, height);
+//            g.drawString(String.valueOf(starsList.get(i).getyPos()), (int) starsList.get(i).getxPos(), (int) starsList.get(i).getyPos());
         }
 
     }

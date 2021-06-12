@@ -128,8 +128,8 @@ public class MonsterEvents {
 
         for (int k = 0; k < SPAWN_SIZE; k++) {
             double randomY = util.setRandomY();
-            if(randomY > MainClass.HEIGHT) {
-                randomY -= MainClass.HEIGHT;
+            if(randomY > (MainClass.HEIGHT/2)) {
+                randomY -= 250;
             }
             monsterController.addMonster(new Monster(util.setRandomX(), randomY, main));
         }

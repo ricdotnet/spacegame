@@ -11,7 +11,7 @@ public class PausedScreen {
 
     public void pausedScreen(Graphics g) {
         g.setColor(Colors.LIGHT_BLACK);
-        g.fillRect(WIDTH-(WIDTH/2), HEIGHT-(HEIGHT/2), WIDTH, HEIGHT);
+        g.fillRect((WIDTH/2)/2, (HEIGHT/2)/2, WIDTH/2, HEIGHT/2);
 
         pausedText(g);
     }
@@ -22,11 +22,11 @@ public class PausedScreen {
         Font info = new Font("Monospace", Font.PLAIN, 18);
 
         g.setFont(title);
-        g.drawString("Paused...", WIDTH-50, HEIGHT-20);
+        g.drawString("Paused...", (WIDTH/2)-50, (HEIGHT/2)-20);
 
         g.setFont(info);
-        g.drawString("Press R to restart the game.", WIDTH-110, HEIGHT+20);
-        g.drawString("(you will lose all your score)", WIDTH-110, HEIGHT+40);
+        g.drawString("Press R to restart the game.", (WIDTH/2)-110, (HEIGHT/2)+20);
+        g.drawString("(you will lose all your score)", (WIDTH/2)-110, (HEIGHT/2)+40);
     }
 
 }

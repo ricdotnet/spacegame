@@ -10,8 +10,7 @@ import Util.*;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
+import java.awt.event.*;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.util.concurrent.Executors;
@@ -28,9 +27,9 @@ public class MainClass extends Canvas implements Runnable {
 
     ScheduledExecutorService service = Executors.newScheduledThreadPool(1);
 
-    public static final int WIDTH = 320;
-    public static final int HEIGHT = WIDTH / 12 * 9;
-    public static final int SCALE = 2;
+    public static int WIDTH = 640;
+    public static int HEIGHT = WIDTH / 12 * 9;
+    public static final int SCALE = 1;
     public static final String TITLE = "Space Game";
 
 //    private BufferedImage image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
@@ -76,7 +75,6 @@ public class MainClass extends Canvas implements Runnable {
 
     public MainClass() { }
 
-    static JTextArea scoresList = new JTextArea();
     public static void main(String[] args) {
 
         if(connect.getConnection() != null) {
@@ -136,7 +134,12 @@ public class MainClass extends Canvas implements Runnable {
         heartController = new HeartController(this);
         explosionController = new ExplosionController(this);
 
-        monsterController.addMonster(new Monster(util.setRandomX(), util.setRandomY(), this));
+        double monsterYpos = util.setRandomY();
+        if(monsterYpos > HEIGHT/2) {
+            monsterYpos -= 250;
+        }
+        System.out.println(monsterYpos);
+        monsterController.addMonster(new Monster(util.setRandomX(), monsterYpos, this));
 
         // stars need to generate and render always before anything else
         stars = new Stars();
@@ -277,7 +280,7 @@ public class MainClass extends Canvas implements Runnable {
         g.setColor(Color.black);
         Font small = new Font("Monospace", Font.BOLD, 14);
         g.setFont(small);
-        g.drawString("Current score: " + playerVars.getPlayerScore(), 50, getHeight()-15);
+        g.drawString("Current score: " + playerVars.getPlayerScore(), 50, HEIGHT-15);
     }
 
     /*
@@ -396,5 +399,10 @@ public class MainClass extends Canvas implements Runnable {
         explosionController.getExplosionsList().clear();
         bombController.getBombList().clear();
         monsterController.getMonsterList().clear();
+    }
+
+    public void setWindowSize() {
+        WIDTH = getWidth();
+        HEIGHT = getHeight();
     }
 }
