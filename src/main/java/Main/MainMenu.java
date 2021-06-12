@@ -60,7 +60,7 @@ public class MainMenu extends JPanel {
         //set component positions
         startButton.setLocation(((MainClass.WIDTH * MainClass.SCALE) / 2) - 105, 10);
         quitButton.setLocation(((MainClass.WIDTH * MainClass.SCALE) / 2) + 5, 10);
-        changeDifficulty.setLocation((MainClass.WIDTH * 2) - 165, (MainClass.HEIGHT * MainClass.SCALE) - 45);
+        changeDifficulty.setLocation((MainClass.WIDTH * MainClass.SCALE) - 165, (MainClass.HEIGHT * MainClass.SCALE) - 45);
         gameDifficulty.setLocation(changeDifficulty.getX(), changeDifficulty.getY() - 40);
         testButton.setLocation(15, getHeight() - 45);
 

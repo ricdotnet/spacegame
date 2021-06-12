@@ -138,7 +138,6 @@ public class MainClass extends Canvas implements Runnable {
         if(monsterYpos > HEIGHT/2) {
             monsterYpos -= 250;
         }
-        System.out.println(monsterYpos);
         monsterController.addMonster(new Monster(util.setRandomX(), monsterYpos, this));
 
         // stars need to generate and render always before anything else
