@@ -8,7 +8,7 @@ public class Util {
      * Random X and random Y inside the window screen
      */
     public double setRandomX() {
-        double x = Math.floor(Math.random() * MainClass.WIDTH);
+        double x = Math.floor(Math.random() * (MainClass.WIDTH * MainClass.SCALE));
 
         if(x >= MainClass.WIDTH - 32) {
             x = x - 32;
@@ -16,7 +16,7 @@ public class Util {
         return x;
     }
     public double setRandomY() {
-        return Math.floor(Math.random() * (MainClass.HEIGHT / 2));
+        return Math.floor(Math.random() * (MainClass.HEIGHT * MainClass.SCALE));
     }
 
     /**

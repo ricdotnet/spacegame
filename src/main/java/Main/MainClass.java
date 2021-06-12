@@ -5,6 +5,7 @@ import Bullet.*;
 import Database.Database;
 import Monster.*;
 import Player.*;
+import Sky.Stars;
 import Util.*;
 
 import javax.swing.*;
@@ -55,6 +56,8 @@ public class MainClass extends Canvas implements Runnable {
     private HeartController heartController;
 
     private ExplosionController explosionController;
+
+    private Stars stars;
 
     private long lastSecond, lastFrame;
     private int ticks, frames;
@@ -134,6 +137,10 @@ public class MainClass extends Canvas implements Runnable {
         explosionController = new ExplosionController(this);
 
         monsterController.addMonster(new Monster(util.setRandomX(), util.setRandomY(), this));
+
+        // stars need to generate and render always before anything else
+        stars = new Stars();
+        stars.generateStars(); //generate new stars
 
         // temp lives
         double x = 50;
@@ -219,6 +226,8 @@ public class MainClass extends Canvas implements Runnable {
             monsterEvents.monsterOut();
             playerEvents.userHit();
 
+            stars.tick(); //move stars down
+
             //TODO change the tick for bomb drop
             if(util.chance() < 0.1) {
                 monsterEvents.addBomb();
@@ -239,12 +248,13 @@ public class MainClass extends Canvas implements Runnable {
         graphics.fillRect(0, 0, getWidth(), getHeight());
 
         drawScore(graphics);
+        heartController.render(graphics);
+        stars.render(graphics);
 
         player.render(graphics);
         bulletController.render(graphics);
         monsterController.render(graphics);
         bombController.render(graphics);
-        heartController.render(graphics);
         explosionController.render(graphics);
 
         if(PAUSED) {

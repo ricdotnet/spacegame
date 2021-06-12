@@ -127,7 +127,11 @@ public class MonsterEvents {
         }
 
         for (int k = 0; k < SPAWN_SIZE; k++) {
-            monsterController.addMonster(new Monster(util.setRandomX(), util.setRandomY(), main));
+            double randomY = util.setRandomY();
+            if(randomY > MainClass.HEIGHT) {
+                randomY -= MainClass.HEIGHT;
+            }
+            monsterController.addMonster(new Monster(util.setRandomX(), randomY, main));
         }
     }
 

@@ -18,9 +18,9 @@ public class ExplosionController {
     }
 
     public void tick() {
-        for(Explosion explosion:explosionsList) {
-            if((Time.msNow() - explosion.getExplodedIn()) >= 250) {
-                removeExplosion(explosion);
+        for(int i = 0; i < explosionsList.size(); i++) {
+            if((Time.msNow() - explosionsList.get(i).getExplodedIn()) >= 250) {
+                removeExplosion(i);
             }
         }
     }
@@ -35,7 +35,7 @@ public class ExplosionController {
         explosionsList.add(explosion);
     }
 
-    public void removeExplosion(Explosion explosion) {
+    public void removeExplosion(int explosion) {
         explosionsList.remove(explosion);
     }
 

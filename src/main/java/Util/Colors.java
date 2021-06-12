@@ -15,4 +15,13 @@ public class Colors {
     //paused menu
     public static final Color LIGHT_BLACK = new Color(0,0,0,150);
 
+    //star colors
+    public static final Color BLUE_STAR = new Color(20, 103, 219);
+    public static final Color LIGHT_BLUE_STAR = new Color(171, 206, 255);
+    public static final Color CREAM_STAR = new Color(255, 247, 228);
+    public static final Color LIGHT_YELLOW_STAR = new Color(251, 255, 157);
+    public static final Color BRIGHT_YELLOW_STAR = new Color(244, 255, 0);
+    public static final Color ORANGE_STAR = new Color(255, 138, 0);
+    public static final Color RED_STAR = new Color(255, 0, 0);
+
 }

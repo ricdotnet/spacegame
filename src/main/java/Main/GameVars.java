@@ -1,5 +1,8 @@
 package Main;
 
+import Util.Colors;
+
+import java.awt.*;
 import java.util.Arrays;
 
 public class GameVars {
@@ -10,6 +13,17 @@ public class GameVars {
             { "Weak", 1 },
             { "Tough", 3 },
             { "Colossal", 6 }
+    };
+
+    private static final String[] starTypes = { "Close", "Medium", "Far" };
+    private static final Color[] starColors = {
+            Colors.BLUE_STAR,
+            Colors.LIGHT_BLUE_STAR,
+            Colors.CREAM_STAR,
+            Colors.LIGHT_YELLOW_STAR,
+            Colors.BRIGHT_YELLOW_STAR,
+            Colors.ORANGE_STAR,
+            Colors.RED_STAR
     };
 
     public void setDifficulty(String difficulty) {
@@ -28,6 +42,14 @@ public class GameVars {
 
     public String monsterObject() {
         return Arrays.deepToString(monsterType[(int) Math.ceil(Math.random() * 3) - 1]);
+    }
+
+    public String starType() {
+        return starTypes[(int) Math.ceil(Math.random() * 3) - 1];
+    }
+
+    public Color setStarColor() {
+        return starColors[(int) Math.ceil(Math.random() * 7) - 1];
     }
 
 }
