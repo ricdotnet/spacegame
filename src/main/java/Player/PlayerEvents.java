@@ -20,6 +20,8 @@ public class PlayerEvents {
 
     HeartController heartController = new HeartController(main);
 
+    private boolean isValidShot = false;
+
     public PlayerEvents(MainClass main, Player player) {
         this.main = main;
         this.player = player;
@@ -31,25 +33,33 @@ public class PlayerEvents {
             case ("Easy"):
                 //allow only 2 bullets on the screen at once
                 if(bulletController.getBulletList().size() < 10) {
-                    bulletController.addBullet(new Bullet(player.getxPOS(), player.getyPOS() - 32, main));
-                    soundLoader.playSound("/playerShoot.wav");
+                    addBullet();
+                    isValidShot = true;
                 }
                 break;
             case ("Medium"):
                 //allow only 2 bullets on the screen at once
                 if(bulletController.getBulletList().size() < 5) {
-                    bulletController.addBullet(new Bullet(player.getxPOS(), player.getyPOS() - 32, main));
-                    soundLoader.playSound("/playerShoot.wav");
+                    addBullet();
+                    isValidShot = true;
                 }
                 break;
             case ("Hard"):
                 //allow only 2 bullets on the screen at once
                 if(bulletController.getBulletList().size() < 2) {
-                    bulletController.addBullet(new Bullet(player.getxPOS(), player.getyPOS() - 32, main));
-                    soundLoader.playSound("/playerShoot.wav");
+                    addBullet();
+                    isValidShot = true;
                 }
                 break;
         }
+        if(isValidShot)
+            soundLoader.playSound("/playerShoot.wav");
+
+        isValidShot = false;
+    }
+
+    private void addBullet() {
+        bulletController.addBullet(new Bullet(player.getxPOS(), player.getyPOS() - 32, player.getRotation(), main));
     }
 
     public void userHit() {

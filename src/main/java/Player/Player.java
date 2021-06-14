@@ -10,15 +10,17 @@ public class Player {
 
     private double xPOS;
     private double yPOS;
+    private double rotation;
 
     private double velX;
     private double velY;
 
     private BufferedImage player;
 
-    public Player(double xPOS, double yPOS, MainClass main) {
+    public Player(double xPOS, double yPOS, double rotation, MainClass main) {
         this.xPOS = xPOS;
         this.yPOS = yPOS;
+        this.rotation = rotation;
 
         SprideSheet sprite = new SprideSheet(main.getSpriteSheet());
 
@@ -35,7 +37,10 @@ public class Player {
     public void render(Graphics graphic) {
         Graphics2D g2d = (Graphics2D) graphic;
 
+        g2d.rotate(Math.toRadians(getRotation()), xPOS+16, yPOS+16);
+//        g2d.scale(2, 2);
         g2d.drawImage(player, (int) xPOS, (int) yPOS, null);
+
     }
 
     public void checkWallCollision() {
@@ -74,6 +79,13 @@ public class Player {
     }
     public void setVelY(double velY) {
         this.velY = velY;
+    }
+
+    public void setRotation(double rotation) {
+        this.rotation += rotation;
+    }
+    public double getRotation() {
+        return rotation;
     }
 
 }

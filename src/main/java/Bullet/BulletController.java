@@ -27,7 +27,7 @@ public class BulletController {
         }
     }
 
-    public void render(Graphics graphic) {
+    public void render(Graphics2D graphic) {
         for(int i = 0; i < bulletList.size(); i++) {
             bullet = bulletList.get(i);
             bullet.render(graphic);

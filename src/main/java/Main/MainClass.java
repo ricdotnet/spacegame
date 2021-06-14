@@ -42,11 +42,11 @@ public class MainClass extends Canvas implements Runnable {
 
     SoundLoader sound = new SoundLoader();
 
-    private Player player;
-    private PlayerEvents playerEvents;
-    private PlayerVars playerVars = new PlayerVars();
+    public Player player;
+    public PlayerEvents playerEvents;
+    public PlayerVars playerVars = new PlayerVars();
 
-    private BulletController bulletController;
+    public BulletController bulletController;
 
     private MonsterController monsterController;
     private MonsterEvents monsterEvents;
@@ -70,6 +70,7 @@ public class MainClass extends Canvas implements Runnable {
     AskName askName = new AskName();
     GameVars gameVars = new GameVars();
     Util util = new Util();
+    Renderer renderer = new Renderer(this);
     static Database connect = new Database();
 
     static JFrame window = new JFrame(TITLE);
@@ -128,7 +129,7 @@ public class MainClass extends Canvas implements Runnable {
         spriteSheet = imageLoader.loadImage("/sprites.png");
         icons = imageLoader.loadImage("/icons.png");
 
-        player = new Player((getWidth() / 2) - 16, getHeight() - 64, this);
+        player = new Player((getWidth() / 2) - 16, getHeight() - 64, 0, this);
         monsterEvents = new MonsterEvents(this, player);
         playerEvents = new PlayerEvents(this, player);
 
@@ -260,8 +261,11 @@ public class MainClass extends Canvas implements Runnable {
         heartController.render(graphics);
         stars.render(graphics);
 
-        player.render(graphics);
-        bulletController.render(graphics);
+//        player.render(graphics);
+        renderer.renderPlayer();
+        renderer.renderBullet();
+
+//        bulletController.render(graphics);
         monsterController.render(graphics);
         bombController.render(graphics);
         explosionController.render(graphics);
@@ -296,16 +300,18 @@ public class MainClass extends Canvas implements Runnable {
      */
     public void keyPressed(KeyEvent e) {
         if(e.getKeyCode() == KeyEvent.VK_RIGHT) {
-            player.setVelX(5);
+//            player.setVelX(5);
+            player.setRotation(5);
         }
         if(e.getKeyCode() == KeyEvent.VK_LEFT) {
-            player.setVelX(-5);
+//            player.setVelX(-5);
+            player.setRotation(-5);
         }
         if(e.getKeyCode() == KeyEvent.VK_UP) {
-            player.setVelY(-5);
+//            player.setVelY(-5);
         }
         if(e.getKeyCode() == KeyEvent.VK_DOWN) {
-            player.setVelY(5);
+//            player.setVelY(5);
         }
 
         if(e.getKeyCode() == KeyEvent.VK_SPACE) {
