@@ -20,19 +20,19 @@ public class BulletController {
     public void tick() {
         for(int i = 0; i < bulletList.size(); i++) {
             bullet = bulletList.get(i);
-            if(bullet.getyPOS() <= 0) {
+            if(bullet.getyPOS() < 0 || bullet.getyPOS() > MainClass.HEIGHT || bullet.getxPOS() < 0 || bullet.getxPOS() > MainClass.WIDTH) {
                 removeBullet(bullet);
             }
             bullet.tick();
         }
     }
 
-    public void render(Graphics2D graphic) {
-        for(int i = 0; i < bulletList.size(); i++) {
-            bullet = bulletList.get(i);
-            bullet.render(graphic);
-        }
-    }
+//    public void render(Graphics2D graphic) {
+//        for(int i = 0; i < bulletList.size(); i++) {
+//            bullet = bulletList.get(i);
+//            bullet.render(graphic);
+//        }
+//    }
 
     public void addBullet(Bullet bullet) {
         bulletList.add(bullet);

@@ -129,7 +129,8 @@ public class MainClass extends Canvas implements Runnable {
         spriteSheet = imageLoader.loadImage("/sprites.png");
         icons = imageLoader.loadImage("/icons.png");
 
-        player = new Player((getWidth() / 2) - 16, getHeight() - 64, 0, this);
+//        player = new Player((getWidth() / 2) - 16, getHeight() - 64, 90, this);
+        player = new Player(320, 280, 0, this);
         monsterEvents = new MonsterEvents(this, player);
         playerEvents = new PlayerEvents(this, player);
 

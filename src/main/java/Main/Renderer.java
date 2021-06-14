@@ -37,7 +37,10 @@ public class Renderer {
     }
 
     public void renderBullet() {
-        main.bulletController.render(getGraphicsVar());
+//        main.bulletController.render(getGraphicsVar());
+        for(int i = 0; i < main.bulletController.getBulletList().size(); i++) {
+            main.bulletController.getBulletList().get(i).render(getGraphicsVar());
+        }
     }
 
 }

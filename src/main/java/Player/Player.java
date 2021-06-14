@@ -5,6 +5,7 @@ import Main.MainClass;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.text.DecimalFormat;
 
 public class Player {
 
@@ -40,6 +41,9 @@ public class Player {
         g2d.rotate(Math.toRadians(getRotation()), xPOS+16, yPOS+16);
 //        g2d.scale(2, 2);
         g2d.drawImage(player, (int) xPOS, (int) yPOS, null);
+
+        g2d.setColor(Color.WHITE);
+        g2d.drawString(String.valueOf(Math.toRadians(getRotation())), (int) xPOS, (int) yPOS-16);
 
     }
 
@@ -85,7 +89,8 @@ public class Player {
         this.rotation += rotation;
     }
     public double getRotation() {
-        return rotation;
+        DecimalFormat newRotation = new DecimalFormat("0.00");
+        return Double.parseDouble(newRotation.format(rotation));
     }
 
 }

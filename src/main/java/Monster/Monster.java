@@ -52,6 +52,8 @@ public class Monster {
 
     // INDEX VALUE IS TO TEST THE INDEX POSITION OF THE MONSTER
     public void render(Graphics graphic, int index) {
+        graphic.setColor(Colors.LIGHT_BLACK);
+        graphic.fillRect((int) xPOS, (int) yPOS, 32, 32);
         graphic.drawImage(monster, (int) xPOS, (int) yPOS, null);
 
         graphic.setColor(Color.white);

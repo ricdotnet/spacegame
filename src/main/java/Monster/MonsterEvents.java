@@ -56,7 +56,11 @@ public class MonsterEvents {
                     monster = monsterController.getMonsterList().get(i);
                     bullet = bulletController.getBulletList().get(j);
 
-                    if ((bullet.getxPOS() + 20 > monster.getxPOS() && bullet.getxPOS() + 10 < monster.getxPOS() + 32) && (bullet.getyPOS() > monster.getyPOS() && bullet.getyPOS() < monster.getyPOS() + 16)) {
+//                    if ((bullet.getxPOS() + 20 > monster.getxPOS() && bullet.getxPOS() + 10 < monster.getxPOS() + 32)
+//                            && (bullet.getyPOS() > monster.getyPOS() && bullet.getyPOS() < monster.getyPOS() + 16)) {
+
+                    if((bullet.getxPOS() + 20 > monster.getxPOS() && bullet.getxPOS() + 10 < monster.getxPOS() + 32)
+                            && (bullet.getyPOS() > monster.getyPOS() && bullet.getyPOS() < monster.getyPOS() + 32)) {
 
                         if (monster.getMonsterHearts() != 1) {
                             monster.setMonsterHearts();

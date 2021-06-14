@@ -5,6 +5,7 @@ import Images.SprideSheet;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.text.DecimalFormat;
 
 public class Bullet {
 
@@ -24,11 +25,13 @@ public class Bullet {
     }
 
     public void tick() {
-        yPOS = yPOS - 5;
+//        yPOS = yPOS - 5;
+        this.xPOS += Math.cos(Math.toRadians(getRotation()-90)) * 5;
+        this.yPOS += Math.sin(Math.toRadians(getRotation()-90)) * 5;
     }
 
     public void render(Graphics2D graphic) {
-//        graphic.rotate(Math.toRadians(getRotation()), (int) xPOS+8, (int) yPOS+8);
+        graphic.rotate(Math.toRadians(getRotation()), (int) xPOS+8, (int) yPOS+8);
         graphic.drawImage(bullet, (int) xPOS + (16/2), (int) yPOS + 15, null);
 //        graphic.dispose();
     }
@@ -39,8 +42,12 @@ public class Bullet {
     public double getxPOS() {
         return xPOS;
     }
+//    public double getRotation() {
+//        return rotation;
+//    }
     public double getRotation() {
-        return rotation;
+        DecimalFormat newRotation = new DecimalFormat("0.00");
+        return Double.parseDouble(newRotation.format(rotation));
     }
 
 }
