@@ -2,6 +2,7 @@ package Player;
 
 import Images.SprideSheet;
 import Main.MainClass;
+import Util.Colors;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -12,6 +13,9 @@ public class Player {
     private double xPOS;
     private double yPOS;
     private double rotation;
+
+    private double bulletXpos = 0;
+    private double bulletYpos = 0;
 
     private double velX;
     private double velY;
@@ -39,11 +43,13 @@ public class Player {
         Graphics2D g2d = (Graphics2D) graphic;
 
         g2d.rotate(Math.toRadians(getRotation()), xPOS+16, yPOS+16);
+        g2d.setColor(Colors.LIGHT_BLACK);
+        g2d.fillRect((int) xPOS, (int) yPOS, 32, 32);
 //        g2d.scale(2, 2);
         g2d.drawImage(player, (int) xPOS, (int) yPOS, null);
 
         g2d.setColor(Color.WHITE);
-        g2d.drawString(String.valueOf(Math.toRadians(getRotation())), (int) xPOS, (int) yPOS-16);
+        g2d.drawString(bulletXpos + " - " + bulletYpos, (int) xPOS, (int) yPOS-16);
 
     }
 
@@ -93,4 +99,17 @@ public class Player {
         return Double.parseDouble(newRotation.format(rotation));
     }
 
+    public void setBulletXpos(double bulletXpos) {
+        this.bulletXpos = bulletXpos;
+    }
+    public double getBulletXpos() {
+        return bulletXpos;
+    }
+
+    public void setBulletYpos(double bulletYpos) {
+        this.bulletYpos = bulletYpos;
+    }
+    public double getBulletYpos() {
+        return bulletYpos;
+    }
 }

@@ -94,7 +94,6 @@ public class MainClass extends Canvas implements Runnable {
         window.setVisible(true);
 
 //        scores.getScores();
-        main.keys();
     }
 
     // main game methods
@@ -114,7 +113,7 @@ public class MainClass extends Canvas implements Runnable {
      */
     private void keys() {
         System.out.println("keys started");
-        addKeyListener(new KeyInput(this));
+        addKeyListener(new KeyInput(this, player, playerEvents));
     }
     /*
     Buttons starter method example
@@ -158,6 +157,8 @@ public class MainClass extends Canvas implements Runnable {
             heartController.addHeart(new Heart(x, y, this));
             x = x + 20;
         }
+
+        main.keys();
     }
 
     private synchronized void start() {
@@ -299,57 +300,6 @@ public class MainClass extends Canvas implements Runnable {
     /*
     Key events
      */
-    public void keyPressed(KeyEvent e) {
-        if(e.getKeyCode() == KeyEvent.VK_RIGHT) {
-//            player.setVelX(5);
-            player.setRotation(5);
-        }
-        if(e.getKeyCode() == KeyEvent.VK_LEFT) {
-//            player.setVelX(-5);
-            player.setRotation(-5);
-        }
-        if(e.getKeyCode() == KeyEvent.VK_UP) {
-//            player.setVelY(-5);
-        }
-        if(e.getKeyCode() == KeyEvent.VK_DOWN) {
-//            player.setVelY(5);
-        }
-
-        if(e.getKeyCode() == KeyEvent.VK_SPACE) {
-            playerEvents.playerShoot();
-        }
-
-        if(e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-            pauseUnpause();
-        }
-
-        if(e.getKeyCode() == KeyEvent.VK_R) {
-            if(PAUSED) {
-                window.remove(main);
-                window.add(mainMenu);
-                RUNNING = false;
-                PAUSED = false;
-                playerVars.resetPlayerScore();
-                sound.stopBackgroundMusic();
-                resetGameLists();
-            }
-        }
-
-    }
-    public void keyReleased(KeyEvent e) {
-        if(e.getKeyCode() == KeyEvent.VK_RIGHT) {
-            player.setVelX(0);
-        }
-        if(e.getKeyCode() == KeyEvent.VK_LEFT) {
-            player.setVelX(0);
-        }
-        if(e.getKeyCode() == KeyEvent.VK_UP) {
-            player.setVelY(0);
-        }
-        if(e.getKeyCode() == KeyEvent.VK_DOWN) {
-            player.setVelY(0);
-        }
-    }
 
     public void gameFinished() {
         if(heartController.getHeartList().size() == 0 || monsterController.getMonsterList().size() == 0) {
@@ -407,6 +357,20 @@ public class MainClass extends Canvas implements Runnable {
             PAUSED = true;
             sound.pauseBackgroundMusic();
         }
+    }
+
+    public void pauseRestart() {
+        if(!PAUSED) {
+            return;
+        }
+
+        window.remove(main);
+        window.add(mainMenu);
+        RUNNING = false;
+        PAUSED = false;
+        playerVars.resetPlayerScore();
+        sound.stopBackgroundMusic();
+        resetGameLists();
     }
 
     private void resetGameLists() {

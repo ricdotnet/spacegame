@@ -59,7 +59,9 @@ public class PlayerEvents {
     }
 
     private void addBullet() {
-        bulletController.addBullet(new Bullet(player.getxPOS() - 8, player.getyPOS() - 8, player.getRotation(), main));
+//        double xPos = Math.cos(Math.toRadians(player.getRotation())) * 32;
+//        double yPos = Math.sin(Math.toRadians(player.getRotation())) * 32;
+        bulletController.addBullet(new Bullet(player.getxPOS() + player.getBulletXpos()/2, player.getyPOS() + player.getBulletYpos()/2, player.getRotation(), main));
     }
 
     public void userHit() {

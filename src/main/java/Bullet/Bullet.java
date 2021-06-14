@@ -2,6 +2,7 @@ package Bullet;
 
 import Main.MainClass;
 import Images.SprideSheet;
+import Util.Colors;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -31,8 +32,13 @@ public class Bullet {
     }
 
     public void render(Graphics2D graphic) {
+
         graphic.rotate(Math.toRadians(getRotation()), (int) xPOS+8, (int) yPOS+8);
-        graphic.drawImage(bullet, (int) xPOS + (16/2), (int) yPOS + 15, null);
+//        graphic.drawImage(bullet, (int) xPOS + (16/2), (int) yPOS + 15, null);
+//        graphic.drawImage(bullet, (int) (xPOS+xPos), (int) (yPOS+yPos), null);
+
+        graphic.setColor(Colors.LIGHT_BLACK);
+        graphic.fillRect((int) (xPOS) + 16, (int) (yPOS) + 16, 16, 16);
 //        graphic.dispose();
     }
 
