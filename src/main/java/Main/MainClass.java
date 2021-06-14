@@ -5,6 +5,8 @@ import Bullet.*;
 import Database.Database;
 import Monster.*;
 import Player.*;
+import Sky.Asteroid;
+import Sky.Asteroids;
 import Sky.Stars;
 import Util.*;
 
@@ -57,6 +59,8 @@ public class MainClass extends Canvas implements Runnable {
     private ExplosionController explosionController;
 
     private Stars stars;
+
+    private Asteroids asteroids;
 
     private long lastSecond, lastFrame;
     private int ticks, frames;
@@ -133,6 +137,7 @@ public class MainClass extends Canvas implements Runnable {
         bombController = new BombController(this);
         heartController = new HeartController(this);
         explosionController = new ExplosionController(this);
+        asteroids = new Asteroids(this);
 
         double monsterYpos = util.setRandomY();
         if(monsterYpos > HEIGHT/2) {
@@ -223,12 +228,14 @@ public class MainClass extends Canvas implements Runnable {
             bombController.tick();
             heartController.tick();
             explosionController.tick();
+            asteroids.tick();
 
             monsterEvents.monsterKilled();
             monsterEvents.monsterOut();
             playerEvents.userHit();
 
             stars.tick(); //move stars down
+            randomEvent();
 
             //TODO change the tick for bomb drop
             if(util.chance() < 0.1) {
@@ -258,6 +265,8 @@ public class MainClass extends Canvas implements Runnable {
         monsterController.render(graphics);
         bombController.render(graphics);
         explosionController.render(graphics);
+
+        asteroids.render(graphics);
 
         if(PAUSED) {
             pausedScreen.pausedScreen(graphics);
@@ -403,5 +412,14 @@ public class MainClass extends Canvas implements Runnable {
     public void setWindowSize() {
         WIDTH = getWidth();
         HEIGHT = getHeight();
+    }
+
+    /**
+     * TEMP CODE
+     */
+    public void randomEvent() {
+        if(util.chance() < 0.15 && asteroids.getAsteroidList().size() < 3) {
+            asteroids.getAsteroidList().add(new Asteroid(util.setRandomX(), -32, 5, main));
+        }
     }
 }
