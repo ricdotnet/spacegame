@@ -30,4 +30,6 @@ Users enter their name after losing.
 
 #### Game screenshots
 
-![img.png](img.png)
+![spacegame_3.png](spacegame_3.png)
+![spacegame_1.png](spacegame_1.png)
+![spacegame_2.png](spacegame_2.png)
