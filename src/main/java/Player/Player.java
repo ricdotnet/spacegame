@@ -33,7 +33,9 @@ public class Player {
     }
 
     public void render(Graphics graphic) {
-        graphic.drawImage(player, (int) xPOS, (int) yPOS, null);
+        Graphics2D g2d = (Graphics2D) graphic;
+
+        g2d.drawImage(player, (int) xPOS, (int) yPOS, null);
     }
 
     public void checkWallCollision() {
