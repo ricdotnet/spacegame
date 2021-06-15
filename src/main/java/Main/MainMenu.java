@@ -76,10 +76,10 @@ public class MainMenu extends JPanel {
         add(testButton);
 
         //action listeners
-        startButton.addActionListener(new ButtonClick(main));
-        quitButton.addActionListener(new ButtonClick(main));
-        changeDifficulty.addActionListener(new ButtonClick(main));
-        testButton.addActionListener(new ButtonClick(main));
+        startButton.addActionListener(new ButtonClick());
+        quitButton.addActionListener(new ButtonClick());
+        changeDifficulty.addActionListener(new ButtonClick());
+        testButton.addActionListener(new ButtonClick());
 
     }
 

@@ -6,16 +6,10 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class ButtonClick implements ActionListener {
+public class ButtonClick extends MainClass implements ActionListener {
 
-    MainClass main;
-    MainClass mainClass = new MainClass(); //for button click purposes
     AskName askName = new AskName();
     GameVars gameVars = new GameVars();
-
-    public ButtonClick(MainClass main) {
-        this.main = main;
-    }
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -26,12 +20,12 @@ public class ButtonClick implements ActionListener {
         // start button command
         if(name.equals("START_GAME")) {
             gameVars.setIsTesting(false); //always make sure testing mode is off
-            mainClass.startGame(e);
+            startGame(e);
         }
 
         // quit button command
         if(name.equals("QUIT_GAME")) {
-            mainClass.quitGame(e);
+            quitGame(e);
         }
 
         // confirm name button
@@ -39,7 +33,7 @@ public class ButtonClick implements ActionListener {
             if(!askName.nameField.getText().isEmpty()) {
                 askName.nameField.setBackground(Colors.BLOOD_RED);
             } else {
-                main.restart();
+                restart();
             }
         }
 
@@ -65,7 +59,7 @@ public class ButtonClick implements ActionListener {
          */
         if(name.equals("TEST_GAME")) {
             gameVars.setIsTesting(true); //set testing mode on
-            mainClass.startGame(e);
+            startGame(e);
 //            String monster = gameVars.monsterObject();
 //            String monsterType = monster.substring(1, monster.length() - 4);
 //            String monsterHearts = monster.substring(monster.length() - 2, monster.length() - 1);

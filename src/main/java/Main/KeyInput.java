@@ -2,17 +2,17 @@ package Main;
 
 import Player.*;
 
-import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
-public class KeyInput extends KeyAdapter {
+public class KeyInput extends MainClass implements KeyListener {
 
-    MainClass main;
     Player player;
     PlayerEvents playerEvents;
 
-    public KeyInput(MainClass main) {
-        this.main = main;
+    @Override
+    public void keyTyped(KeyEvent keyEvent) {
+
     }
 
     public void keyPressed(KeyEvent e) {

@@ -117,19 +117,23 @@ public class MainClass extends Canvas implements Runnable {
     this avoids multiple key listeners on restart.
      */
     private void keys() {
-        if(keyInput != null)
+        if(keyInput != null) {
+            System.out.println("Key listener already started;");
             return;
+        }
 
         System.out.println("Key listener started.");
-        keyInput = new KeyInput(this);
+        keyInput = new KeyInput();
         addKeyListener(keyInput);
     }
     private void mouse() {
-        if(mouseInput != null)
+        if(mouseInput != null) {
+            System.out.println("Mouse listener already started.");
             return;
+        }
 
         System.out.println("Mouse listener started.");
-        mouseInput = new MouseInput(this);
+        mouseInput = new MouseInput();
         addMouseListener(mouseInput);
         addMouseMotionListener(mouseInput);
     }
@@ -138,7 +142,7 @@ public class MainClass extends Canvas implements Runnable {
     Buttons starter method example
      */
     private void buttons(JButton button) {
-        button.addActionListener(new ButtonClick(this));
+        button.addActionListener(new ButtonClick());
     }
 
     public void init() {
@@ -341,7 +345,7 @@ public class MainClass extends Canvas implements Runnable {
 
             if(!gameVars.getIsTesting()) {
                 askName.setVisible(true);
-                askName.confirmButton.addActionListener(new ButtonClick(main));
+                askName.confirmButton.addActionListener(new ButtonClick());
             } else {
                 playerVars.resetPlayerScore();
 //                drawScoresTable();

@@ -1,22 +1,21 @@
 package Main;
 
 import Player.*;
+import Sky.Asteroids;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
-public class MouseInput implements MouseListener, MouseMotionListener {
+public class MouseInput extends MainClass implements MouseListener, MouseMotionListener {
 
-    MainClass main;
+//    MainClass main;
     Player player;
-
-    public MouseInput(MainClass main) {
-        this.main = main;
-    }
+    Asteroids asteroids = new Asteroids(this);
 
     @Override
     public void mouseClicked(MouseEvent mouseEvent) {
+
     }
 
     @Override
