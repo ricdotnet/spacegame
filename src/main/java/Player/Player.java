@@ -15,6 +15,8 @@ public class Player {
     private double velX;
     private double velY;
 
+    private double rotation = 0;
+
     private BufferedImage player;
 
     public Player(double xPOS, double yPOS, MainClass main) {
@@ -33,7 +35,8 @@ public class Player {
         checkWallCollision();
     }
 
-    public void render(Graphics graphic) {
+    public void render(Graphics2D graphic) {
+        graphic.rotate(Math.toRadians(rotation), (int) xPOS - 16, (int) yPOS - 16);
         graphic.drawImage(player, (int) xPOS, (int) yPOS, null);
     }
 
@@ -73,6 +76,10 @@ public class Player {
     }
     public void setVelY(double velY) {
         this.velY = velY;
+    }
+
+    public void setRotation(double rotation) {
+        this.rotation = rotation;
     }
 
 }

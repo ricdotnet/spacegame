@@ -117,7 +117,8 @@ public class MainClass extends Canvas implements Runnable {
     }
     private void mouse() {
         System.out.println("Mouse listener started.");
-        addMouseListener(new MouseInput(this));
+        addMouseListener(new MouseInput(this, player));
+        addMouseMotionListener(new MouseInput(this, player));
     }
 
     /*
@@ -134,8 +135,6 @@ public class MainClass extends Canvas implements Runnable {
         spriteSheet = imageLoader.loadImage("/sprites.png");
         icons = imageLoader.loadImage("/icons.png");
 
-        renderer = new Renderer(this);
-
         player = new Player((getWidth() / 2) - 16, getHeight() - 64, this);
         monsterEvents = new MonsterEvents(this, player);
         playerEvents = new PlayerEvents(this, player);
@@ -146,6 +145,8 @@ public class MainClass extends Canvas implements Runnable {
         heartController = new HeartController(this);
         explosionController = new ExplosionController(this);
         asteroids = new Asteroids(this);
+
+        renderer = new Renderer(this, player);
 
         double monsterYpos = util.setRandomY();
         if(monsterYpos > HEIGHT/2) {
@@ -274,7 +275,9 @@ public class MainClass extends Canvas implements Runnable {
         heartController.render(graphics);
         stars.render(graphics);
 
-        player.render(graphics);
+//        player.render(graphics);
+        renderer.renderPlayer();
+
         bulletController.render(graphics);
         monsterController.render(graphics);
         bombController.render(graphics);

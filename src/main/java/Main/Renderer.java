@@ -1,7 +1,6 @@
 package Main;
 
-import Main.MainClass;
-import Sky.Asteroids;
+import Player.*;
 
 import java.awt.*;
 import java.awt.image.BufferStrategy;
@@ -9,11 +8,13 @@ import java.awt.image.BufferStrategy;
 public class Renderer {
 
     MainClass main;
+    Player player;
 
     private BufferStrategy bufferStrategy;
 
-    public Renderer(MainClass main) {
+    public Renderer(MainClass main, Player player) {
         this.main = main;
+        this.player = player;
     }
 
     private BufferStrategy setBufferStrategy() {
@@ -32,6 +33,10 @@ public class Renderer {
     /**
      * GAME RENDER METHODS
      */
+    public void renderPlayer() {
+        player.render(getGraphicsVar());
+    }
+
     public void renderAsteroids() {
         for(int i = 0; i < main.asteroids.getAsteroidList().size(); i++) {
             main.asteroids.getAsteroidList().get(i).render(getGraphicsVar());
