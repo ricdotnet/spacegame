@@ -21,8 +21,8 @@ public class MainClass extends Canvas implements Runnable {
 
     public static final long serialVersionUID = 1L;
 
-    public Boolean PAUSED = false; //state fo the game; false for not playing <-> true for playing
-    public Boolean RUNNING = false;
+    private Boolean PAUSED = false; //state fo the game; false for not playing <-> true for playing
+    private Boolean RUNNING = false;
     private Thread thread;
 
     ScheduledExecutorService service = Executors.newScheduledThreadPool(1);
@@ -78,6 +78,9 @@ public class MainClass extends Canvas implements Runnable {
 
     Renderer renderer;
 
+    KeyInput keyInput;
+    MouseInput mouseInput;
+
     public MainClass() { }
 
     public static void main(String[] args) {
@@ -94,6 +97,8 @@ public class MainClass extends Canvas implements Runnable {
         window.setVisible(true);
 
 //        scores.getScores();
+        main.keys();
+        main.mouse();
     }
 
     // main game methods
@@ -112,13 +117,21 @@ public class MainClass extends Canvas implements Runnable {
     this avoids multiple key listeners on restart.
      */
     private void keys() {
+        if(keyInput != null)
+            return;
+
         System.out.println("Key listener started.");
-        addKeyListener(new KeyInput(this, player, playerEvents));
+        keyInput = new KeyInput(this);
+        addKeyListener(keyInput);
     }
     private void mouse() {
+        if(mouseInput != null)
+            return;
+
         System.out.println("Mouse listener started.");
-        addMouseListener(new MouseInput(this, player));
-        addMouseMotionListener(new MouseInput(this, player));
+        mouseInput = new MouseInput(this);
+        addMouseListener(mouseInput);
+        addMouseMotionListener(mouseInput);
     }
 
     /*
@@ -167,8 +180,9 @@ public class MainClass extends Canvas implements Runnable {
         }
 
         // initialize the key listener
-        main.keys();
-        main.mouse();
+        keyInput.setPlayer(player);
+        keyInput.setPlayerEvents(playerEvents);
+        mouseInput.setPlayer(player);
     }
 
     private synchronized void start() {
@@ -347,6 +361,7 @@ public class MainClass extends Canvas implements Runnable {
 
             playerVars.resetPlayerScore();
             resetGameLists();
+            player = null;
 
 //            drawScoresTable();
             window.add(mainMenu);
@@ -363,6 +378,8 @@ public class MainClass extends Canvas implements Runnable {
             playerVars.resetPlayerScore();
             sound.stopBackgroundMusic();
             resetGameLists();
+
+            player = null;
         }
     }
 

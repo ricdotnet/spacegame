@@ -11,10 +11,8 @@ public class KeyInput extends KeyAdapter {
     Player player;
     PlayerEvents playerEvents;
 
-    public KeyInput(MainClass main, Player player, PlayerEvents playerEvents) {
+    public KeyInput(MainClass main) {
         this.main = main;
-        this.player = player;
-        this.playerEvents = playerEvents;
     }
 
     public void keyPressed(KeyEvent e) {
@@ -57,6 +55,13 @@ public class KeyInput extends KeyAdapter {
         if(e.getKeyCode() == KeyEvent.VK_DOWN) {
             player.setVelY(0);
         }
+    }
+
+    public void setPlayer(Player player) {
+        this.player = player;
+    }
+    public void setPlayerEvents(PlayerEvents playerEvents) {
+        this.playerEvents = playerEvents;
     }
 
 }
