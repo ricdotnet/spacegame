@@ -416,7 +416,7 @@ public class MainClass extends Canvas implements Runnable {
      */
     public void randomEvent() {
         if(util.chance() < 0.01 && asteroids.getAsteroidList().size() < 3) {
-            asteroids.getAsteroidList().add(new Asteroid(util.setRandomX(), -32, (int) Math.ceil(util.chance() * 5), main));
+            asteroids.getAsteroidList().add(new Asteroid(util.setRandomX(), -32, (int) Math.ceil(util.chance() * 5), (int) Math.ceil(util.chance() * 10), main));
         }
     }
 

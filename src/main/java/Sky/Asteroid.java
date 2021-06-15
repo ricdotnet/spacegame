@@ -15,35 +15,25 @@ public class Asteroid {
     private double xPos;
     private double yPos;
     private int speed;
-    private int rotationSpeed = 1; // TODO: 14/06/2021 Make variable rotation speed.
-    private int rotation = 1;
-
-    private long timer;
+    private final int rotationSpeed; // TODO: 14/06/2021 Make variable rotation speed.
+    private int rotation;
 
     private final BufferedImage asteroid;
 
-    public Asteroid(double xPos, double yPos, int speed, MainClass main) {
+    public Asteroid(double xPos, double yPos, int speed, int rotationSpeed, MainClass main) {
         this.xPos = xPos;
         this.yPos = yPos;
         this.speed = speed;
+        this.rotationSpeed = rotationSpeed;
         this.main = main;
 
         SprideSheet sprite = new SprideSheet(main.getSpriteSheet());
         asteroid = sprite.grabImage(5, 1, 32, 32);
     }
 
-    public void tick() {
-    }
-
     public void render(Graphics2D g) {
         g.rotate(Math.toRadians(getRotation()), getxPos()+16, getyPos()+16);
         g.drawImage(asteroid, (int) getxPos(), (int) getyPos(), null);
-
-//        g.setColor(Color.WHITE);
-//        g.drawString(getxPos() + " - " + getyPos(), (int) getxPos(), (int) getyPos() -16);
-//
-//        g.setColor(Colors.LIGHT_BLACK);
-//        g.fillRect((int) getxPos(), (int) getyPos(), 32, 32);
     }
 
     public void setxPos(double xPos) {
@@ -55,8 +45,8 @@ public class Asteroid {
     public void setSpeed(int speed) {
         this.speed = speed;
     }
-    public void setRotation(int rotation) {
-        this.rotation = getRotation() + rotation;
+    public void setRotation() {
+        this.rotation = getRotation() + rotationSpeed;
     }
 
     public double getxPos() {
