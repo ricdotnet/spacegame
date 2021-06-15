@@ -23,8 +23,8 @@ public class MainClass extends Canvas implements Runnable {
 
     public static final long serialVersionUID = 1L;
 
-    private Boolean PAUSED = false; //state fo the game; false for not playing <-> true for playing
-    private Boolean RUNNING = false;
+    public Boolean PAUSED = false; //state fo the game; false for not playing <-> true for playing
+    public Boolean RUNNING = false;
     private Thread thread;
 
     ScheduledExecutorService service = Executors.newScheduledThreadPool(1);
@@ -60,7 +60,7 @@ public class MainClass extends Canvas implements Runnable {
 
     private Stars stars;
 
-    private Asteroids asteroids;
+    public Asteroids asteroids;
 
     private long lastSecond, lastFrame;
     private int ticks, frames;
@@ -76,6 +76,8 @@ public class MainClass extends Canvas implements Runnable {
     static MainClass main = new MainClass();
     static MainMenu mainMenu = new MainMenu();
     static PausedScreen pausedScreen = new PausedScreen();
+
+    Renderer renderer;
 
     public MainClass() { }
 
@@ -93,7 +95,6 @@ public class MainClass extends Canvas implements Runnable {
         window.setVisible(true);
 
 //        scores.getScores();
-        main.keys();
     }
 
     // main game methods
@@ -113,7 +114,7 @@ public class MainClass extends Canvas implements Runnable {
      */
     private void keys() {
         System.out.println("keys started");
-        addKeyListener(new KeyInput(this));
+        addKeyListener(new KeyInput(this, player, playerEvents));
     }
     /*
     Buttons starter method example
@@ -127,6 +128,8 @@ public class MainClass extends Canvas implements Runnable {
         ImageLoader imageLoader = new ImageLoader();
         spriteSheet = imageLoader.loadImage("/sprites.png");
         icons = imageLoader.loadImage("/icons.png");
+
+        renderer = new Renderer(this);
 
         player = new Player((getWidth() / 2) - 16, getHeight() - 64, this);
         monsterEvents = new MonsterEvents(this, player);
@@ -156,6 +159,9 @@ public class MainClass extends Canvas implements Runnable {
             heartController.addHeart(new Heart(x, y, this));
             x = x + 20;
         }
+
+        // initialize the key listener
+        main.keys();
     }
 
     private synchronized void start() {
@@ -266,7 +272,7 @@ public class MainClass extends Canvas implements Runnable {
         bombController.render(graphics);
         explosionController.render(graphics);
 
-        asteroids.render(graphics);
+        renderer.renderAsteroids();
 
         if(PAUSED) {
             pausedScreen.pausedScreen(graphics);
@@ -289,59 +295,6 @@ public class MainClass extends Canvas implements Runnable {
         Font small = new Font("Monospace", Font.BOLD, 14);
         g.setFont(small);
         g.drawString("Current score: " + playerVars.getPlayerScore(), 50, HEIGHT-15);
-    }
-
-    /*
-    Key events
-     */
-    public void keyPressed(KeyEvent e) {
-        if(e.getKeyCode() == KeyEvent.VK_RIGHT) {
-            player.setVelX(5);
-        }
-        if(e.getKeyCode() == KeyEvent.VK_LEFT) {
-            player.setVelX(-5);
-        }
-        if(e.getKeyCode() == KeyEvent.VK_UP) {
-            player.setVelY(-5);
-        }
-        if(e.getKeyCode() == KeyEvent.VK_DOWN) {
-            player.setVelY(5);
-        }
-
-        if(e.getKeyCode() == KeyEvent.VK_SPACE) {
-            playerEvents.playerShoot();
-        }
-
-        if(e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-            pauseUnpause();
-        }
-
-        if(e.getKeyCode() == KeyEvent.VK_R) {
-            if(PAUSED) {
-                window.remove(main);
-                window.add(mainMenu);
-                RUNNING = false;
-                PAUSED = false;
-                playerVars.resetPlayerScore();
-                sound.stopBackgroundMusic();
-                resetGameLists();
-            }
-        }
-
-    }
-    public void keyReleased(KeyEvent e) {
-        if(e.getKeyCode() == KeyEvent.VK_RIGHT) {
-            player.setVelX(0);
-        }
-        if(e.getKeyCode() == KeyEvent.VK_LEFT) {
-            player.setVelX(0);
-        }
-        if(e.getKeyCode() == KeyEvent.VK_UP) {
-            player.setVelY(0);
-        }
-        if(e.getKeyCode() == KeyEvent.VK_DOWN) {
-            player.setVelY(0);
-        }
     }
 
     public void gameFinished() {
@@ -390,6 +343,18 @@ public class MainClass extends Canvas implements Runnable {
         }
     }
 
+    public void resetOnPause() {
+        if(PAUSED) {
+            window.remove(main);
+            window.add(mainMenu);
+            RUNNING = false;
+            PAUSED = false;
+            playerVars.resetPlayerScore();
+            sound.stopBackgroundMusic();
+            resetGameLists();
+        }
+    }
+
     public void pauseUnpause() {
         if(PAUSED) {
             sound.playSound("/unpauseSound.wav");
@@ -402,7 +367,7 @@ public class MainClass extends Canvas implements Runnable {
         }
     }
 
-    private void resetGameLists() {
+    public void resetGameLists() {
         bulletController.getBulletList().clear();
         explosionController.getExplosionsList().clear();
         bombController.getBombList().clear();
@@ -418,8 +383,8 @@ public class MainClass extends Canvas implements Runnable {
      * TEMP CODE
      */
     public void randomEvent() {
-        if(util.chance() < 0.15 && asteroids.getAsteroidList().size() < 3) {
-            asteroids.getAsteroidList().add(new Asteroid(util.setRandomX(), -32, 5, main));
+        if(util.chance() < 0.01 && asteroids.getAsteroidList().size() < 3) {
+            asteroids.getAsteroidList().add(new Asteroid(util.setRandomX(), -32, (int) Math.ceil(util.chance() * 5), main));
         }
     }
 }

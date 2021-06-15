@@ -28,21 +28,21 @@ public class Asteroids {
 //        }
 
         for(int i = 0; i < asteroidList.size(); i++) {
-            asteroidList.get(i).setyPos(5);
-            asteroidList.get(i).setRotation(5);
+            asteroidList.get(i).setyPos(asteroidList.get(i).getSpeed());
+            asteroidList.get(i).setRotation(asteroidList.get(i).getSpeed());
             if(asteroidList.get(i).getyPos() > main.getHeight()) {
                 asteroidList.remove(i);
             }
         }
     }
 
-    public void render(Graphics g) {
-
-        for(int i = 0; i < asteroidList.size(); i++) {
-//            asteroidList.get(i).tick();
-            asteroidList.get(i).render(g);
-        }
-    }
+//    public void render(Graphics g) {
+//
+//        for(int i = 0; i < asteroidList.size(); i++) {
+////            asteroidList.get(i).tick();
+//            asteroidList.get(i).render(g);
+//        }
+//    }
 
     public List<Asteroid> getAsteroidList() {
         return asteroidList;

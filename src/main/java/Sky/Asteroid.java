@@ -31,8 +31,8 @@ public class Asteroid {
     public void tick() {
     }
 
-    public void render(Graphics g) {
-//        g2d.rotate(Math.toRadians(getRotation()), getxPos()+16, getyPos()+16);
+    public void render(Graphics2D g) {
+        g.rotate(Math.toRadians(getRotation()), getxPos()+16, getyPos()+16);
         g.drawImage(asteroid, (int) getxPos(), (int) getyPos(), null);
     }
 
