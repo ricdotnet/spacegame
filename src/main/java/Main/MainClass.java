@@ -5,9 +5,7 @@ import Bullet.*;
 import Database.Database;
 import Monster.*;
 import Player.*;
-import Sky.Asteroid;
-import Sky.Asteroids;
-import Sky.Stars;
+import Sky.*;
 import Util.*;
 
 import javax.swing.*;
@@ -70,6 +68,7 @@ public class MainClass extends Canvas implements Runnable {
     AskName askName = new AskName();
     GameVars gameVars = new GameVars();
     Util util = new Util();
+    Time time = new Time();
     static Database connect = new Database();
 
     static JFrame window = new JFrame(TITLE);
@@ -113,9 +112,14 @@ public class MainClass extends Canvas implements Runnable {
     this avoids multiple key listeners on restart.
      */
     private void keys() {
-        System.out.println("keys started");
+        System.out.println("Key listener started.");
         addKeyListener(new KeyInput(this, player, playerEvents));
     }
+    private void mouse() {
+        System.out.println("Mouse listener started.");
+        addMouseListener(new MouseInput(this));
+    }
+
     /*
     Buttons starter method example
      */
@@ -124,6 +128,7 @@ public class MainClass extends Canvas implements Runnable {
     }
 
     public void init() {
+        timer = time.msNow();
         requestFocus();
         ImageLoader imageLoader = new ImageLoader();
         spriteSheet = imageLoader.loadImage("/sprites.png");
@@ -162,6 +167,7 @@ public class MainClass extends Canvas implements Runnable {
 
         // initialize the key listener
         main.keys();
+        main.mouse();
     }
 
     private synchronized void start() {
@@ -193,8 +199,8 @@ public class MainClass extends Canvas implements Runnable {
     @Override
     public void run() {
         init();
-        lastSecond = Time.nsNow();
-        lastFrame = Time.msNow();
+        lastSecond = time.nsNow();
+        lastFrame = time.msNow();
         frames = 0;
         ticks = 0;
         delta = 0;
@@ -202,7 +208,7 @@ public class MainClass extends Canvas implements Runnable {
         sound.playBackgroundMusic("/backgroundMusic.wav");
 
         while (RUNNING) {
-            long now = Time.nsNow();
+            long now = time.nsNow();
             delta += (now - lastSecond) / Time.NS_PER_TICK;
             lastSecond = now;
             if (delta >= 1) {
@@ -214,7 +220,7 @@ public class MainClass extends Canvas implements Runnable {
             render();
             frames++;
 
-            if (Time.msNow() - lastFrame > 1000) {
+            if (time.msNow() - lastFrame > 1000) {
                 lastFrame += 1000;
                 System.out.println(ticks + " Ticks, FPS " + frames);
                 ticks = 0;
@@ -225,6 +231,7 @@ public class MainClass extends Canvas implements Runnable {
     }
 
     private void tick() {
+//        timer();
         if(!PAUSED) {
             gameFinished(); //check for when game end
 
@@ -239,6 +246,7 @@ public class MainClass extends Canvas implements Runnable {
             monsterEvents.monsterKilled();
             monsterEvents.monsterOut();
             playerEvents.userHit();
+            playerEvents.asteroidCollision();
 
             stars.tick(); //move stars down
             randomEvent();
@@ -385,6 +393,15 @@ public class MainClass extends Canvas implements Runnable {
     public void randomEvent() {
         if(util.chance() < 0.01 && asteroids.getAsteroidList().size() < 3) {
             asteroids.getAsteroidList().add(new Asteroid(util.setRandomX(), -32, (int) Math.ceil(util.chance() * 5), main));
+        }
+    }
+
+    private long timer;
+    private int counter = 0;
+    public void timer() {
+        if(time.msNow() - timer >= 1000) {
+            System.out.println(counter++);
+            timer = time.msNow();
         }
     }
 }

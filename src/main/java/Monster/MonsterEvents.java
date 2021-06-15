@@ -29,6 +29,7 @@ public class MonsterEvents {
     PlayerVars playerVars = new PlayerVars();
     GameVars gameVars = new GameVars();
     Util util = new Util();
+    Time time = new Time();
 
     Bullet bullet;
     BulletController bulletController = new BulletController(main);
@@ -142,7 +143,7 @@ public class MonsterEvents {
      */
     private void addExplosion(double tempX, double tempY) {
 //        explosion = new Explosion(tempX, tempY, main);
-        explosionController.addExplosion(new Explosion(tempX, tempY, Time.msNow(), main));
+        explosionController.addExplosion(new Explosion(tempX, tempY, time.msNow(), main));
         service.schedule(removeExplosion, 200, TimeUnit.MILLISECONDS);
     }
 

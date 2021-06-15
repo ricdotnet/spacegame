@@ -9,12 +9,12 @@ public class Time {
     public static final double NS_PER_TICK = 1000000000 / TPS; // nanoseconds per tick
 
     // return current time in nanoseconds
-    public static long nsNow() {
+    public long nsNow() {
         return System.nanoTime();
     }
 
     // return current time in milliseconds
-    public static long msNow() {
+    public long msNow() {
         return System.currentTimeMillis();
     }
 

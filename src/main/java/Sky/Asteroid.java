@@ -2,6 +2,7 @@ package Sky;
 
 import Images.SprideSheet;
 import Main.MainClass;
+import Util.*;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -9,12 +10,15 @@ import java.awt.image.BufferedImage;
 public class Asteroid {
 
     MainClass main;
+    Time time;
 
     private double xPos;
     private double yPos;
     private int speed;
     private int rotationSpeed = 1; // TODO: 14/06/2021 Make variable rotation speed.
     private int rotation = 1;
+
+    private long timer;
 
     private final BufferedImage asteroid;
 

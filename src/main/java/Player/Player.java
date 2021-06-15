@@ -2,6 +2,7 @@ package Player;
 
 import Images.SprideSheet;
 import Main.MainClass;
+import Util.Colors;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;

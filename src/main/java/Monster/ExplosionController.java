@@ -1,7 +1,7 @@
 package Monster;
 
 import Main.MainClass;
-import Util.Time;
+import Util.*;
 
 import java.awt.*;
 import java.util.LinkedList;
@@ -12,6 +12,7 @@ public class ExplosionController {
     private static List<Explosion> explosionsList = new LinkedList<>();
 
     MainClass main;
+    Time time = new Time();
 
     public ExplosionController(MainClass main) {
         this.main = main;
@@ -19,7 +20,7 @@ public class ExplosionController {
 
     public void tick() {
         for(int i = 0; i < explosionsList.size(); i++) {
-            if((Time.msNow() - explosionsList.get(i).getExplodedIn()) >= 250) {
+            if((time.msNow() - explosionsList.get(i).getExplodedIn()) >= 250) {
                 removeExplosion(i);
             }
         }

@@ -14,7 +14,7 @@ public class Asteroids {
     Util util = new Util();
     MainClass main;
 
-    private List<Asteroid> asteroidList = new LinkedList<>();
+    private static List<Asteroid> asteroidList = new LinkedList<>();
 
     public Asteroids(MainClass main) {
         this.main = main;
@@ -31,9 +31,17 @@ public class Asteroids {
             asteroidList.get(i).setyPos(asteroidList.get(i).getSpeed());
             asteroidList.get(i).setRotation(asteroidList.get(i).getSpeed());
             if(asteroidList.get(i).getyPos() > main.getHeight()) {
-                asteroidList.remove(i);
+                removeAsteroid(asteroidList.get(i));
             }
         }
+    }
+
+    /**
+     * Remove asteroid
+     * @param asteroid
+     */
+    public void removeAsteroid(Asteroid asteroid) {
+        asteroidList.remove(asteroid);
     }
 
 //    public void render(Graphics g) {
