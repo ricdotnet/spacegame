@@ -20,7 +20,12 @@ public class MouseInput extends MainClass implements MouseListener, MouseMotionL
 
     @Override
     public void mousePressed(MouseEvent mouseEvent) {
-
+        for(int i = 0; i < asteroids.getAsteroidList().size(); i++) {
+            if ((mouseEvent.getX() > asteroids.getAsteroidList().get(i).getxPos() && mouseEvent.getX() < asteroids.getAsteroidList().get(i).getxPos() + 32)
+                    && (mouseEvent.getY() > asteroids.getAsteroidList().get(i).getyPos() && mouseEvent.getY() < asteroids.getAsteroidList().get(i).getyPos() + 32)) {
+                asteroids.removeAsteroid(asteroids.getAsteroidList().get(i));
+            }
+        }
     }
 
     @Override

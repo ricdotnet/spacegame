@@ -38,6 +38,12 @@ public class Asteroid {
     public void render(Graphics2D g) {
         g.rotate(Math.toRadians(getRotation()), getxPos()+16, getyPos()+16);
         g.drawImage(asteroid, (int) getxPos(), (int) getyPos(), null);
+
+//        g.setColor(Color.WHITE);
+//        g.drawString(getxPos() + " - " + getyPos(), (int) getxPos(), (int) getyPos() -16);
+//
+//        g.setColor(Colors.LIGHT_BLACK);
+//        g.fillRect((int) getxPos(), (int) getyPos(), 32, 32);
     }
 
     public void setxPos(double xPos) {
