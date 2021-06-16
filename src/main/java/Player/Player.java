@@ -19,6 +19,7 @@ public class Player {
 
     private double velX;
     private double velY;
+    private int vel;
 
     private BufferedImage player;
 
@@ -33,23 +34,32 @@ public class Player {
     }
 
     public void tick() {
-        xPOS += velX;
-        yPOS += velY;
+//        xPOS += velX;
+//        yPOS += velY;
+
+        if(vel != 0)
+            move();
 
         checkWallCollision();
+    }
+
+    public void move() {
+        double angle = getRotation();
+        this.xPOS += Math.sin(angle) * 2;
+        this.yPOS += Math.sin(angle-90) * 2;
     }
 
     public void render(Graphics graphic) {
         Graphics2D g2d = (Graphics2D) graphic;
 
-        g2d.rotate(Math.toRadians(getRotation()), xPOS+16, yPOS+16);
+        g2d.rotate(getRotation(), xPOS+16, yPOS+16);
         g2d.setColor(Colors.LIGHT_BLACK);
         g2d.fillRect((int) xPOS, (int) yPOS, 32, 32);
 //        g2d.scale(2, 2);
         g2d.drawImage(player, (int) xPOS, (int) yPOS, null);
 
         g2d.setColor(Color.WHITE);
-        g2d.drawString(bulletXpos + " - " + bulletYpos, (int) xPOS, (int) yPOS-16);
+        g2d.drawString(String.valueOf(getRotation()), (int) xPOS, (int) yPOS-16);
 
     }
 
@@ -90,13 +100,20 @@ public class Player {
     public void setVelY(double velY) {
         this.velY = velY;
     }
+    public void setVel(int vel) {
+        this.vel = vel;
+    }
 
     public void setRotation(double rotation) {
         this.rotation += rotation;
     }
+    public void setRotationMouse(double rotation) {
+        this.rotation = rotation;
+    }
     public double getRotation() {
         DecimalFormat newRotation = new DecimalFormat("0.00");
         return Double.parseDouble(newRotation.format(rotation));
+//        return rotation;
     }
 
     public void setBulletXpos(double bulletXpos) {

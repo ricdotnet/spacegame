@@ -18,20 +18,23 @@ public class KeyInput extends KeyAdapter {
     }
 
     public void keyPressed(KeyEvent e) {
+        if(e.getKeyCode() == KeyEvent.VK_W) {
+            player.setVel(1);
+        }
         if(e.getKeyCode() == KeyEvent.VK_RIGHT) {
 //            player.setVelX(5);
-            player.setRotation(10);
+            player.setRotation(Math.toRadians(5));
 //            double xPos = Math.cos(Math.toRadians(getRotation())) * 32;
 //            double yPos = Math.sin(Math.toRadians(getRotation())) * 32;
 
-            player.setBulletXpos(Math.cos(Math.toRadians(player.getRotation())) * 32);
-            player.setBulletYpos(Math.sin(Math.toRadians(player.getRotation())) * 32);
+//            player.setBulletXpos(Math.cos(Math.toRadians(player.getRotation())) * 32);
+//            player.setBulletYpos(Math.sin(Math.toRadians(player.getRotation())) * 32);
         }
         if(e.getKeyCode() == KeyEvent.VK_LEFT) {
 //            player.setVelX(-5);
-            player.setRotation(-10);
-            player.setBulletXpos((Math.cos(Math.toRadians(player.getRotation())) * 32));
-            player.setBulletYpos((Math.sin(Math.toRadians(player.getRotation())) * 32));
+            player.setRotation(Math.toRadians(-5));
+//            player.setBulletXpos((Math.cos(Math.toRadians(player.getRotation())) * 32));
+//            player.setBulletYpos((Math.sin(Math.toRadians(player.getRotation())) * 32));
         }
         if(e.getKeyCode() == KeyEvent.VK_UP) {
 //            player.setVelY(-5);
@@ -39,7 +42,7 @@ public class KeyInput extends KeyAdapter {
         if(e.getKeyCode() == KeyEvent.VK_DOWN) {
 //            player.setVelY(5);
         }
-
+//
         if(e.getKeyCode() == KeyEvent.VK_SPACE) {
             playerEvents.playerShoot();
         }
@@ -54,6 +57,9 @@ public class KeyInput extends KeyAdapter {
 
     }
     public void keyReleased(KeyEvent e) {
+        if(e.getKeyCode() == KeyEvent.VK_W) {
+            player.setVel(0);
+        }
         if(e.getKeyCode() == KeyEvent.VK_RIGHT) {
             player.setVelX(0);
         }
