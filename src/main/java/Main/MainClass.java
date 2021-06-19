@@ -404,6 +404,7 @@ public class MainClass extends Canvas implements Runnable {
         explosionController.getExplosionsList().clear();
         bombController.getBombList().clear();
         monsterController.getMonsterList().clear();
+        heartController.getHeartList().clear();
     }
 
     public void setWindowSize() {
